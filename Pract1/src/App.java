@@ -2,13 +2,13 @@ import java.io.*;
 
 public class App {
 
-    int numCameras; // Numero de camaras
-    int rangVision; // Alcance de camaras
-    float angApertura; // Angulo de las camaras (solo si es con codificacion real)
-    boolean[][] map; // Mapa de bools para guardar objetos que bloqueen las camaras
-    int[][] importancia; // Mapa de valor de vigilancia por cada casilla (solo si es codificacion real)
-    boolean modeReal; // Bool que es true si el algoritmo tiene codificación real y false si es
-                      // binaria
+    static int numCameras; // Numero de camaras
+    static int rangVision; // Alcance de camaras
+    static float angApertura; // Angulo de las camaras (solo si es con codificacion real)
+    static boolean[][] map; // Mapa de bools para guardar objetos que bloqueen las camaras
+    static int[][] importancia; // Mapa de valor de vigilancia por cada casilla (solo si es codificacion real)
+    static boolean modeReal; // Bool que es true si el algoritmo tiene codificación real y false si es
+    // binaria
 
     public static void main(String[] args) throws Exception {
         LeerData("data1");
@@ -21,13 +21,31 @@ public class App {
             BufferedReader br = new BufferedReader(fr);
             // Lectura del fichero
             String linea;
-            /*
-             * while ((linea = br.readLine()) != null)
-             * System.out.println(linea);
-             */
             br.readLine();
             linea = br.readLine();
-            System.out.println(linea);
+            numCameras = Integer.parseInt(linea);
+            br.readLine();
+            linea = br.readLine();
+            rangVision = Integer.parseInt(linea);
+            br.readLine();
+            linea = br.readLine();
+            angApertura = Float.parseFloat(linea);
+            br.readLine();
+            linea = br.readLine();
+            int y = Integer.parseInt(linea);
+            linea = br.readLine();
+            int x = Integer.parseInt(linea);
+            for (int i = 0; i < y; i++) {
+                for (int j = 0; j < x; j++) {
+                    /*
+                     *
+                     * int aux = br.read();
+                     * System.out.print(aux + "\n");
+                     */
+                }
+                linea = br.read();
+                System.out.println(linea);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
