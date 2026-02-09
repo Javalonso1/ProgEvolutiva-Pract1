@@ -32,19 +32,15 @@ public class App {
             angApertura = Float.parseFloat(linea);
             br.readLine();
             linea = br.readLine();
-            int y = Integer.parseInt(linea);
-            linea = br.readLine();
             int x = Integer.parseInt(linea);
-            for (int i = 0; i < y; i++) {
-                for (int j = 0; j < x; j++) {
-                    /*
-                     *
-                     * int aux = br.read();
-                     * System.out.print(aux + "\n");
-                     */
+            linea = br.readLine();
+            int y = Integer.parseInt(linea);
+            map = new boolean[x] [y];
+            for (int i = 0; i < x; i++) {
+                String[] valores = br.readLine().trim().split("\\s+");
+                for (int j = 0; j < y; j++) {
+                    map[i][j] = (valores[j] == "1");
                 }
-                linea = br.read();
-                System.out.println(linea);
             }
         } catch (Exception e) {
             e.printStackTrace();
