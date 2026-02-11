@@ -46,6 +46,14 @@ public class Main {
                     map[i][j] = (valores[j] == "1");
                 }
             }
+            importancia = new int[x][y];
+            br.readLine();
+            for (int i = 0; i < x; i++) {
+                String[] valores = br.readLine().trim().split("\\s+");
+                for (int j = 0; j < y; j++) {
+                    importancia[i][j] = Integer.parseInt(valores[j]);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
