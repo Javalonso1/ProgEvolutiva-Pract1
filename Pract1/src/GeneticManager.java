@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 
 //el manager para
-public class GeneticManager {
+public abstract class GeneticManager {
 
     private Chromosome[][] population;
 
-     private int[] generationAverage;
+     private double[] generationAverage;
      private Chromosome[] generationBest;
-     private Chromosome[] absoluteBest;
+     private Chromosome absoluteBest;
 
      public GeneticManager()
      {
@@ -18,14 +18,13 @@ public class GeneticManager {
     {
         int i = 0; //i es la generación actual
         population = new Chromosome[n_gen][p_size];
-        generationAverage = new int[n_gen];
+        generationAverage = new double[n_gen];
         generationBest = new Chromosome[n_gen];
-        absoluteBest = new Chromosome[n_gen];
 
         population[0] = initializePopulation(p_size);
 
 
-        evaluateBinaryCameraPopulation(population[i]);
+        evaluate(population[i]);
         while (i < n_gen)   //por si queremos meter otra condición de ruptura
         {
             if (elitism) {
@@ -41,12 +40,10 @@ public class GeneticManager {
                 //this.eliteChromosomes.clear();
             }
 
-            evaluateBinaryCameraPopulation(population[i]);
+            evaluate(population[i]);
 
-            //para visualizar los datos. Igual sustituir por getMetrics.
-            this.generationAverage[i] = getGenerationAvg();
-            this.generationBest[i] = getGenerationBest();
-            this.absoluteBest[i] = getAbsoluteBest();
+            //para visualizar los datos
+            getMetrics(i);
             //ya
 
             i++;
@@ -56,46 +53,46 @@ public class GeneticManager {
     }
 
 
-    Chromosome[] initializePopulation(int p_size)
-    {
-        return null;
-    }
+    protected abstract Chromosome[] initializePopulation(int p_size);
+    protected abstract Chromosome[] crossover (Chromosome[] pop);
+    protected abstract void evaluate(Chromosome[] pop);
 
-    void evaluateBinaryCameraPopulation(Chromosome[] pop)
-    {
 
-    }
+
 
     public Chromosome[] selectParents(Chromosome[] pop) {
 
         return null;
     }
 
-    public Chromosome[] crossover (Chromosome[] pop)
-    {
-
-        return null;
-    }
 
     public Chromosome[] mutate (Chromosome[] pop)
     {
-
         return null;
     }
 
-    int getGenerationAvg()
+    private void getMetrics(int i)
     {
-        return 0;
-    }
+        //hacemos una vuelta por la population para conseguir estos dos
+        double tot = 0;
+        Chromosome best = population[i][0];
+        for (int j = 0; j < population[i].length; i++)
+        {
+            if(population[i][j].aptitud > best.aptitud)
+            {
+                best = population[i][j];
+            }
 
-    Chromosome getGenerationBest()
-    {
-        return null;
-    }
+            tot+= population[i][j].aptitud;
 
-    Chromosome getAbsoluteBest()
-    {
-        return null;
+        }
+        generationAverage[i] = tot/ population[i].length;
+        generationBest[i] = best;
+
+        if(best.aptitud > absoluteBest.aptitud)
+        {
+            absoluteBest= best;
+        }
 
     }
 }
