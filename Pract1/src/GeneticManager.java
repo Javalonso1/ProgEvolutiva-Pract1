@@ -5,6 +5,7 @@ public abstract class GeneticManager {
 
     private Chromosome[][] population;
 
+    protected enum SELECTION_METHOD {RULETA, TORNEOS, ESTOCASTICO, TRUNCAMIENTO, RESTOS}
      private double[] generationAverage;
      private Chromosome[] generationBest;
      private Chromosome absoluteBest;
