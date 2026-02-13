@@ -39,4 +39,29 @@ public class ChromosomeBinario extends Chromosome{
     void mutate(GeneticManager.MUTATION_TYPE t) {
 
     }
+
+    void cruceMonopunto(Chromosome c1, Chromosome c2, int corte)
+    {
+        for(int i = 0; i < genotipo.length; i++){
+            if(i < corte) genotipo[i] = c1.getGenotipo()[i];
+            else genotipo[i] = c2.getGenotipo()[i];
+        }
+        calculateFenotipo();
+    };
+    void cruceUniforme(Chromosome c1, Chromosome c2, float prob, float[]results)
+    {
+        for(int i = 0; i < genotipo.length; i++){
+            if(results[i] < prob) genotipo[i] = c1.getGenotipo()[i];
+            else genotipo[i] = c2.getGenotipo()[i];
+        }
+        calculateFenotipo();
+    };
+    void cruceAritmetico(Chromosome c1, Chromosome c2)
+    {
+        //En el cromosoma binario no se utiliza
+    };
+    void cruceBLX_Alpha(Chromosome c1, Chromosome c2)
+    {
+        //En el cromosoma binario no se utiliza
+    };
 }
