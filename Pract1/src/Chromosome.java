@@ -16,5 +16,5 @@ public abstract class Chromosome {
 
     public abstract void initializeRandom();
     abstract void calculateFenotipo();
-    abstract void mutate();
+    //abstract void mutate();
 }

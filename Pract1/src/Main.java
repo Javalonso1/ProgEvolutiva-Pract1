@@ -1,3 +1,5 @@
+import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 public class Main {
     static int numCameras; // Numero de camaras
@@ -17,6 +19,8 @@ public class Main {
 
          */
         LeerData("data1");
+
+        SwingUtilities.invokeLater(() -> new UIclass() );
     }
 
 
