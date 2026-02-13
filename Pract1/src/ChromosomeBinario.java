@@ -1,12 +1,12 @@
-public class ChromosomeBinario extends Chromosome{
+public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
 
     int TX;
     int TY;
     public ChromosomeBinario(int NumCams, int X, int Y){
-        fenotipo = new double[NumCams * 2];
+        fenotipo = new Integer[NumCams * 2];
         TX = X;
         TY = Y;
-        genotipo = new boolean[NumCams * (TX + TY)];
+        genotipo = new Boolean[NumCams * (TX + TY)];
     }
 
     public void initializeRandom(){
@@ -52,16 +52,16 @@ public class ChromosomeBinario extends Chromosome{
     void cruceMonopunto(Chromosome c1, Chromosome c2, int corte)
     {
         for(int i = 0; i < genotipo.length; i++){
-            if(i < corte) genotipo[i] = c1.getGenotipo()[i];
-            else genotipo[i] = c2.getGenotipo()[i];
+            if(i < corte) genotipo[i] = (Boolean) c1.getGenotipo()[i];
+            else genotipo[i] = (Boolean) c2.getGenotipo()[i];
         }
         calculateFenotipo();
     };
     void cruceUniforme(Chromosome c1, Chromosome c2, float prob, float[]results)
     {
         for(int i = 0; i < genotipo.length; i++){
-            if(results[i] < prob) genotipo[i] = c1.getGenotipo()[i];
-            else genotipo[i] = c2.getGenotipo()[i];
+            if(results[i] < prob) genotipo[i] = (Boolean) c1.getGenotipo()[i];
+            else genotipo[i] = (Boolean) c2.getGenotipo()[i];
         }
         calculateFenotipo();
     };

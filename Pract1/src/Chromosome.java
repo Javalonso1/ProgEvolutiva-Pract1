@@ -1,13 +1,13 @@
-public abstract class Chromosome {
+public abstract class Chromosome <T, G> {
 
-    boolean[] genotipo;
-    double[] fenotipo;
+    T[] genotipo;
+    G[] fenotipo;
     public double aptitud;
     public double puntuacion;
     public double punt_acumulada;
 
-    public boolean[] getGenotipo() {return  genotipo;}
-    public double[] getFenotipo()
+    public T[] getGenotipo() {return  genotipo;}
+    public G[] getFenotipo()
     {
         calculateFenotipo();
         return  fenotipo;

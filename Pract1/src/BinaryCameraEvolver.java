@@ -5,7 +5,6 @@ public class BinaryCameraEvolver extends GeneticManager{
     private boolean[][] map;
     public BinaryCameraEvolver(int nc, int vr, boolean[][] m)
     {
-        super();
         NCameras = nc;
         VisionRange = vr;
         map = m;
@@ -27,7 +26,30 @@ public class BinaryCameraEvolver extends GeneticManager{
     }
 
     @Override
-    protected void evaluate(Chromosome[] pop) {
+    protected void evaluate(Chromosome[] pop)
+    {
+        //FORMATO CROMOSOMA: (posx, posy) x nCameras
+        for (Chromosome c : pop)
+        {
+            boolean[][] seen  = new boolean[map.length][map[0].length];
+            int puntuacion = 0;
+            c.calculateFenotipo();
+            Integer[] sol = (Integer[]) c.fenotipo;
+
+            //recorremos la solución, viendo cuanto ven las camaras
+            for (int i = 0; i < sol.length; i+=2)
+            {
+                //si está en un obstaculo, la penalizamos
+                if(map[sol[i]][sol[i+1]])
+                {
+                    puntuacion -= 100;
+                }
+            }
+
+
+
+
+        }
 
     }
 }
