@@ -37,7 +37,16 @@ public class ChromosomeBinario extends Chromosome{
 
     @Override
     void mutate(GeneticManager.MUTATION_TYPE t) {
+        switch (t){
+            case UNIFORM:
+                int pos = (int) Math.random()*(genotipo.length);
+                genotipo[pos] = !genotipo[pos];
+                calculateFenotipo();
+                break;
+            default:
+                break;
 
+        }
     }
 
     void cruceMonopunto(Chromosome c1, Chromosome c2, int corte)
