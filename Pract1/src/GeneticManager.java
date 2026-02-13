@@ -8,9 +8,13 @@ public abstract class GeneticManager {
 
     public enum SELECTION_METHOD {RULETA, TORNEOS, ESTOCASTICO, TRUNCAMIENTO, RESTOS}
     public enum CROSS_METHOD {MONOPUNTO, UNIFORME, ARITMETICO, BLXALPHA}
+    public enum MUTATION_TYPE {UNIFORM, GAUSSEAN}
 
     protected CROSS_METHOD crossMethod;
     protected SELECTION_METHOD selectionMethod;
+    protected  MUTATION_TYPE mutationType;
+
+    //estas para la grafica
      private double[] generationAverage;
      private Chromosome[] generationBest;
      private Chromosome[] absoluteBest;
@@ -20,10 +24,11 @@ public abstract class GeneticManager {
 
      }
     //esto ahora mismo es super guarro, en un futuro será chulo
-    public void evolve(int n_gen, int p_size, boolean elitism, CROSS_METHOD cm, SELECTION_METHOD sm)
+    public void evolve(int n_gen, int p_size, boolean elitism, CROSS_METHOD cm, SELECTION_METHOD sm, MUTATION_TYPE mt)
     {
         this.crossMethod = cm;
         this.selectionMethod = sm;
+        this.mutationType = mt;
 
         int i = 0; //i es la generación actual
         population = new Chromosome[n_gen][p_size];
@@ -42,7 +47,7 @@ public abstract class GeneticManager {
 
             Chromosome[] parents = selectParents(population[i]);
             population[i+1] = crossover(parents);
-            population[i+1] = mutate(population[i+1]);
+            mutate(population[i+1]);
 
             if (elitism) {
                 //this.population =this.elite.includeEliteRepWorst(this.population, this.eliteChromosomes);
@@ -114,9 +119,12 @@ public abstract class GeneticManager {
     }
 
 
-    public Chromosome[] mutate (Chromosome[] pop)
+    public void mutate (Chromosome[] pop)
     {
-        return null;
+        for (Chromosome c : pop)
+        {
+            c.mutate(mutationType);
+        }
     }
 
     private void getMetrics(int i)

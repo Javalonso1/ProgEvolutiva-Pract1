@@ -34,4 +34,9 @@ public class ChromosomeBinario extends Chromosome{
             fenotipo[i*2 + 1] = sol;
         }
     }
+
+    @Override
+    void mutate(GeneticManager.MUTATION_TYPE t) {
+
+    }
 }

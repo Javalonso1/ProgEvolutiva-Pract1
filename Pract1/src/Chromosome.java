@@ -1,6 +1,6 @@
 public abstract class Chromosome {
 
-    public enum MUTATION_TYPE {UNIFORM, GAUSSEAN}
+
 
     boolean[] genotipo;
     double[] fenotipo;
@@ -16,5 +16,5 @@ public abstract class Chromosome {
 
     public abstract void initializeRandom();
     abstract void calculateFenotipo();
-    //abstract void mutate();
+    abstract void mutate(GeneticManager.MUTATION_TYPE t);
 }
