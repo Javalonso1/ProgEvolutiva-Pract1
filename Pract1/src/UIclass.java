@@ -75,19 +75,24 @@ public class UIclass extends JFrame {
         setVisible(true);
     }
 
+    public GraphPanel getGraphPanel() {
+        return graphPanel;
+    }
+
     // --- Inner class: Graph panel ---
     class GraphPanel extends JPanel {
 
-        private int y1 = 10;
-        private int y2 = 50;
+        private int[][] dataSeries;   // Each row = one series
+        private Color[] colors;       // Colors for each series
 
         public GraphPanel() {
             setPreferredSize(new Dimension(300, 600));
+            dataSeries = new int[0][0];  // initially empty
+            colors = new Color[]{Color.BLUE, Color.GREEN, Color.MAGENTA};
         }
 
-        public void setData(int y1, int y2) {
-            this.y1 = y1;
-            this.y2 = y2;
+        public void setData(int[] series1, int[] series2, int[] series3) {
+            dataSeries = new int[][] {series1, series2, series3};
             repaint();
         }
 
@@ -101,17 +106,32 @@ public class UIclass extends JFrame {
 
             // Draw axes
             g2.setColor(Color.BLACK);
-            g2.drawLine(50, height - 50, width - 50, height - 50);
-            g2.drawLine(50, height - 50, 50, 50);
+            g2.drawLine(50, height - 50, width - 50, height - 50); // x-axis
+            g2.drawLine(50, height - 50, 50, 50);                  // y-axis
 
-            // Data points
-            int x1 = 100;
-            int x2 = 200;
-            int scaledY1 = height - 50 - y1 * 4;
-            int scaledY2 = height - 50 - y2 * 4;
+            int marginX = 50;
+            int marginY = 50;
+            int plotWidth = width - 2 * marginX;
+            int plotHeight = height - 2 * marginY;
 
-            g2.setColor(Color.BLUE);
-            g2.drawLine(x1, scaledY1, x2, scaledY2);
+            if (dataSeries.length == 0) return;
+
+            int nPoints = dataSeries[0].length; // assume all series same length
+
+            for (int s = 0; s < dataSeries.length; s++) {
+                g2.setColor(colors[s % colors.length]);
+                int[] series = dataSeries[s];
+
+                for (int i = 0; i < series.length - 1; i++) {
+                    int x1 = marginX + i * plotWidth / (nPoints - 1);
+                    int x2 = marginX + (i + 1) * plotWidth / (nPoints - 1);
+
+                    int y1 = height - marginY - series[i] * 4;     // scale
+                    int y2 = height - marginY - series[i + 1] * 4; // scale
+
+                    g2.drawLine(x1, y1, x2, y2);
+                }
+            }
         }
     }
 }

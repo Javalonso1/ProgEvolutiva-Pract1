@@ -13,7 +13,7 @@ public abstract class GeneticManager {
     protected SELECTION_METHOD selectionMethod;
      private double[] generationAverage;
      private Chromosome[] generationBest;
-     private Chromosome absoluteBest;
+     private Chromosome[] absoluteBest;
 
      public GeneticManager()
      {
@@ -137,9 +137,13 @@ public abstract class GeneticManager {
         generationAverage[i] = tot/ population[i].length;
         generationBest[i] = best;
 
-        if(best.aptitud > absoluteBest.aptitud)
+        if(i == 0 ||best.aptitud > absoluteBest[i-1].aptitud)
         {
-            absoluteBest= best;
+            absoluteBest[i]= best;
+        }
+        else
+        {
+            absoluteBest[i] = absoluteBest[i-1];
         }
 
     }

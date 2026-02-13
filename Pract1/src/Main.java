@@ -20,7 +20,11 @@ public class Main {
          */
         LeerData("data1");
 
-        SwingUtilities.invokeLater(() -> new UIclass() );
+        UIclass ui = new UIclass();
+        int[] series1 = {10, 30, 20, 40};
+        int[] series2 = {50, 25, 35, 10};
+        int[] series3 = {20, 40, 10, 30};
+        ui.getGraphPanel().setData(series1, series2, series3);
     }
 
 
