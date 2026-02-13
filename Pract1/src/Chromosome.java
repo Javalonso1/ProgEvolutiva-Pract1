@@ -7,11 +7,7 @@ public abstract class Chromosome {
     public double punt_acumulada;
 
     public boolean[] getGenotipo() {return  genotipo;}
-    public double[] getFenotipo()
-    {
-        calculateFenotipo();
-        return  fenotipo;
-    };
+    public double[] getFenotipo(){return  fenotipo;};
 
     public abstract void initializeRandom();
     abstract void calculateFenotipo();
