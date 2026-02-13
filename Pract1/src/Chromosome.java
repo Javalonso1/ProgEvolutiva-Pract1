@@ -9,7 +9,6 @@ public abstract class Chromosome <T, G> {
     public T[] getGenotipo() {return  genotipo;}
     public G[] getFenotipo()
     {
-        calculateFenotipo();
         return  fenotipo;
     };
 
