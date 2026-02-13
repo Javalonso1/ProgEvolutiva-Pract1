@@ -1,6 +1,7 @@
 public abstract class Chromosome {
 
     public enum MUTATION_TYPE {UNIFORM, GAUSSEAN}
+
     boolean[] genotipo;
     double[] fenotipo;
     public double aptitud;

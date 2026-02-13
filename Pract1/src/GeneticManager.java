@@ -1,11 +1,16 @@
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 //el manager para
 public abstract class GeneticManager {
 
     private Chromosome[][] population;
 
-    protected enum SELECTION_METHOD {RULETA, TORNEOS, ESTOCASTICO, TRUNCAMIENTO, RESTOS}
+    public enum SELECTION_METHOD {RULETA, TORNEOS, ESTOCASTICO, TRUNCAMIENTO, RESTOS}
+    public enum CROSS_METHOD {MONOPUNTO, UNIFORME, ARITMETICO, BLXALPHA}
+
+    protected CROSS_METHOD crossMethod;
+    protected SELECTION_METHOD selectionMethod;
      private double[] generationAverage;
      private Chromosome[] generationBest;
      private Chromosome absoluteBest;
@@ -15,8 +20,11 @@ public abstract class GeneticManager {
 
      }
     //esto ahora mismo es super guarro, en un futuro será chulo
-    public void evolve(int n_gen, int p_size, boolean elitism)
+    public void evolve(int n_gen, int p_size, boolean elitism, CROSS_METHOD cm, SELECTION_METHOD sm)
     {
+        this.crossMethod = cm;
+        this.selectionMethod = sm;
+
         int i = 0; //i es la generación actual
         population = new Chromosome[n_gen][p_size];
         generationAverage = new double[n_gen];
@@ -61,9 +69,48 @@ public abstract class GeneticManager {
 
 
 
-    public Chromosome[] selectParents(Chromosome[] pop) {
+    protected Chromosome[] selectParents(Chromosome[] pop) {
 
-        return null;
+        Chromosome[] out = null;
+        switch (selectionMethod)
+        {
+            case RULETA:
+                out = ruletteSlection(pop);
+                break;
+
+            default:
+                break;
+        }
+        return out;
+    }
+
+    private Chromosome[] ruletteSlection(Chromosome[] pop)
+    {
+        int n = pop.length;
+        Chromosome[] selected = new Chromosome[n];
+
+        double totalFitness = 0.0;
+        for (Chromosome c : pop) {
+            totalFitness += c.aptitud;
+        }
+
+        // ahora seleccionamos
+        for (int i = 0; i < n; i++) {
+
+            double r = ThreadLocalRandom.current().nextDouble() * totalFitness;
+            double cumulative = 0.0;
+
+            for (Chromosome c : pop) {
+                cumulative += c.aptitud;
+
+                if (cumulative >= r) {
+                    selected[i] = c;
+                    break;
+                }
+            }
+        }
+
+        return selected;
     }
 
 
