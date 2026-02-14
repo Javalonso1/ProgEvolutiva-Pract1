@@ -79,12 +79,58 @@ public class BinaryCameraEvolver extends GeneticManager{
                 {
                     puntuacion -= 100;
                 }
+                else {
+                    //Se miran por los 4 lados
+                    boolean stopArriba = false;
+                    boolean stopAbajo = false;
+                    boolean stopIzquierda = false;
+                    boolean stopDerecha = false;
+                    int aux = 0;
+                    while (!stopArriba || ! stopAbajo|| ! stopDerecha|| ! stopIzquierda){
+                        if(sol[i+1] - aux < 0 || map[sol[i]][sol[i+1] - aux]) stopArriba = true;
+                        if(sol[i+1] + aux >= map[0].length || map[sol[i]][sol[i+1] + aux]) stopAbajo = true;
+                        if(sol[i] - aux < 0 || map[sol[i]- aux][sol[i+1]]) stopIzquierda = true;
+                        if(sol[i] + aux >= map.length || map[sol[i]+ aux][sol[i+1]]) stopDerecha = true;
+
+                        //Arriba
+                        if(!stopArriba && !seen[sol[i]][sol[i+1] - aux]){
+                            seen[sol[i]][sol[i+1] - aux] = true;
+                            //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
+                            puntuacion += 1;
+                        }
+
+                        //Abajo
+                        if(!stopAbajo && !seen[sol[i]][sol[i+1] + aux]){
+                            seen[sol[i]][sol[i+1] + aux] = true;
+                            //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
+                            puntuacion += 1;
+                        }
+
+                        //Izquierda
+                        if(!stopIzquierda && !seen[sol[i]- aux][sol[i+1]]){
+                            seen[sol[i] - aux][sol[i+1]] = true;
+                            //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
+                            puntuacion += 1;
+                        }
+
+                        //Derecha
+                        if(!stopDerecha && !seen[sol[i]+ aux][sol[i+1]]){
+                            seen[sol[i] + aux][sol[i+1]] = true;
+                            //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
+                            puntuacion += 1;
+                        }
+
+                        aux++;
+                        if(aux > VisionRange) {
+                            stopArriba = true;
+                            stopAbajo = true;
+                            stopDerecha = true;
+                            stopIzquierda = true;
+                        }
+                    }
+                }
             }
-
-
-
-
+            c.aptitud = puntuacion;
         }
-
     }
 }
