@@ -25,6 +25,8 @@ public class UIclass extends JFrame {
         leftPanel.add(optionA);
         leftPanel.add(optionB);
 
+        leftPanel.setPreferredSize(new Dimension(200, 600));
+
         add(leftPanel, BorderLayout.WEST);
 
         // === CENTER PANEL: 5x5 Grid + Translucent Red Triangle ===
@@ -66,6 +68,7 @@ public class UIclass extends JFrame {
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
             }
         };
+        centerPanel.setPreferredSize(new Dimension(50, 50));
         add(centerPanel, BorderLayout.CENTER);
 
         // === RIGHT PANEL: Graph with Two Points ===
@@ -82,17 +85,29 @@ public class UIclass extends JFrame {
     // --- Inner class: Graph panel ---
     class GraphPanel extends JPanel {
 
-        private int[][] dataSeries;   // Each row = one series
+        private double[][] dataSeries;   // Each row = one series
         private Color[] colors;       // Colors for each series
+        private String[] labels = {"generationBest", "absoluteBest", "generationAverage"};
+        double maxValue;
 
         public GraphPanel() {
-            setPreferredSize(new Dimension(300, 600));
-            dataSeries = new int[0][0];  // initially empty
+            setPreferredSize(new Dimension(600, 600));
+            dataSeries = new double[0][0];  // initially empty
             colors = new Color[]{Color.BLUE, Color.GREEN, Color.MAGENTA};
         }
 
-        public void setData(int[] series1, int[] series2, int[] series3) {
-            dataSeries = new int[][] {series1, series2, series3};
+        public void setData(double[] series1, double[] series2, double[] series3) {
+            dataSeries = new double[][] {series1, series2, series3};
+
+            maxValue = Double.MIN_VALUE;
+            for (double[] series : dataSeries) {
+                for (double v : series) {
+                    if (v > maxValue) {
+                        maxValue = v;
+                    }
+                }
+            }
+
             repaint();
         }
 
@@ -117,20 +132,36 @@ public class UIclass extends JFrame {
             if (dataSeries.length == 0) return;
 
             int nPoints = dataSeries[0].length; // assume all series same length
+            double scale = plotHeight / (maxValue + 10);
 
             for (int s = 0; s < dataSeries.length; s++) {
                 g2.setColor(colors[s % colors.length]);
-                int[] series = dataSeries[s];
+                double[] series = dataSeries[s];
 
                 for (int i = 0; i < series.length - 1; i++) {
-                    int x1 = marginX + i * plotWidth / (nPoints - 1);
-                    int x2 = marginX + (i + 1) * plotWidth / (nPoints - 1);
+                    double x1 = marginX + i * plotWidth / (nPoints - 1);
+                    double x2 = marginX + (i + 1) * plotWidth / (nPoints - 1);
 
-                    int y1 = height - marginY - series[i] * 4;     // scale
-                    int y2 = height - marginY - series[i + 1] * 4; // scale
+                    double y1 = height - marginY - series[i] * scale;     // scale
+                    double y2 = height - marginY - series[i + 1] * scale; // scale
 
-                    g2.drawLine(x1, y1, x2, y2);
+                    g2.setStroke(new BasicStroke(1));
+                    g2.drawLine((int)x1, (int)y1, (int)x2, (int)y2);
+                    //g2.drawString(labels[i], i*10 + 10, 12);
                 }
+            }
+
+            int legendX = width - 160;
+            int legendY = 60;
+            int boxSize = 15;
+
+            for (int i = 0; i < dataSeries.length; i++) {
+                g2.setColor(colors[i % colors.length]);
+                g2.fillRect(legendX, legendY + i * 25, boxSize, boxSize);
+
+                g2.setColor(Color.BLACK);
+                g2.drawRect(legendX, legendY + i * 25, boxSize, boxSize);
+                g2.drawString(labels[i], legendX + boxSize + 10, legendY + i * 25 + 12);
             }
         }
     }

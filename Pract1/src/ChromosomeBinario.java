@@ -9,6 +9,22 @@ public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
         genotipo = new Boolean[NumCams * (TX + TY)];
     }
 
+    @Override
+    public void setFenotipo(Integer[] f) {
+        if(fenotipo != f)
+        {
+            fenotipo = f;
+            recalculateGenome();
+
+        }
+
+    }
+
+    @Override
+    protected void recalculateGenome() {
+        //TODO para cuando nuestro fenotipo es invaldo y hay q recalcular el genoma
+    }
+
     public void initializeRandom(){
         for(int i = 0; i < genotipo.length; i++){
             genotipo[i] = (int)(Math.random() * 2) == 1;

@@ -1,10 +1,13 @@
+import static java.lang.Math.min;
+
 public class BinaryCameraEvolver extends GeneticManager{
 
     private int NCameras;
     private int VisionRange;
     private boolean[][] map;
-    public BinaryCameraEvolver(int nc, int vr, boolean[][] m)
+    public BinaryCameraEvolver(int nc, int vr, boolean[][] m, UIclass.GraphPanel g)
     {
+        super(g);
         NCameras = nc;
         VisionRange = vr;
         map = m;
@@ -12,9 +15,10 @@ public class BinaryCameraEvolver extends GeneticManager{
     @Override
     protected Chromosome[] initializePopulation(int p_size) {
         Chromosome[] ini_pop = new ChromosomeBinario[p_size];
-        for ( Chromosome c : ini_pop)
+        for ( int i = 0; i < p_size; i++)
         {
-            c.initializeRandom();
+            ini_pop[i] = new ChromosomeBinario(NCameras, 5, 5);  //por ahora 3 y 3, en un futuro se calculará
+            ini_pop[i].initializeRandom();
         }
 
         return ini_pop;
@@ -71,15 +75,25 @@ public class BinaryCameraEvolver extends GeneticManager{
             c.calculateFenotipo();
             Integer[] sol = (Integer[]) c.fenotipo;
 
+            //si el fenotipo no es correcto, lo corregimos
+
             //recorremos la solución, viendo cuanto ven las camaras
             for (int i = 0; i < sol.length; i+=2)
             {
+                //si la posición no es correcta, la corregimos:
+                if(sol[i] > map.length-1 || sol[i+1] > map[sol[i]].length-1)
+                {
+                    sol[i] = min(map.length-1, sol[i]);
+                    sol[i+1] = min(map[sol[i]].length-1, sol[i+1]);
+                }
+
                 //si está en un obstaculo, la penalizamos
                 if(map[sol[i]][sol[i+1]])
                 {
                     puntuacion -= 100;
                 }
-                else {
+                //este o no, vemos como va
+                {
                     //Se miran por los 4 lados
                     boolean stopArriba = false;
                     boolean stopAbajo = false;
@@ -131,6 +145,8 @@ public class BinaryCameraEvolver extends GeneticManager{
                 }
             }
             c.aptitud = puntuacion;
+            //por si ha cambiado su fenotipo (no era valido), lo recalculamos:
+            c.setFenotipo(sol);
         }
     }
 }

@@ -11,6 +11,8 @@ public abstract class Chromosome <T, G> {
     {
         return  fenotipo;
     };
+    public abstract void setFenotipo(G[] f);
+    protected abstract void recalculateGenome();
 
     public abstract void initializeRandom();
     abstract void calculateFenotipo();

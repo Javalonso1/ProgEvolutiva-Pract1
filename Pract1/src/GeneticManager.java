@@ -16,11 +16,15 @@ public abstract class GeneticManager {
 
     //estas para la grafica
      private double[] generationAverage;
-     private Chromosome[] generationBest;
-     private Chromosome[] absoluteBest;
+     private double[] generationBest;
+     private double[] absoluteBest;
+     private Chromosome bestSolution;
 
-     public GeneticManager()
+     private UIclass.GraphPanel graph;
+
+     public GeneticManager(UIclass.GraphPanel g)
      {
+         graph = g;
 
      }
     //esto ahora mismo es super guarro, en un futuro será chulo
@@ -33,13 +37,14 @@ public abstract class GeneticManager {
         int i = 0; //i es la generación actual
         population = new Chromosome[n_gen][p_size];
         generationAverage = new double[n_gen];
-        generationBest = new Chromosome[n_gen];
+        generationBest = new double[n_gen];
+        absoluteBest = new double[n_gen];
 
         population[0] = initializePopulation(p_size);
 
 
-        evaluate(population[i]);
-        while (i < n_gen)   //por si queremos meter otra condición de ruptura
+        evaluate(population[0]);
+        while (i < n_gen-1)   //por si queremos meter otra condición de ruptura
         {
             if (elitism) {
                 //eliteChromosomes.addAll(0, this.elite.getElite(population));
@@ -58,6 +63,8 @@ public abstract class GeneticManager {
 
             //para visualizar los datos
             getMetrics(i);
+
+            graph.setData(generationBest, absoluteBest, generationAverage);
             //ya
 
             i++;
@@ -132,7 +139,7 @@ public abstract class GeneticManager {
         //hacemos una vuelta por la population para conseguir estos dos
         double tot = 0;
         Chromosome best = population[i][0];
-        for (int j = 0; j < population[i].length; i++)
+        for (int j = 0; j < population[i].length; j++)
         {
             if(population[i][j].aptitud > best.aptitud)
             {
@@ -143,16 +150,22 @@ public abstract class GeneticManager {
 
         }
         generationAverage[i] = tot/ population[i].length;
-        generationBest[i] = best;
+        generationBest[i] = best.aptitud;
 
-        if(i == 0 ||best.aptitud > absoluteBest[i-1].aptitud)
+        if(i == 0 ||best.aptitud > absoluteBest[i-1])
         {
-            absoluteBest[i]= best;
+            absoluteBest[i]= best.aptitud;
+            bestSolution = best;
         }
         else
         {
             absoluteBest[i] = absoluteBest[i-1];
         }
 
+    }
+
+    public Chromosome getBestSolution()
+    {
+        return bestSolution;
     }
 }
