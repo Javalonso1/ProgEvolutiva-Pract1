@@ -22,7 +22,27 @@ public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
 
     @Override
     protected void recalculateGenome() {
-        //TODO para cuando nuestro fenotipo es invaldo y hay q recalcular el genoma
+        int pos = 0;
+        for(int i = 0; i < fenotipo.length; i +=2){
+            //Primero con X
+            int aux = fenotipo[i];
+            int aux2 = TX - 1;
+            while (aux != 1 && aux2>=0){
+                genotipo[i*(TX+TY) + aux2] = aux%2 == 1;
+                aux = aux / 2;
+                aux2--;
+            }
+            genotipo[i*(TX+TY)] = true;
+            //Luego con Y
+            aux = fenotipo[i+1];
+            aux2 = TY - 1;
+            while (aux != 1 && aux2>=0){
+                genotipo[i*(TX+TY) + TX + aux2] = aux%2 == 1;
+                aux = aux / 2;
+                aux2--;
+            }
+            genotipo[i*(TX+TY) + TX] = true;
+        }
     }
 
     public void initializeRandom(){
@@ -65,6 +85,7 @@ public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
         }
     }
 
+    @Override
     void cruceMonopunto(Chromosome c1, Chromosome c2, int corte)
     {
         for(int i = 0; i < genotipo.length; i++){
@@ -73,6 +94,7 @@ public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
         }
         calculateFenotipo();
     };
+    @Override
     void cruceUniforme(Chromosome c1, Chromosome c2, float prob, float[]results)
     {
         for(int i = 0; i < genotipo.length; i++){
@@ -81,11 +103,13 @@ public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
         }
         calculateFenotipo();
     };
+    @Override
     void cruceAritmetico(Chromosome c1, Chromosome c2)
     {
         //En el cromosoma binario no se utiliza
     };
-    void cruceBLX_Alpha(Chromosome c1, Chromosome c2)
+    @Override
+    void cruceBLX_Alpha(Chromosome c1, Chromosome c2, float alpha)
     {
         //En el cromosoma binario no se utiliza
     };
