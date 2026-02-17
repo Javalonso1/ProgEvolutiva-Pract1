@@ -19,25 +19,37 @@ public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
     @Override
     protected void recalculateGenome() {
         int pos = 0;
-        for(int i = 0; i < fenotipo.length; i +=2){
+        for(int i = 0; i < fenotipo.length; i+=2){
+            boolean[] aux = new boolean[TX];
+
             //Primero con X
-            int aux = fenotipo[i];
-            int aux2 = TX - 1;
-            while (aux != 1 && aux2>=0){
-                genotipo[i*(TX+TY) + aux2] = aux%2 == 1;
-                aux = aux / 2;
-                aux2--;
+            int j = 0;
+            int fen = fenotipo[i];
+            while (fen >1){
+                aux[j] = fen%2 == 1;
+                fen = fen / 2;
+                j++;
             }
-            genotipo[i*(TX+TY)] = true;
+            aux[j] = true;
+            for(j = 1; j <= TX; j++){
+                genotipo[pos+ (TX-j)] = aux[j-1];
+            }
+            pos +=TX;
+
             //Luego con Y
-            aux = fenotipo[i+1];
-            aux2 = TY - 1;
-            while (aux != 1 && aux2>=0){
-                genotipo[i*(TX+TY) + TX + aux2] = aux%2 == 1;
-                aux = aux / 2;
-                aux2--;
+            j = 0;
+            fen = fenotipo[i+1];
+            aux = new boolean[TY];
+            while (fen >1){
+                aux[j] = fen%2 == 1;
+                fen = fen / 2;
+                j++;
             }
-            genotipo[i*(TX+TY) + TX] = true;
+            aux[j] = true;
+            for(j = 1; j <= TY; j++){
+                genotipo[pos+ (TY-j)] = aux[j-1];
+            }
+            pos +=TY;
         }
     }
 
