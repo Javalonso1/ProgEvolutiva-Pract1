@@ -11,12 +11,8 @@ public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
 
     @Override
     public void setFenotipo(Integer[] f) {
-        if(fenotipo != f)
-        {
-            fenotipo = f;
-            recalculateGenome();
-
-        }
+        fenotipo = f;
+        recalculateGenome();
 
     }
 

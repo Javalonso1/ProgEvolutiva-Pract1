@@ -72,6 +72,7 @@ public class BinaryCameraEvolver extends GeneticManager{
         {
             boolean[][] seen  = new boolean[map.length][map[0].length];
             int puntuacion = 0;
+            boolean changeGenome = false;
             c.calculateFenotipo();
             Integer[] sol = (Integer[]) c.fenotipo;
 
@@ -85,6 +86,7 @@ public class BinaryCameraEvolver extends GeneticManager{
                 {
                     sol[i] = min(map.length-1, sol[i]);
                     sol[i+1] = min(map[sol[i]].length-1, sol[i+1]);
+                    changeGenome = true;
                 }
 
                 //si está en un obstaculo, la penalizamos
@@ -146,7 +148,8 @@ public class BinaryCameraEvolver extends GeneticManager{
             }
             c.aptitud = puntuacion;
             //por si ha cambiado su fenotipo (no era valido), lo recalculamos:
-            c.setFenotipo(sol);
+            if (changeGenome)
+                c.setFenotipo(sol);
         }
     }
 }
