@@ -91,7 +91,7 @@ public class UIclass extends JFrame {
         double maxValue;
 
         public GraphPanel() {
-            setPreferredSize(new Dimension(600, 600));
+            setPreferredSize(new Dimension(500, 600));
             dataSeries = new double[0][0];  // initially empty
             colors = new Color[]{Color.BLUE, Color.GREEN, Color.MAGENTA};
         }
@@ -138,7 +138,7 @@ public class UIclass extends JFrame {
                 g2.setColor(colors[s % colors.length]);
                 double[] series = dataSeries[s];
 
-                for (int i = 0; i < series.length - 1; i++) {
+                for (int i = 0; i < series.length-1; i++) {
                     double x1 = marginX + i * plotWidth / (nPoints - 1);
                     double x2 = marginX + (i + 1) * plotWidth / (nPoints - 1);
 

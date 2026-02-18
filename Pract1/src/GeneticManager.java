@@ -63,7 +63,6 @@ public abstract class GeneticManager {
 
             //para visualizar los datos
             getMetrics(i);
-
             graph.setData(generationBest, absoluteBest, generationAverage);
             //ya
 
@@ -88,6 +87,10 @@ public abstract class GeneticManager {
         {
             case RULETA:
                 out = ruletteSlection(pop);
+                break;
+
+            case TORNEOS:
+                out = tournamentSelection(pop);
                 break;
 
             default:
@@ -116,7 +119,7 @@ public abstract class GeneticManager {
                 cumulative += c.aptitud;
 
                 if (cumulative >= r) {
-                    selected[i] = c;
+                    selected[i] = c.copy();
                     break;
                 }
             }
@@ -125,6 +128,30 @@ public abstract class GeneticManager {
         return selected;
     }
 
+    private Chromosome[] tournamentSelection(Chromosome[] pop) {
+
+        int k = 7; //ESTO ES CUANTOS INDIVIDUOS SE pegan para ver cual es el mejor
+        int n = pop.length;
+        Chromosome[] selected = new Chromosome[n];
+
+        for (int i = 0; i < n; i++) {
+
+            Chromosome best = null;
+
+            for (int j = 0; j < k; j++) {
+
+                int randomIndex = ThreadLocalRandom.current().nextInt(n);
+
+                if (best == null || pop[randomIndex].aptitud > best.aptitud) {
+                    best = pop[randomIndex];
+                }
+            }
+
+            selected[i] = best.copy();
+        }
+
+        return selected;
+    }
 
     public void mutate (Chromosome[] pop)
     {

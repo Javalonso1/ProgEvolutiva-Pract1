@@ -21,4 +21,6 @@ public abstract class Chromosome <T, G> {
     abstract void  cruceUniforme(Chromosome c1, Chromosome c2, float prob, float[]results);
     abstract void  cruceAritmetico(Chromosome c1, Chromosome c2);
     abstract void  cruceBLX_Alpha(Chromosome c1, Chromosome c2, float alpha);
+
+    public abstract Chromosome copy();
 }

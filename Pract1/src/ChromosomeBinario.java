@@ -83,7 +83,7 @@ public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
     void mutate(GeneticManager.MUTATION_TYPE t) {
         switch (t){
             case UNIFORM:
-                int pos = (int) Math.random()*(genotipo.length);
+                int pos =  (int) (Math.random() * genotipo.length);
                 genotipo[pos] = !genotipo[pos];
                 calculateFenotipo();
                 break;
@@ -120,5 +120,22 @@ public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
     void cruceBLX_Alpha(Chromosome c1, Chromosome c2, float alpha)
     {
         //En el cromosoma binario no se utiliza
-    };
+    }
+
+    private ChromosomeBinario(ChromosomeBinario other) {
+        this.genotipo = other.genotipo.clone(); // deep copy array
+        this.aptitud = other.aptitud;
+        this.puntuacion = other.puntuacion;
+        this.punt_acumulada = other.punt_acumulada;
+        this.TX = other.TX;
+        this.TY = other.TY;
+        this.fenotipo = other.fenotipo.clone();
+    }
+
+    @Override
+    public Chromosome copy() {
+        return new ChromosomeBinario(this);
+    }
+
+    ;
 }

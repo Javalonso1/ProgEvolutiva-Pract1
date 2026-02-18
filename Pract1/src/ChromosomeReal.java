@@ -102,5 +102,12 @@ public class ChromosomeReal extends Chromosome<Boolean, Integer> {
                 cmax = (int)(cmax + aux * alpha);
                 fenotipo[i] = (int)(Math.random()* (cmax-cmin))+ cmin;
             }
-        };
+        }
+
+    @Override
+    public Chromosome copy() {
+        return null;
+    }
+
+    ;
 }

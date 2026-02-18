@@ -10,22 +10,14 @@ public class Main {
     static boolean modeReal; // Bool que es true si el algoritmo tiene codificación real y false si es binaria
 
     public static void main(String[] args) {
-        /*
-        System.out.printf("Hello and welcome!");
-
-        for (int i = 1; i <= 5; i++) {
-            System.out.println("i = " + i);
-        }
-
-         */
         LeerData("data1");
 
         UIclass ui = new UIclass();
 
         BinaryCameraEvolver ev = new BinaryCameraEvolver(numCameras, rangVision, map, ui.getGraphPanel());
-        ev.evolve(200, 100, false,
-                GeneticManager.CROSS_METHOD.MONOPUNTO,
-                GeneticManager.SELECTION_METHOD.RULETA,
+        ev.evolve(1000, 500, false,
+                GeneticManager.CROSS_METHOD.UNIFORME,
+                GeneticManager.SELECTION_METHOD.TORNEOS,
                 GeneticManager.MUTATION_TYPE.UNIFORM);
 
         Chromosome solution = ev.getBestSolution();
