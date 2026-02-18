@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 //el manager para
@@ -20,12 +19,17 @@ public abstract class GeneticManager {
      private double[] absoluteBest;
      private Chromosome bestSolution;
 
+     //Porcentajes
+     public float Pcruce;
+     public float Pmutacion;
+
      private UIclass.GraphPanel graph;
 
      public GeneticManager(UIclass.GraphPanel g)
      {
          graph = g;
-
+         Pcruce = 0.6f;
+         Pmutacion = 0.05f;
      }
     //esto ahora mismo es super guarro, en un futuro será chulo
     public void evolve(int n_gen, int p_size, boolean elitism, CROSS_METHOD cm, SELECTION_METHOD sm, MUTATION_TYPE mt)
@@ -157,7 +161,8 @@ public abstract class GeneticManager {
     {
         for (Chromosome c : pop)
         {
-            c.mutate(mutationType);
+            if(Pmutacion <= Math.random())
+                c.mutate(mutationType);
         }
     }
 
