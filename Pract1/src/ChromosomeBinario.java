@@ -20,36 +20,18 @@ public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
     protected void recalculateGenome() {
         int pos = 0;
         for(int i = 0; i < fenotipo.length; i+=2){
-            boolean[] aux = new boolean[TX];
 
-            //Primero con X
-            int j = 0;
-            int fen = fenotipo[i];
-            while (fen >1){
-                aux[j] = fen%2 == 1;
-                fen = fen / 2;
-                j++;
-            }
-            aux[j] = true;
-            for(j = 1; j <= TX; j++){
-                genotipo[pos+ (TX-j)] = aux[j-1];
+            for (int bit = 0; bit < TX; bit++) {
+                // MSB first
+                genotipo[pos + TX - 1 - bit] = ((fenotipo[i] >> bit) & 1) == 1;
             }
             pos +=TX;
 
             //Luego con Y
-            j = 0;
-            fen = fenotipo[i+1];
-            aux = new boolean[TY];
-            while (fen >1){
-                aux[j] = fen%2 == 1;
-                fen = fen / 2;
-                j++;
+            for (int bit = 0; bit < TY; bit++) {
+                genotipo[pos + TY - 1 - bit] = ((fenotipo[i+1] >> bit) & 1) == 1;
             }
-            aux[j] = true;
-            for(j = 1; j <= TY; j++){
-                genotipo[pos+ (TY-j)] = aux[j-1];
-            }
-            pos +=TY;
+            pos += TY;
         }
     }
 
@@ -72,7 +54,7 @@ public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
             sol = 0;
             for(int j = 0; j < TY; j++){
                 int aux = 0;
-                if(genotipo[i*(TX+TY)+j]) aux = 1;
+                if(genotipo[i*(TX+TY)+TX +j]) aux = 1;
                 sol += Math.pow(2, TY-(j+1)) * aux;
             }
             fenotipo[i*2 + 1] = sol;
@@ -87,7 +69,7 @@ public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
                 for(int i = 0; i < genotipo.length; i++)
                 {
                     double r = Math.random() * 100;
-                    if (r > mutationP)
+                    if (r < mutationP)
                         genotipo[i] = !genotipo[i];
 
                 }

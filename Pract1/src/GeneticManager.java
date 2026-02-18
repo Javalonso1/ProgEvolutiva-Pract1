@@ -22,11 +22,11 @@ public abstract class GeneticManager {
      private Chromosome bestSolution;
 
      //Porcentaje cruce
-     public float Pcruce;
+     public float Pcruce = 60;
 
      //Elitismo
      public float Pelitismo;
-     private int numCromosomasElite;
+     private int numCromosomasElite = 1;
      private Chromosome[] eliteChromosomes;
 
      private UIclass.GraphPanel graph;

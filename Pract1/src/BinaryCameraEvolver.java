@@ -17,7 +17,7 @@ public class BinaryCameraEvolver extends GeneticManager{
         Chromosome[] ini_pop = new ChromosomeBinario[p_size];
         for ( int i = 0; i < p_size; i++)
         {
-            ini_pop[i] = new ChromosomeBinario(NCameras, 5, 5);  //por ahora 3 y 3, en un futuro se calculará
+            ini_pop[i] = new ChromosomeBinario(NCameras, 4, 4);  //por ahora 3 y 3, en un futuro se calculará
             ini_pop[i].initializeRandom();
         }
 
