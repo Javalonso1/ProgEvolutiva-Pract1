@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -22,9 +21,12 @@ public abstract class GeneticManager {
      private double[] absoluteBest;
      private Chromosome bestSolution;
 
-     //Porcentajes
+     //Porcentaje cruce
      public float Pcruce;
-     public float Pmutacion;
+
+     public float Pelitismo;
+     private int numCromosomasElite;
+     private Chromosome[] eliteChromosomes;
 
      private UIclass.GraphPanel graph;
 
@@ -32,7 +34,6 @@ public abstract class GeneticManager {
      {
          graph = g;
          Pcruce = 0.6f;
-         Pmutacion = 0.05f;
      }
     //esto ahora mismo es super guarro, en un futuro será chulo
     public void evolve(int n_gen, int p_size, boolean elitism, CROSS_METHOD cm, SELECTION_METHOD sm, MUTATION_TYPE mt)
@@ -49,6 +50,7 @@ public abstract class GeneticManager {
 
         population[0] = initializePopulation(p_size);
 
+        setElitismoPorcentaje(0.02f);
 
         evaluate(population[0]);
         while (i < n_gen-1)   //por si queremos meter otra condición de ruptura
@@ -66,10 +68,10 @@ public abstract class GeneticManager {
                 //this.eliteChromosomes.clear();
             }
 
-            evaluate(population[i]);
+            evaluate(population[i+1]);
 
             //para visualizar los datos
-            getMetrics(i);
+            getMetrics(i+1);
             graph.setData(generationBest, absoluteBest, generationAverage);
             //ya
 
@@ -200,6 +202,12 @@ public abstract class GeneticManager {
             absoluteBest[i] = absoluteBest[i-1];
         }
 
+    }
+
+    public void setElitismoPorcentaje(float p){
+        Pelitismo = p;
+        numCromosomasElite = (int)(p * population[0].length);
+        eliteChromosomes = new Chromosome[numCromosomasElite];
     }
 
     public Chromosome getBestSolution()
