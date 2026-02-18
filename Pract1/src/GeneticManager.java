@@ -13,7 +13,7 @@ public abstract class GeneticManager {
     protected CROSS_METHOD crossMethod;
     protected SELECTION_METHOD selectionMethod;
     protected  MUTATION_TYPE mutationType;
-    protected double MUTATION_PROBABILITY;
+    protected double MUTATION_PROBABILITY = 5;
 
     //estas para la grafica
      private double[] generationAverage;
@@ -117,9 +117,20 @@ public abstract class GeneticManager {
         int n = pop.length;
         Chromosome[] selected = new Chromosome[n];
 
+        //cogemos el minimo
+        double aptitudMin = 0;
+        for (Chromosome c : pop)
+        {
+            if (c.aptitud < aptitudMin)
+                aptitudMin = c.aptitud;
+        }
+
+        //ajustamos y sumamos fitness
+        double[] aptitudDesplazada = new double[pop.length];
         double totalFitness = 0.0;
-        for (Chromosome c : pop) {
-            totalFitness += c.aptitud;
+        for (int i = 0; i < pop.length; i++) {
+            aptitudDesplazada[i] = pop[i].aptitud - aptitudMin;
+            totalFitness += aptitudDesplazada[i];
         }
 
         // ahora seleccionamos
@@ -128,11 +139,11 @@ public abstract class GeneticManager {
             double r = ThreadLocalRandom.current().nextDouble() * totalFitness;
             double cumulative = 0.0;
 
-            for (Chromosome c : pop) {
-                cumulative += c.aptitud;
+            for (int j = 0; j < pop.length; j++) {
+                cumulative += aptitudDesplazada[j];
 
                 if (cumulative >= r) {
-                    selected[i] = c.copy();
+                    selected[i] = pop[j].copy();
                     break;
                 }
             }

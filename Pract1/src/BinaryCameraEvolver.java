@@ -62,6 +62,10 @@ public class BinaryCameraEvolver extends GeneticManager{
                         break;
                 }
             }
+            else {
+                sol[i] = pop[i].copy();
+                sol[i+1] =pop[i+1].copy();
+            }
         }
         return sol;
     }
