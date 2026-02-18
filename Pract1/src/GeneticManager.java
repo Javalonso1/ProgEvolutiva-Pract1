@@ -24,6 +24,7 @@ public abstract class GeneticManager {
      //Porcentaje cruce
      public float Pcruce;
 
+     //Elitismo
      public float Pelitismo;
      private int numCromosomasElite;
      private Chromosome[] eliteChromosomes;
@@ -56,19 +57,19 @@ public abstract class GeneticManager {
         while (i < n_gen-1)   //por si queremos meter otra condición de ruptura
         {
             if (elitism) {
-                //eliteChromosomes.addAll(0, this.elite.getElite(population));
+                AddElitismo(i);
             }
 
             Chromosome[] parents = selectParents(population[i]);
             population[i+1] = crossover(parents);
             mutate(population[i+1]);
 
-            if (elitism) {
-                //this.population =this.elite.includeEliteRepWorst(this.population, this.eliteChromosomes);
-                //this.eliteChromosomes.clear();
-            }
-
             evaluate(population[i+1]);
+
+            if (elitism) {
+                MixElite(i+1);
+                eliteChromosomes = new Chromosome[numCromosomasElite];
+            }
 
             //para visualizar los datos
             getMetrics(i+1);
@@ -224,5 +225,48 @@ public abstract class GeneticManager {
     public Chromosome getBestSolution()
     {
         return bestSolution;
+    }
+
+    private void AddElitismo(int pos){
+        //Primero se buscan los cromosomas de mayor valor
+        int[] sustituciones = new int[numCromosomasElite];
+        for(int i = 0; i < population[i].length; i++){
+            if(i < numCromosomasElite) sustituciones[i] = i;
+            else {
+                int aux = i;
+                for (int j = 0; j < numCromosomasElite; j++){
+                    if(population[pos][aux].aptitud > population[pos][sustituciones[j]].aptitud){
+                        int k = sustituciones[j];
+                        sustituciones[j] = aux;
+                        aux = k;
+                    }
+                }
+            }
+        }
+        //Luego se sustituyen
+        for(int i = 0; i < numCromosomasElite; i++){
+            eliteChromosomes[i] = population[pos][sustituciones[i]].copy();
+        }
+    }
+    private void MixElite(int pos){
+        //Primero se buscan los cromosomas de menor valor
+        int[] sustituciones = new int[numCromosomasElite];
+        for(int i = 0; i < population[i].length; i++){
+            if(i < numCromosomasElite) sustituciones[i] = i;
+            else {
+                int aux = i;
+                for (int j = 0; j < numCromosomasElite; j++){
+                    if(population[pos][aux].aptitud < population[pos][sustituciones[j]].aptitud){
+                        int k = sustituciones[j];
+                        sustituciones[j] = aux;
+                        aux = k;
+                    }
+                }
+            }
+        }
+        //Luego se sustituyen
+        for(int i = 0; i < numCromosomasElite; i++){
+            population[pos][sustituciones[i]] = eliteChromosomes[i].copy();
+        }
     }
 }
