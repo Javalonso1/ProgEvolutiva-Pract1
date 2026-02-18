@@ -5,6 +5,17 @@ public class UIclass extends JFrame {
 
     private GraphPanel graphPanel;
 
+    boolean[][] mapMatrix;
+    boolean[][] cameraMatrix = new boolean[5][5];       // true = gray, false = white (only for white squares)
+    public void setMap(boolean[][] map)
+    {
+        mapMatrix = map;
+    }
+    public void setCameras(boolean c)
+    {
+
+    }
+
     public UIclass() {
         setTitle("Practica 1");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,7 +40,8 @@ public class UIclass extends JFrame {
 
         add(leftPanel, BorderLayout.WEST);
 
-        // === CENTER PANEL: 5x5 Grid + Translucent Red Triangle ===
+        // === CENTER PANEL
+
         JPanel centerPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -39,18 +51,23 @@ public class UIclass extends JFrame {
                 int width = getWidth();
                 int height = getHeight();
 
-                int rows = 5;
-                int cols = 5;
+                int rows = mapMatrix.length;
+                int cols = mapMatrix[0].length;
                 int cellW = width / cols;
                 int cellH = height / rows;
 
-                // Fill each row with a different color
                 for (int i = 0; i < rows; i++) {
-                    g2.setColor(Color.getHSBColor(i / (float) rows, 1f, 1f)); // different hue per row
-                    g2.fillRect(0, i * cellH, width, cellH);
+                    for (int j = 0; j < cols; j++) {
+                        if (mapMatrix[i][j]) {
+                            g2.setColor(Color.BLACK);
+                        } else {
+                            g2.setColor(Color.WHITE);
+                        }
+                        g2.fillRect(j * cellW, i * cellH, cellW, cellH);
+                    }
                 }
 
-                // Optional: draw cell borders
+                // Draw grid lines
                 g2.setColor(Color.BLACK);
                 for (int i = 0; i <= rows; i++) {
                     g2.drawLine(0, i * cellH, width, i * cellH); // horizontal
@@ -58,14 +75,6 @@ public class UIclass extends JFrame {
                 for (int j = 0; j <= cols; j++) {
                     g2.drawLine(j * cellW, 0, j * cellW, height); // vertical
                 }
-
-                // Translucent red triangle on top
-                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
-                g2.setColor(Color.RED);
-                int[] xPoints = {width / 2, width / 4, 3 * width / 4};
-                int[] yPoints = {height / 4, 3 * height / 4, 3 * height / 4};
-                g2.fillPolygon(xPoints, yPoints, 3);
-                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
             }
         };
         centerPanel.setPreferredSize(new Dimension(50, 50));

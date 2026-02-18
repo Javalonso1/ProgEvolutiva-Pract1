@@ -13,6 +13,7 @@ public class Main {
         LeerData("data1");
 
         UIclass ui = new UIclass();
+        ui.setMap(map);
 
         BinaryCameraEvolver ev = new BinaryCameraEvolver(numCameras, rangVision, map, ui.getGraphPanel());
         ev.evolve(1000, 500, false,
@@ -48,7 +49,7 @@ public class Main {
             for (int i = 0; i < x; i++) {
                 String[] valores = br.readLine().trim().split("\\s+");
                 for (int j = 0; j < y; j++) {
-                    map[i][j] = (valores[j] == "1");
+                    map[i][j] = (valores[j].equals("1"));
                 }
             }
             importancia = new int[x][y];
