@@ -67,6 +67,7 @@ public class BinaryCameraEvolver extends GeneticManager{
     @Override
     protected void evaluate(Chromosome[] pop)
     {
+        int reward = 10;
         //FORMATO CROMOSOMA: (posx, posy) x nCameras
         for (Chromosome c : pop)
         {
@@ -112,28 +113,28 @@ public class BinaryCameraEvolver extends GeneticManager{
                         if(!stopArriba && !seen[sol[i]][sol[i+1] - aux]){
                             seen[sol[i]][sol[i+1] - aux] = true;
                             //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
-                            puntuacion += 1;
+                            puntuacion += reward;
                         }
 
                         //Abajo
                         if(!stopAbajo && !seen[sol[i]][sol[i+1] + aux]){
                             seen[sol[i]][sol[i+1] + aux] = true;
                             //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
-                            puntuacion += 1;
+                            puntuacion += reward;
                         }
 
                         //Izquierda
                         if(!stopIzquierda && !seen[sol[i]- aux][sol[i+1]]){
                             seen[sol[i] - aux][sol[i+1]] = true;
                             //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
-                            puntuacion += 1;
+                            puntuacion += reward;
                         }
 
                         //Derecha
                         if(!stopDerecha && !seen[sol[i]+ aux][sol[i+1]]){
                             seen[sol[i] + aux][sol[i+1]] = true;
                             //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
-                            puntuacion += 1;
+                            puntuacion += reward;
                         }
 
                         aux++;
