@@ -34,7 +34,7 @@ public class ChromosomeReal extends Chromosome<Boolean, Integer> {
         }
 
         @Override
-        void mutate(GeneticManager.MUTATION_TYPE t) {
+        void mutate(GeneticManager.MUTATION_TYPE t, double mutationp) {
             switch (t){
                 case UNIFORM:
                     int pos = (int) Math.random()*(fenotipo.length);
@@ -104,9 +104,18 @@ public class ChromosomeReal extends Chromosome<Boolean, Integer> {
             }
         }
 
+    private ChromosomeReal(ChromosomeReal other) {
+        this.genotipo = other.genotipo.clone(); // deep copy array
+        this.aptitud = other.aptitud;
+        this.puntuacion = other.puntuacion;
+        this.punt_acumulada = other.punt_acumulada;
+        this.TX = other.TX;
+        this.TY = other.TY;
+        this.fenotipo = other.fenotipo.clone();
+    }
     @Override
     public Chromosome copy() {
-        return null;
+        return new ChromosomeReal(this);
     }
 
     ;

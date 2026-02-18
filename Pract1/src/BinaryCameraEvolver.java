@@ -69,7 +69,7 @@ public class BinaryCameraEvolver extends GeneticManager{
     @Override
     protected void evaluate(Chromosome[] pop)
     {
-        int reward = 10;
+        int reward = 1;
         //FORMATO CROMOSOMA: (posx, posy) x nCameras
         for (Chromosome c : pop)
         {

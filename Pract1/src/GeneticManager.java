@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 //el manager para
@@ -12,6 +14,7 @@ public abstract class GeneticManager {
     protected CROSS_METHOD crossMethod;
     protected SELECTION_METHOD selectionMethod;
     protected  MUTATION_TYPE mutationType;
+    protected double MUTATION_PROBABILITY;
 
     //estas para la grafica
      private double[] generationAverage;
@@ -73,6 +76,10 @@ public abstract class GeneticManager {
             i++;
 
         }
+
+        System.out.println(Arrays.toString(generationAverage));
+        System.out.println(Arrays.toString(generationBest));
+        System.out.println(Arrays.toString(absoluteBest));
 
     }
 
@@ -161,8 +168,7 @@ public abstract class GeneticManager {
     {
         for (Chromosome c : pop)
         {
-            if(Pmutacion <= Math.random())
-                c.mutate(mutationType);
+            c.mutate(mutationType, MUTATION_PROBABILITY);
         }
     }
 

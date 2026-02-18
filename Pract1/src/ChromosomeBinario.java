@@ -80,7 +80,8 @@ public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
     }
 
     @Override
-    void mutate(GeneticManager.MUTATION_TYPE t) {
+    void mutate(GeneticManager.MUTATION_TYPE t, double mutationP) {
+        double r = Math.random();
         switch (t){
             case UNIFORM:
                 int pos =  (int) (Math.random() * genotipo.length);

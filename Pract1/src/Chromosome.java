@@ -15,8 +15,8 @@ public abstract class Chromosome <T, G> {
     protected abstract void recalculateGenome();
 
     public abstract void initializeRandom();
-    abstract void calculateFenotipo ();
-    abstract void mutate(GeneticManager.MUTATION_TYPE t);
+    abstract void calculateFenotipo();
+    abstract void mutate(GeneticManager.MUTATION_TYPE t, double mutationP);
     abstract void  cruceMonopunto(Chromosome c1, Chromosome c2, int corte);
     abstract void  cruceUniforme(Chromosome c1, Chromosome c2, float prob, float[]results);
     abstract void  cruceAritmetico(Chromosome c1, Chromosome c2);
