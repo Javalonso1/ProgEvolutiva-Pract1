@@ -107,6 +107,18 @@ public abstract class GeneticManager {
                 out = tournamentSelection(pop);
                 break;
 
+            case ESTOCASTICO:
+                out = estocasticSlection(pop);
+                break;
+
+            case TRUNCAMIENTO:
+                out = truncamentSelection(pop);
+                break;
+
+            case RESTOS:
+                out = restSelection(pop);
+                break;
+
             default:
                 break;
         }
@@ -177,7 +189,144 @@ public abstract class GeneticManager {
 
         return selected;
     }
+    private Chromosome[] estocasticSlection(Chromosome[] pop)
+    {
+        int n = pop.length;
+        Chromosome[] selected = new Chromosome[n];
 
+        //cogemos el minimo
+        double aptitudMin = 0;
+        for (Chromosome c : pop)
+        {
+            if (c.aptitud < aptitudMin)
+                aptitudMin = c.aptitud;
+        }
+
+        //ajustamos y sumamos fitness
+        double[] aptitudDesplazada = new double[pop.length];
+        double totalFitness = 0.0;
+        for (int i = 0; i < pop.length; i++) {
+            aptitudDesplazada[i] = pop[i].aptitud - aptitudMin;
+            totalFitness += aptitudDesplazada[i];
+        }
+
+        // ahora seleccionamos
+        double r = totalFitness / pop.length;
+        double cumulative = ThreadLocalRandom.current().nextDouble() * r;
+        for (int i = 0; i < n; i++) {
+            boolean  stop = false;
+            int j =0;
+            double sum = 0.0;
+            while (!stop){
+                sum += aptitudDesplazada[j];
+                if(sum >= cumulative) {
+                    selected[i] = pop[j].copy();
+                    stop = true;
+                }
+                j++;
+            }
+            cumulative += r;
+        }
+        return selected;
+    }
+
+    private Chromosome[] truncamentSelection(Chromosome[] pop)
+    {
+        int n = pop.length;
+        double trunc = 0.25;
+        Chromosome[] selected = new Chromosome[n];
+
+        //organizamos los cromosomas de mayor a menor valor
+        int[] organizados = new int[pop.length];
+        for (int pos = 0; pos < pop.length; pos++)
+        {
+            int aux = pos;
+            boolean stop = false;
+            int j = 0;
+            while (!stop){
+                if(j >= aux){
+                    stop = true;
+                    organizados[j] = aux;
+                }
+                else{
+                    if(pop[j].aptitud < pop[aux].aptitud){
+                        int aux2 = organizados[j];
+                        organizados[j] = aux;
+                        aux = aux2;
+                    }
+                }
+                j++;
+            }
+        }
+        // ahora seleccionamos
+        int numSelec = (int) (pop.length * trunc);
+        int numDuplics = (int) (1/trunc);
+
+        int k = 0;
+        for(int j = 0; j < numSelec; j++){
+            for(int l = 0; l < numDuplics; l++){
+                selected[k] = pop[organizados[j]].copy();
+                k++;
+            }
+        }
+        //Esto para el caso raro en el que no se haya completado "selected", para evitar que haya cromosomas "null"
+        while (k < selected.length){
+            selected[k] = pop[0].copy();
+            k++;
+        }
+
+        return selected;
+    }
+
+    private Chromosome[] restSelection(Chromosome[] pop)
+    {
+        int n = pop.length;
+        Chromosome[] selected = new Chromosome[n];
+
+        //cogemos el minimo
+        double aptitudMin = 0;
+        for (Chromosome c : pop)
+        {
+            if (c.aptitud < aptitudMin)
+                aptitudMin = c.aptitud;
+        }
+
+        //ajustamos y sumamos fitness
+        double[] aptitudDesplazada = new double[pop.length];
+        double totalFitness = 0.0;
+        for (int i = 0; i < pop.length; i++) {
+            aptitudDesplazada[i] = pop[i].aptitud - aptitudMin;
+            totalFitness += aptitudDesplazada[i];
+        }
+
+        //Metemos en "selected" aquellos cuya probabilidad multiplicada por su numero de copias sea mayor a 1
+        int k = 0;
+        for(int i = 0; i < n; i++){
+            if((aptitudDesplazada[i]/ totalFitness) * n >= 1){
+                selected[k] = pop[i].copy();
+                k++;
+            }
+        }
+
+        //El resto de cromosomas deben ser elegidos con otro metodo
+        //No se especifica cual en la practica, asi que elegi hacerlo por ruleta
+        while (k < n){
+            double r = ThreadLocalRandom.current().nextDouble() * totalFitness;
+            double cumulative = 0.0;
+
+            for (int j = 0; j < pop.length; j++) {
+                cumulative += aptitudDesplazada[j];
+
+                if (cumulative >= r) {
+                    selected[k] = pop[j].copy();
+                    k++;
+                    break;
+                }
+            }
+        }
+
+        return selected;
+    }
     public void mutate (Chromosome[] pop)
     {
         for (Chromosome c : pop)
