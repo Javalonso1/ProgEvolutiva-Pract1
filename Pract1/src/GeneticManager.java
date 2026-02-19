@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 //el manager para
@@ -77,6 +79,7 @@ public abstract class GeneticManager {
             //ya
 
             i++;
+
 
         }
 
@@ -167,7 +170,7 @@ public abstract class GeneticManager {
 
     private Chromosome[] tournamentSelection(Chromosome[] pop) {
 
-        int k = 7; //ESTO ES CUANTOS INDIVIDUOS SE pegan para ver cual es el mejor
+        int k = 2; //ESTO ES CUANTOS INDIVIDUOS SE pegan para ver cual es el mejor
         int n = pop.length;
         Chromosome[] selected = new Chromosome[n];
 
@@ -379,7 +382,7 @@ public abstract class GeneticManager {
     private void AddElitismo(int pos){
         //Primero se buscan los cromosomas de mayor valor
         int[] sustituciones = new int[numCromosomasElite];
-        for(int i = 0; i < population[i].length; i++){
+        for(int i = 0; i < population[pos].length; i++){
             if(i < numCromosomasElite) sustituciones[i] = i;
             else {
                 int aux = i;
@@ -400,7 +403,7 @@ public abstract class GeneticManager {
     private void MixElite(int pos){
         //Primero se buscan los cromosomas de menor valor
         int[] sustituciones = new int[numCromosomasElite];
-        for(int i = 0; i < population[i].length; i++){
+        for(int i = 0; i < population[pos].length; i++){
             if(i < numCromosomasElite) sustituciones[i] = i;
             else {
                 int aux = i;

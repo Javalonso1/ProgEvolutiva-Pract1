@@ -52,7 +52,7 @@ public class BinaryCameraEvolver extends GeneticManager{
             aux = aux / 2;
         }
         for(int i = 0; i < pop.length; i += 2){
-            if(Pcruce <= Math.random()){
+            if(Pcruce < Math.random()){
                 sol[i] = new ChromosomeBinario(NCameras, cifX, cifY);
                 sol[i+1] = new ChromosomeBinario(NCameras, cifX, cifY);
                 switch (crossMethod){
