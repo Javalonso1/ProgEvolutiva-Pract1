@@ -89,7 +89,10 @@ public class BinaryCameraEvolver extends GeneticManager{
         //FORMATO CROMOSOMA: (posx, posy) x nCameras
         for (Chromosome c : pop)
         {
-            boolean[][] seen  = new boolean[map.length][map[0].length];
+            //vamos construyendo el mapita y eso (para llevar la cuenta de las camaras)
+            //basicamente, las camaras no ven a traves de las camaras
+            //0 nada, 1 cuadrado visto, 2 cuadrado con camara
+            int[][] seen  = new int[map.length][map[0].length];
             int puntuacion = 0;
             boolean changeGenome = false;
             c.calculateFenotipo();
@@ -113,44 +116,46 @@ public class BinaryCameraEvolver extends GeneticManager{
                 {
                     puntuacion -= 100;
                 }
-                //este o no, vemos como va
-                {
+                //vemos como va
+                else{
+                    seen[sol[i]][sol[i+1]] = 2;
                     //Se miran por los 4 lados
                     boolean stopArriba = false;
                     boolean stopAbajo = false;
                     boolean stopIzquierda = false;
                     boolean stopDerecha = false;
-                    int aux = 0;
+                    int aux = 1;
                     while (!stopArriba || ! stopAbajo|| ! stopDerecha|| ! stopIzquierda){
-                        if(sol[i+1] - aux < 0 || map[sol[i]][sol[i+1] - aux]) stopArriba = true;
-                        if(sol[i+1] + aux >= map[0].length || map[sol[i]][sol[i+1] + aux]) stopAbajo = true;
-                        if(sol[i] - aux < 0 || map[sol[i]- aux][sol[i+1]]) stopIzquierda = true;
-                        if(sol[i] + aux >= map.length || map[sol[i]+ aux][sol[i+1]]) stopDerecha = true;
+                        if(sol[i+1] - aux < 0 || map[sol[i]][sol[i+1] - aux] ||seen[sol[i]][sol[i+1] - aux]==2) stopArriba = true;
+                        if(sol[i+1] + aux >= map[0].length || map[sol[i]][sol[i+1] + aux] ||seen[sol[i]][sol[i+1] + aux] ==2) stopAbajo = true;
+                        if(sol[i] - aux < 0 || map[sol[i]- aux][sol[i+1]]||seen[sol[i]- aux][sol[i+1]]==2) stopIzquierda = true;
+                        if(sol[i] + aux >= map.length || map[sol[i]+ aux][sol[i+1]]||seen[sol[i]+ aux][sol[i+1]]==2) stopDerecha = true;
+
 
                         //Arriba
-                        if(!stopArriba && !seen[sol[i]][sol[i+1] - aux]){
-                            seen[sol[i]][sol[i+1] - aux] = true;
+                        if(!stopArriba && seen[sol[i]][sol[i+1] - aux]!=1){
+                            seen[sol[i]][sol[i+1] - aux] = 1;
                             //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
                             puntuacion += reward;
                         }
 
                         //Abajo
-                        if(!stopAbajo && !seen[sol[i]][sol[i+1] + aux]){
-                            seen[sol[i]][sol[i+1] + aux] = true;
+                        if(!stopAbajo && seen[sol[i]][sol[i+1] + aux]!= 1){
+                            seen[sol[i]][sol[i+1] + aux] = 1;
                             //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
                             puntuacion += reward;
                         }
 
                         //Izquierda
-                        if(!stopIzquierda && !seen[sol[i]- aux][sol[i+1]]){
-                            seen[sol[i] - aux][sol[i+1]] = true;
+                        if(!stopIzquierda && seen[sol[i]- aux][sol[i+1]]!=1){
+                            seen[sol[i] - aux][sol[i+1]] = 1;
                             //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
                             puntuacion += reward;
                         }
 
                         //Derecha
-                        if(!stopDerecha && !seen[sol[i]+ aux][sol[i+1]]){
-                            seen[sol[i] + aux][sol[i+1]] = true;
+                        if(!stopDerecha && seen[sol[i]+ aux][sol[i+1]]!=1){
+                            seen[sol[i] + aux][sol[i+1]] = 1;
                             //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
                             puntuacion += reward;
                         }
