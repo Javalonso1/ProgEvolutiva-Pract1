@@ -6,13 +6,15 @@ public class RealCameraEvolver extends GeneticManager{
     private int VisionRange;
     private int RangoVision;
     private boolean[][] map;
-    public RealCameraEvolver(int nc, int vr, int rv, boolean[][] m, UIclass.GraphPanel g)
+    private int[][] importancia;
+    public RealCameraEvolver(int nc, int vr, int rv, boolean[][] m, int[][] i, UIclass.GraphPanel g)
     {
         super(g);
         NCameras = nc;
         VisionRange = vr;
         RangoVision = rv;
         map = m;
+        importancia = i;
     }
     @Override
     protected Chromosome[] initializePopulation(int p_size) {
@@ -69,7 +71,7 @@ public class RealCameraEvolver extends GeneticManager{
     }
 
     @Override
-    protected void evaluate(Chromosome[] pop)
+    protected void evaluate(Chromosome[] pop, boolean casillaImport)
     {
         int reward = 1;
         //FORMATO CROMOSOMA: (posx, posy, angulo) x nCameras
@@ -133,7 +135,10 @@ public class RealCameraEvolver extends GeneticManager{
                                                     k++;
                                                 }
                                                 if(!bloquea){
-                                                    puntuacion += reward;
+                                                    if(casillaImport){
+                                                        puntuacion += importancia[sol[i]][sol[i+1]];
+                                                    }
+                                                    else  puntuacion += reward;
                                                 }
                                             }
                                         }

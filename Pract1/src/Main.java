@@ -15,8 +15,8 @@ public class Main {
         UIclass ui = new UIclass();
         ui.setMap(map);
 
-        BinaryCameraEvolver ev = new BinaryCameraEvolver(numCameras, rangVision, map, ui.getGraphPanel());
-        ev.evolve(1000, 200, false,
+        BinaryCameraEvolver ev = new BinaryCameraEvolver(numCameras, rangVision, map, importancia, ui.getGraphPanel());
+        ev.evolve(1000, 200, false, true,
                 GeneticManager.CROSS_METHOD.UNIFORME,
                 GeneticManager.SELECTION_METHOD.TORNEOS,
                 GeneticManager.MUTATION_TYPE.UNIFORM);

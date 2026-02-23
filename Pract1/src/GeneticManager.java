@@ -39,7 +39,7 @@ public abstract class GeneticManager {
          Pcruce = 0.6f;
      }
     //esto ahora mismo es super guarro, en un futuro será chulo
-    public void evolve(int n_gen, int p_size, boolean elitism, CROSS_METHOD cm, SELECTION_METHOD sm, MUTATION_TYPE mt)
+    public void evolve(int n_gen, int p_size, boolean elitism, boolean casillaImport, CROSS_METHOD cm, SELECTION_METHOD sm, MUTATION_TYPE mt)
     {
         this.crossMethod = cm;
         this.selectionMethod = sm;
@@ -55,7 +55,7 @@ public abstract class GeneticManager {
 
         setElitismoPorcentaje(0.02f);
 
-        evaluate(population[0]);
+        evaluate(population[0], casillaImport);
         while (i < n_gen-1)   //por si queremos meter otra condición de ruptura
         {
             if (elitism) {
@@ -66,7 +66,7 @@ public abstract class GeneticManager {
             population[i+1] = crossover(parents);
             mutate(population[i+1]);
 
-            evaluate(population[i+1]);
+            evaluate(population[i+1], casillaImport);
 
             if (elitism) {
                 MixElite(i+1);
@@ -92,7 +92,7 @@ public abstract class GeneticManager {
 
     protected abstract Chromosome[] initializePopulation(int p_size);
     protected abstract Chromosome[] crossover (Chromosome[] pop);
-    protected abstract void evaluate(Chromosome[] pop);
+    protected abstract void evaluate(Chromosome[] pop, boolean _casillaImport);
 
 
 

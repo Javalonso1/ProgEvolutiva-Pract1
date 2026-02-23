@@ -5,12 +5,14 @@ public class BinaryCameraEvolver extends GeneticManager{
     private int NCameras;
     private int VisionRange;
     private boolean[][] map;
-    public BinaryCameraEvolver(int nc, int vr, boolean[][] m, UIclass.GraphPanel g)
+    private int[][] importancia;
+    public BinaryCameraEvolver(int nc, int vr, boolean[][] m, int[][] i, UIclass.GraphPanel g)
     {
         super(g);
         NCameras = nc;
         VisionRange = vr;
         map = m;
+        importancia = i;
     }
     @Override
     protected Chromosome[] initializePopulation(int p_size) {
@@ -83,7 +85,7 @@ public class BinaryCameraEvolver extends GeneticManager{
     }
 
     @Override
-    protected void evaluate(Chromosome[] pop)
+    protected void evaluate(Chromosome[] pop, boolean casillaImport)
     {
         int reward = 1;
         //FORMATO CROMOSOMA: (posx, posy) x nCameras
@@ -135,29 +137,37 @@ public class BinaryCameraEvolver extends GeneticManager{
                         //Arriba
                         if(!stopArriba && seen[sol[i]][sol[i+1] - aux]!=1){
                             seen[sol[i]][sol[i+1] - aux] = 1;
-                            //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
-                            puntuacion += reward;
+                            if(casillaImport){
+                                puntuacion += importancia[sol[i]][sol[i+1]];
+                            }
+                            else  puntuacion += reward;
                         }
 
                         //Abajo
                         if(!stopAbajo && seen[sol[i]][sol[i+1] + aux]!= 1){
                             seen[sol[i]][sol[i+1] + aux] = 1;
-                            //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
-                            puntuacion += reward;
+                            if(casillaImport){
+                                puntuacion += importancia[sol[i]][sol[i+1]];
+                            }
+                            else  puntuacion += reward;
                         }
 
                         //Izquierda
                         if(!stopIzquierda && seen[sol[i]- aux][sol[i+1]]!=1){
                             seen[sol[i] - aux][sol[i+1]] = 1;
-                            //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
-                            puntuacion += reward;
+                            if(casillaImport){
+                                puntuacion += importancia[sol[i]][sol[i+1]];
+                            }
+                            else  puntuacion += reward;
                         }
 
                         //Derecha
                         if(!stopDerecha && seen[sol[i]+ aux][sol[i+1]]!=1){
                             seen[sol[i] + aux][sol[i+1]] = 1;
-                            //Aqui habra que añadir algo mas si se quisiera que las casillas pudieran valer distinto
-                            puntuacion += reward;
+                            if(casillaImport){
+                                puntuacion += importancia[sol[i]][sol[i+1]];
+                            }
+                            else  puntuacion += reward;
                         }
 
                         aux++;
