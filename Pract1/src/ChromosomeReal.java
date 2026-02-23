@@ -22,7 +22,7 @@ public class ChromosomeReal extends Chromosome<Boolean, Integer> {
         }
 
         public void initializeRandom(){
-            for(int i = 0; i < genotipo.length; i += 3){
+            for(int i = 0; i < fenotipo.length; i += 3){
                 fenotipo[i] = (int)(Math.random() * TX);
                 fenotipo[i + 1] = (int)(Math.random() * TY);
                 fenotipo[i + 2] = (int)(Math.random() * 360);
@@ -105,7 +105,6 @@ public class ChromosomeReal extends Chromosome<Boolean, Integer> {
         }
 
     private ChromosomeReal(ChromosomeReal other) {
-        this.genotipo = other.genotipo.clone(); // deep copy array
         this.aptitud = other.aptitud;
         this.puntuacion = other.puntuacion;
         this.punt_acumulada = other.punt_acumulada;

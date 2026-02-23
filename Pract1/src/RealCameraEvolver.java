@@ -1,18 +1,17 @@
 import static java.lang.Math.min;
-import static java.lang.Math.sqrt;
 
 public class RealCameraEvolver extends GeneticManager{
     private int NCameras;
     private int VisionRange;
-    private int RangoVision;
+    private int anguloApertura;
     private boolean[][] map;
     private int[][] importancia;
-    public RealCameraEvolver(int nc, int vr, int rv, boolean[][] m, int[][] i, UIclass.GraphPanel g)
+    public RealCameraEvolver(int nc, int vr, int aa, boolean[][] m, int[][] i, UIclass.GraphPanel g)
     {
         super(g);
         NCameras = nc;
         VisionRange = vr;
-        RangoVision = rv;
+        anguloApertura = aa;
         map = m;
         importancia = i;
     }
@@ -36,12 +35,12 @@ public class RealCameraEvolver extends GeneticManager{
                 sol[i+1] = new ChromosomeReal(NCameras,  map.length, map[0].length);
                 switch (crossMethod){
                     case MONOPUNTO:
-                        int cru = (int)(Math.random() * pop[i].getGenotipo().length);
+                        int cru = (int)(Math.random() * pop[i].getFenotipo().length);
                         sol[i].cruceMonopunto(pop[i], pop[i+1], cru);
                         sol[i+1].cruceMonopunto(pop[i+1], pop[i], cru);
                         break;
                     case UNIFORME:
-                        float[] results = new float[pop[i].getGenotipo().length];
+                        float[] results = new float[pop[i].getFenotipo().length];
                         for(int j = 0; j < results.length; j++){
                             results[j] = (float) Math.random();
                         }
@@ -109,7 +108,7 @@ public class RealCameraEvolver extends GeneticManager{
                                             int dy = y - sol[i+1];
                                             double angulo = Math.toDegrees(Math.atan2(dx, dy));
                                             angulo = (angulo + 360) % 360;
-                                            if(angulo > sol[i+2]-(RangoVision/2) &&angulo < sol[i+2]+(RangoVision/2)){
+                                            if(angulo > sol[i+2]-(anguloApertura /2) &&angulo < sol[i+2]+(anguloApertura /2)){
                                                 //Por utlimo, comprueba que no haya nada bloqueando la vista
                                                 double tmpX = dx;
                                                 if(tmpX < 0) tmpX = tmpX * -1;
@@ -121,16 +120,18 @@ public class RealCameraEvolver extends GeneticManager{
                                                     tmpY = dy / tmpY;
                                                 }
                                                 else{
-                                                    tmpX = dx / tmpX;
                                                     tmpY = dy / tmpX;
+                                                    tmpX = dx / tmpX;
                                                 }
                                                 int k = 0;
                                                 boolean bloquea = false;
-                                                while (k <= RangoVision && !bloquea){
+                                                while (k <= VisionRange && !bloquea){
                                                     int _x = (int)(sol[i] + Math.round(tmpX*k));
                                                     int _y = (int)(sol[i+1] + Math.round(tmpY*k));
-                                                    if(map[_x][_y]){
-                                                        bloquea = true;
+                                                    if(_x >=0 &&_x <map.length &&_y >=0 &&_y <map[0].length){
+                                                        if(map[_x][_y]){
+                                                            bloquea = true;
+                                                        }
                                                     }
                                                     k++;
                                                 }
