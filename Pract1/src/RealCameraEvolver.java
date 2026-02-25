@@ -6,7 +6,7 @@ public class RealCameraEvolver extends GeneticManager{
     private int anguloApertura;
     private boolean[][] map;
     private int[][] importancia;
-    public RealCameraEvolver(int nc, int vr, int aa, boolean[][] m, int[][] i, UIclass.GraphPanel g)
+    public RealCameraEvolver(int nc, int vr, int aa, boolean[][] m, int[][] i, UIclass g)
     {
         super(g);
         NCameras = nc;

@@ -23,7 +23,7 @@ public class Main {
         GeneticManager ev;
         if (ui.isBinary())
         {
-            ev = new BinaryCameraEvolver(numCameras, rangVision, map, importancia, ui.getGraphPanel());
+            ev = new BinaryCameraEvolver(numCameras, rangVision, map, importancia, ui);
             ev.evolve(1000, 200, true, true,
                     GeneticManager.CROSS_METHOD.UNIFORME,
                     GeneticManager.SELECTION_METHOD.TORNEOS,
@@ -31,7 +31,7 @@ public class Main {
         }
         else
         {
-            ev = new RealCameraEvolver(numCameras, rangVision, angApertura, map, importancia, ui.getGraphPanel());
+            ev = new RealCameraEvolver(numCameras, rangVision, angApertura, map, importancia, ui);
             ev.evolve(1000, 200, true, true,
                     GeneticManager.CROSS_METHOD.UNIFORME,
                     GeneticManager.SELECTION_METHOD.TORNEOS,
