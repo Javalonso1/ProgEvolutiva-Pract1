@@ -49,7 +49,7 @@ public class UIclass extends JFrame {
     public UIclass() {
         setTitle("Practica 1");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900, 600);
+        setSize(1250, 600);
         setLayout(new BorderLayout());
 
         simulateButton = new JButton("Evolve");

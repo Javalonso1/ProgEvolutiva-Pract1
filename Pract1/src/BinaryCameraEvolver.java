@@ -6,7 +6,7 @@ public class BinaryCameraEvolver extends GeneticManager{
     private int VisionRange;
     private boolean[][] map;
     private int[][] importancia;
-    public BinaryCameraEvolver(int nc, int vr, boolean[][] m, int[][] i, UIclass.GraphPanel g)
+    public BinaryCameraEvolver(int nc, int vr, boolean[][] m, int[][] i, UIclass g)
     {
         super(g);
         NCameras = nc;

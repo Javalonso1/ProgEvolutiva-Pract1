@@ -31,11 +31,11 @@ public abstract class GeneticManager {
      private int numCromosomasElite = 1;
      private Chromosome[] eliteChromosomes;
 
-     private UIclass.GraphPanel graph;
+     private UIclass Ui;
 
-     public GeneticManager(UIclass.GraphPanel g)
+     public GeneticManager(UIclass g)
      {
-         graph = g;
+         Ui = g;
          Pcruce = 0.6f;
      }
     //esto ahora mismo es super guarro, en un futuro será chulo
@@ -75,7 +75,7 @@ public abstract class GeneticManager {
 
             //para visualizar los datos
             getMetrics(i+1);
-            graph.setData(generationBest, absoluteBest, generationAverage);
+            Ui.getGraphPanel().setData(generationBest, absoluteBest, generationAverage);
             //ya
 
             i++;
