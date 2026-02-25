@@ -10,19 +10,36 @@ public class Main {
     static boolean modeReal; // Bool que es true si el algoritmo tiene codificación real y false si es binaria
 
     public static void main(String[] args) {
-        LeerData("data1");
+        LeerData("data3");
 
         UIclass ui = new UIclass();
         ui.setMap(map);
+        ui.simulateButton.addActionListener(e -> evolve(ui));
+        
+    }
 
-        RealCameraEvolver ev = new RealCameraEvolver(numCameras, rangVision, angApertura, map, importancia, ui.getGraphPanel());
-        ev.evolve(1000, 200, false, true,
-                GeneticManager.CROSS_METHOD.UNIFORME,
-                GeneticManager.SELECTION_METHOD.TORNEOS,
-                GeneticManager.MUTATION_TYPE.UNIFORM);
+    public static void evolve(UIclass ui)
+    {
+        GeneticManager ev;
+        if (ui.isBinary())
+        {
+            ev = new BinaryCameraEvolver(numCameras, rangVision, map, importancia, ui.getGraphPanel());
+            ev.evolve(1000, 200, true, true,
+                    GeneticManager.CROSS_METHOD.UNIFORME,
+                    GeneticManager.SELECTION_METHOD.TORNEOS,
+                    GeneticManager.MUTATION_TYPE.UNIFORM);
+        }
+        else
+        {
+            ev = new RealCameraEvolver(numCameras, rangVision, angApertura, map, importancia, ui.getGraphPanel());
+            ev.evolve(1000, 200, true, true,
+                    GeneticManager.CROSS_METHOD.UNIFORME,
+                    GeneticManager.SELECTION_METHOD.TORNEOS,
+                    GeneticManager.MUTATION_TYPE.UNIFORM);
+        }
+
 
         Chromosome solution = ev.getBestSolution();
-
     }
 
 

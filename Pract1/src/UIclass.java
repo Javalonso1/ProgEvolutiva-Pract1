@@ -4,6 +4,9 @@ import java.awt.*;
 public class UIclass extends JFrame {
 
     private GraphPanel graphPanel;
+    JRadioButton optionBinary;
+    JRadioButton optionReal;
+    public JButton simulateButton;
 
     boolean[][] mapMatrix;
     boolean[][] cameraMatrix = new boolean[5][5];       // true = gray, false = white (only for white squares)
@@ -11,10 +14,15 @@ public class UIclass extends JFrame {
     {
         mapMatrix = map;
     }
-    public void setCameras(boolean c)
-    {
+    public void setCameras(boolean c) {
+
 
     }
+    public boolean isBinary()
+    {
+        return optionBinary.isSelected();
+    }
+
 
     public UIclass() {
         setTitle("Practica 1");
@@ -22,19 +30,23 @@ public class UIclass extends JFrame {
         setSize(900, 600);
         setLayout(new BorderLayout());
 
+        simulateButton = new JButton("Evolve");
+
+
         // === LEFT PANEL: A / B Selection ===
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
-        JRadioButton optionA = new JRadioButton("A", true);
-        JRadioButton optionB = new JRadioButton("B");
+        optionBinary = new JRadioButton("Binary", true);
+        optionReal = new JRadioButton("Real");
 
         ButtonGroup group = new ButtonGroup();
-        group.add(optionA);
-        group.add(optionB);
+        group.add(optionBinary);
+        group.add(optionReal);
 
-        leftPanel.add(optionA);
-        leftPanel.add(optionB);
+        leftPanel.add(optionBinary);
+        leftPanel.add(optionReal);
+        leftPanel.add(simulateButton);
 
         leftPanel.setPreferredSize(new Dimension(200, 600));
 
