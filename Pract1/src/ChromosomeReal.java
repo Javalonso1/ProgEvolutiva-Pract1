@@ -1,4 +1,6 @@
-public class ChromosomeReal extends Chromosome<Boolean, Integer> {
+import java.util.Random;
+
+public class ChromosomeReal extends Chromosome<Float, Integer> {
 
         int TX;
         int TY;
@@ -37,7 +39,7 @@ public class ChromosomeReal extends Chromosome<Boolean, Integer> {
         void mutate(GeneticManager.MUTATION_TYPE t, double mutationp) {
             switch (t){
                 case UNIFORM:
-                    int pos = (int) Math.random()*(fenotipo.length);
+                    int pos = (int) (Math.random() * fenotipo.length);
                     if(pos%3 == 0){
                         fenotipo[pos] = (int) (Math.random()*TX);
                     }
@@ -49,10 +51,11 @@ public class ChromosomeReal extends Chromosome<Boolean, Integer> {
                     }
                     break;
                 case GAUSSEAN:
+                    Random r = new Random();
                     for(int i = 0; i < fenotipo.length; i +=3){
-                        fenotipo[i] = (int) (Math.random()*TX);
-                        fenotipo[i+1] = (int) (Math.random()*TY);
-                        fenotipo[i+2] = (int) (Math.random()*360);
+                        fenotipo[i] = (int) (r.nextGaussian()*TX);
+                        fenotipo[i+1] = (int) (r.nextGaussian()*TY);
+                        fenotipo[i+2] = (int) (r.nextGaussian()*360);
                     }
                     break;
                 default:
@@ -101,6 +104,7 @@ public class ChromosomeReal extends Chromosome<Boolean, Integer> {
                 cmin = (int)(cmin - aux * alpha);
                 cmax = (int)(cmax + aux * alpha);
                 fenotipo[i] = (int)(Math.random()* (cmax-cmin))+ cmin;
+                fenotipo[i] = Math.max(0, Math.min(fenotipo[i], TX));
             }
         }
 
