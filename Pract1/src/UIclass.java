@@ -6,7 +6,13 @@ public class UIclass extends JFrame {
     private GraphPanel graphPanel;
     JRadioButton optionBinary;
     JRadioButton optionReal;
+
+    JRadioButton elitismOn;
+    JRadioButton elitismOff;
     public JButton simulateButton;
+    JComboBox MutationType;
+    JComboBox CrossType;
+    JComboBox SelectionType;
 
     boolean[][] mapMatrix;
     boolean[][] cameraMatrix = new boolean[5][5];       // true = gray, false = white (only for white squares)
@@ -21,6 +27,22 @@ public class UIclass extends JFrame {
     public boolean isBinary()
     {
         return optionBinary.isSelected();
+    }
+    public boolean elitism()
+    {
+        return elitismOn.isSelected();
+    }
+    public GeneticManager.MUTATION_TYPE mutation()
+    {
+        return GeneticManager.MUTATION_TYPE.values()[MutationType.getSelectedIndex()];
+    }
+    public GeneticManager.CROSS_METHOD cross()
+    {
+        return GeneticManager.CROSS_METHOD.values()[CrossType.getSelectedIndex()];
+    }
+    public GeneticManager.SELECTION_METHOD selection()
+    {
+        return GeneticManager.SELECTION_METHOD.values()[SelectionType.getSelectedIndex()];
     }
 
 
@@ -44,9 +66,30 @@ public class UIclass extends JFrame {
         group.add(optionBinary);
         group.add(optionReal);
 
+        elitismOn = new JRadioButton("Elitism On", true);
+        elitismOff = new JRadioButton("Elitism Off", true);
+        ButtonGroup group2 = new ButtonGroup();
+        group2.add(elitismOn);
+        group2.add(elitismOff);
+
+        String[] mutations = {"UNIFORM", "GAUSSEAN"};
+        MutationType = new JComboBox(mutations);
+
+        String[] cross = {"MONOPUNTO", "UNIFORME", "ARITMETICO", "BLXALPHA"};
+        CrossType = new JComboBox(cross);
+
+        String[] selections = {"RULETA", "TORNEOS", "ESTOCASTICO", "TRUNCAMIENTO", "RESTOS"};
+        SelectionType = new JComboBox(selections);
+
         leftPanel.add(optionBinary);
         leftPanel.add(optionReal);
+        leftPanel.add(elitismOn);
+        leftPanel.add(elitismOff);
+        leftPanel.add(MutationType);
+        leftPanel.add(CrossType);
+        leftPanel.add(SelectionType);
         leftPanel.add(simulateButton);
+
 
         leftPanel.setPreferredSize(new Dimension(200, 600));
 

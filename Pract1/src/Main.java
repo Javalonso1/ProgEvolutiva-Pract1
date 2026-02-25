@@ -15,7 +15,7 @@ public class Main {
         UIclass ui = new UIclass();
         ui.setMap(map);
         ui.simulateButton.addActionListener(e -> evolve(ui));
-        
+
     }
 
     public static void evolve(UIclass ui)
@@ -24,18 +24,18 @@ public class Main {
         if (ui.isBinary())
         {
             ev = new BinaryCameraEvolver(numCameras, rangVision, map, importancia, ui.getGraphPanel());
-            ev.evolve(1000, 200, true, true,
-                    GeneticManager.CROSS_METHOD.UNIFORME,
-                    GeneticManager.SELECTION_METHOD.TORNEOS,
-                    GeneticManager.MUTATION_TYPE.UNIFORM);
+            ev.evolve(1000, 200, ui.elitism(), true,
+                    ui.cross(),
+                    ui.selection(),
+                    ui.mutation());
         }
         else
         {
             ev = new RealCameraEvolver(numCameras, rangVision, angApertura, map, importancia, ui.getGraphPanel());
-            ev.evolve(1000, 200, true, true,
-                    GeneticManager.CROSS_METHOD.UNIFORME,
-                    GeneticManager.SELECTION_METHOD.TORNEOS,
-                    GeneticManager.MUTATION_TYPE.UNIFORM);
+            ev.evolve(1000, 200, ui.elitism(), true,
+                    ui.cross(),
+                    ui.selection(),
+                    ui.mutation());
         }
 
 
