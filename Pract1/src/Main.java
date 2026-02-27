@@ -9,7 +9,7 @@ public class Main {
     static int[][] importancia; // Mapa de valor de vigilancia por cada casilla (solo si es codificacion real)
 
     public static void main(String[] args) {
-        LeerData("data3");
+        LeerData("data1");
 
         UIclass ui = new UIclass();
         ui.setMap(map);
@@ -19,26 +19,32 @@ public class Main {
 
     public static void evolve(UIclass ui)
     {
-        GeneticManager ev;
+
         if (ui.isBinary())
         {
-            ev = new BinaryCameraEvolver(numCameras, rangVision, map, importancia, ui);
+            BinaryCameraEvolver ev = new BinaryCameraEvolver(numCameras, rangVision, map, importancia, ui);
             ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(), true,
                     ui.cross(),
                     ui.selection(),
                     ui.mutation());
+
+            ChromosomeBinario solution = (ChromosomeBinario) ev.getBestSolution();
+
         }
         else
         {
-            ev = new RealCameraEvolver(numCameras, rangVision, angApertura, map, importancia, ui);
+            RealCameraEvolver ev = new RealCameraEvolver(numCameras, rangVision, angApertura, map, importancia, ui);
             ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(), true,
                     ui.cross(),
                     ui.selection(),
                     ui.mutation());
+
+            ChromosomeReal solution = (ChromosomeReal) ev.getBestSolution();
+            ev.drawSolutionMap(ui, solution);
         }
 
 
-        Chromosome solution = ev.getBestSolution();
+
     }
 
 

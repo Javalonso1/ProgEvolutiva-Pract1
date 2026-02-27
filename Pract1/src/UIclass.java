@@ -17,18 +17,22 @@ public class UIclass extends JFrame {
     JComboBox SelectionType;
     JFormattedTextField popSize;
     JFormattedTextField nGens;
+    JPanel centerPanel;
+
 
 
     boolean[][] mapMatrix;
-    boolean[][] cameraMatrix = new boolean[5][5];
-    float[] cameras;
+    boolean[][] cameraMatrix = new boolean[20][20];
+    int[] cameras;
     public void setMap(boolean[][] map)
     {
         mapMatrix = map;
     }
-    public void setCameras(boolean c) {
 
-
+    public void setCameras(int[] cam, boolean[][] seenmap) {
+        cameras = cam;
+        cameraMatrix = seenmap;
+        centerPanel.repaint();
     }
     public boolean isBinary()
     {
@@ -142,7 +146,7 @@ public class UIclass extends JFrame {
 
         // === CENTER PANEL
 
-        JPanel centerPanel = new JPanel() {
+        centerPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -161,7 +165,16 @@ public class UIclass extends JFrame {
                         if (mapMatrix[i][j]) {
                             g2.setColor(Color.BLACK);
                         } else {
-                            g2.setColor(Color.WHITE);
+                            if(cameraMatrix[i][j])
+                            {
+                                g2.setColor(Color.gray);
+                            }
+                            else
+                            {
+                                g2.setColor(Color.white);
+
+                            }
+
                         }
                         g2.fillRect(j * cellW, i * cellH, cellW, cellH);
                     }

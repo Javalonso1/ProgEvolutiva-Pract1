@@ -92,21 +92,21 @@ public class RealCameraEvolver extends GeneticManager{
                 //este o no, vemos como va
                 {
                     //Preguntamos a todas las casillas (dentro del rango "VisionRange") si estan siendo vigiladas
-                    for(int x = VisionRange * -1 ; x <= VisionRange; x++){
+                    for(int x = sol[i] - VisionRange; x <= VisionRange; x++){
                         //Se comprueba que la casilla a comprobar esta dentro del mapa
                         if(x >= 0 && x < map.length){
-                            for(int y = VisionRange * -1 ; y <= VisionRange; y++){
+                            for(int y = sol[i+1] - VisionRange; y <= sol[i+1] + VisionRange; y++){
                                 //Lo mismo para y
                                 if(y >= 0 && y < map[0].length){
                                     //Si no se ha visto ya y si no es un muro
                                     if(!seen[x][y] && !map[x][y]){
                                         //Se le pregunta si esta dentro de su rango de vision
-                                        double dis = Math.sqrt(Math.pow(2, sol[i]-x) + Math.pow(2, sol[i+1]-y)); //Formula matematica de distancias jaja
+                                        double dis = Math.sqrt( Math.pow(sol[i] - x, 2) + Math.pow(sol[i+1] - y, 2)); //Formula matematica de distancias jaja
                                         if(dis < VisionRange){
                                             //Comprueba si la camara esta mirando la casilla
                                             int dx = x - sol[i];
                                             int dy = y - sol[i+1];
-                                            double angulo = Math.toDegrees(Math.atan2(dx, dy));
+                                            double angulo = Math.toDegrees(Math.atan2(dy, dx));
                                             angulo = (angulo + 360) % 360;
                                             if(angulo > sol[i+2]-(anguloApertura /2) &&angulo < sol[i+2]+(anguloApertura /2)){
                                                 //Por utlimo, comprueba que no haya nada bloqueando la vista
@@ -140,6 +140,7 @@ public class RealCameraEvolver extends GeneticManager{
                                                         puntuacion += importancia[sol[i]][sol[i+1]];
                                                     }
                                                     else  puntuacion += reward;
+                                                    seen[x][y] = true;
                                                 }
                                             }
                                         }
@@ -154,4 +155,81 @@ public class RealCameraEvolver extends GeneticManager{
         }
     }
 
+    public void drawSolutionMap(UIclass ui, ChromosomeReal c)
+    {
+
+        //FORMATO CROMOSOMA: (posx, posy, angulo) x nCameras
+        boolean[][] seen  = new boolean[map.length][map[0].length];
+
+        Integer[] sol = (Integer[]) c.fenotipo;
+        int[] cameras = new int[NCameras*2];
+
+        //recorremos la solución, viendo cuanto ven las camaras
+        for (int i = 0; i < sol.length; i+=3)
+        {
+            {
+                int camIndex = i / 3;
+                cameras[camIndex * 2] = sol[i];
+                cameras[camIndex * 2 + 1] = sol[i+1];
+                //Preguntamos a todas las casillas (dentro del rango "VisionRange") si estan siendo vigiladas
+                for(int x = sol[i] -VisionRange; x <= sol[i] + VisionRange; x++){
+                    //Se comprueba que la casilla a comprobar esta dentro del mapa
+                    if(x >= 0 && x < map.length){
+                        for(int y = sol[i+1] -VisionRange; y <= sol[i+1] + VisionRange; y++){
+                            //Lo mismo para y
+                            if(y >= 0 && y < map[0].length){
+                                //Si no se ha visto ya y si no es un muro
+                                if(!seen[x][y] && !map[x][y]){
+                                    //Se le pregunta si esta dentro de su rango de vision
+                                    double dis = Math.sqrt( Math.pow(sol[i] - x, 2) + Math.pow(sol[i+1] - y, 2)); //Formula matematica de distancias jaja
+                                    if(dis < VisionRange){
+                                        //Comprueba si la camara esta mirando la casilla
+                                        int dx = x - sol[i];
+                                        int dy = y - sol[i+1];
+                                        double angulo = Math.toDegrees(Math.atan2(dy, dx));
+                                        angulo = (angulo + 360) % 360;
+                                        if(angulo > sol[i+2]-(anguloApertura /2) &&angulo < sol[i+2]+(anguloApertura /2)){
+                                            //Por utlimo, comprueba que no haya nada bloqueando la vista
+                                            double tmpX = dx;
+                                            if(tmpX < 0) tmpX = tmpX * -1;
+                                            double tmpY = dy;
+                                            if(tmpY < 0) tmpY = tmpY * -1;
+
+                                            if(tmpX < tmpY){
+                                                tmpX = dx / tmpY;
+                                                tmpY = dy / tmpY;
+                                            }
+                                            else{
+                                                tmpY = dy / tmpX;
+                                                tmpX = dx / tmpX;
+                                            }
+                                            int k = 0;
+                                            boolean bloquea = false;
+                                            while (k <= VisionRange && !bloquea){
+                                                int _x = (int)(sol[i] + Math.round(tmpX*k));
+                                                int _y = (int)(sol[i+1] + Math.round(tmpY*k));
+                                                if(_x >=0 &&_x <map.length &&_y >=0 &&_y <map[0].length){
+                                                    if(map[_x][_y]){
+                                                        bloquea = true;
+                                                    }
+                                                }
+                                                k++;
+                                                if(!bloquea) {
+                                                    seen[x][y] = true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        ui.setCameras(cameras, seen);
+
+    }
 }
+
+
