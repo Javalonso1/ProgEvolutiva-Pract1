@@ -1,5 +1,7 @@
 import javax.swing.*;
+import javax.swing.text.NumberFormatter;
 import java.awt.*;
+import java.text.NumberFormat;
 
 public class UIclass extends JFrame {
 
@@ -13,9 +15,13 @@ public class UIclass extends JFrame {
     JComboBox MutationType;
     JComboBox CrossType;
     JComboBox SelectionType;
+    JFormattedTextField popSize;
+    JFormattedTextField nGens;
+
 
     boolean[][] mapMatrix;
-    boolean[][] cameraMatrix = new boolean[5][5];       // true = gray, false = white (only for white squares)
+    boolean[][] cameraMatrix = new boolean[5][5];
+    float[] cameras;
     public void setMap(boolean[][] map)
     {
         mapMatrix = map;
@@ -43,6 +49,16 @@ public class UIclass extends JFrame {
     public GeneticManager.SELECTION_METHOD selection()
     {
         return GeneticManager.SELECTION_METHOD.values()[SelectionType.getSelectedIndex()];
+    }
+    public int getPopSize()
+    {
+        return (int) popSize.getValue();
+
+    }
+    public int getGenNumber()
+    {
+
+        return (int) nGens.getValue();
     }
 
 
@@ -81,10 +97,39 @@ public class UIclass extends JFrame {
         String[] selections = {"RULETA", "TORNEOS", "ESTOCASTICO", "TRUNCAMIENTO", "RESTOS"};
         SelectionType = new JComboBox(selections);
 
+        // Label
+        JLabel label1 = new JLabel("Population:");
+        JLabel label2 = new JLabel("nº generations:");
+
+        // Number formatter
+        NumberFormat format = NumberFormat.getIntegerInstance();
+        NumberFormatter formatter = new NumberFormatter(format);
+        formatter.setValueClass(Integer.class);
+        formatter.setAllowsInvalid(false); // blocks letters
+        formatter.setMinimum(0); // optional
+
+        // Input field
+
+        popSize = new JFormattedTextField(formatter);
+        popSize.setColumns(4);
+        nGens = new JFormattedTextField(formatter);
+        nGens.setColumns(4);
+
+        JPanel popPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        popPanel.add(label1);
+        popPanel.add(popSize);
+
+        JPanel genPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        genPanel.add(label2);
+        genPanel.add(nGens);
+
+
         leftPanel.add(optionBinary);
         leftPanel.add(optionReal);
         leftPanel.add(elitismOn);
         leftPanel.add(elitismOff);
+        leftPanel.add(popPanel);
+        leftPanel.add(genPanel);
         leftPanel.add(MutationType);
         leftPanel.add(CrossType);
         leftPanel.add(SelectionType);
@@ -157,7 +202,7 @@ public class UIclass extends JFrame {
         public GraphPanel() {
             setPreferredSize(new Dimension(500, 600));
             dataSeries = new double[0][0];  // initially empty
-            colors = new Color[]{Color.BLUE, Color.GREEN, Color.MAGENTA};
+            colors = new Color[]{Color.red, Color.blue, Color.green};
         }
 
         public void setData(double[] series1, double[] series2, double[] series3) {

@@ -7,7 +7,6 @@ public class Main {
     static int angApertura; // Angulo de las camaras (solo si es con codificacion real)
     static boolean[][] map; // Mapa de bools para guardar objetos que bloqueen las camaras
     static int[][] importancia; // Mapa de valor de vigilancia por cada casilla (solo si es codificacion real)
-    static boolean modeReal; // Bool que es true si el algoritmo tiene codificación real y false si es binaria
 
     public static void main(String[] args) {
         LeerData("data3");
@@ -24,7 +23,7 @@ public class Main {
         if (ui.isBinary())
         {
             ev = new BinaryCameraEvolver(numCameras, rangVision, map, importancia, ui);
-            ev.evolve(1000, 200, ui.elitism(), true,
+            ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(), true,
                     ui.cross(),
                     ui.selection(),
                     ui.mutation());
@@ -32,7 +31,7 @@ public class Main {
         else
         {
             ev = new RealCameraEvolver(numCameras, rangVision, angApertura, map, importancia, ui);
-            ev.evolve(1000, 200, ui.elitism(), true,
+            ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(), true,
                     ui.cross(),
                     ui.selection(),
                     ui.mutation());
