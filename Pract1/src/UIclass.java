@@ -23,7 +23,7 @@ public class UIclass extends JFrame {
 
     boolean[][] mapMatrix;
     boolean[][] cameraMatrix = new boolean[20][20];
-    int[] cameras;
+    int[] cameras = new int[0];
     public void setMap(boolean[][] map)
     {
         mapMatrix = map;
@@ -187,6 +187,14 @@ public class UIclass extends JFrame {
                 }
                 for (int j = 0; j <= cols; j++) {
                     g2.drawLine(j * cellW, 0, j * cellW, height); // vertical
+                }
+
+                //las camaras
+                g2.setColor(Color.red);
+                for(int i = 0; i < cameras.length; i+=2)
+                {
+                    g2.fillOval((cameras[i+1]) * cellW, (cameras[i]) * cellH, 10, 10);
+                    System.out.println("dot");
                 }
             }
         };
