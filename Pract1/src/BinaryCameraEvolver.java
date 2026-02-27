@@ -186,4 +186,102 @@ public class BinaryCameraEvolver extends GeneticManager{
                 c.setFenotipo(sol);
         }
     }
+
+    public void drawSolutionMap(UIclass ui, ChromosomeBinario c)
+    {
+        //FORMATO CROMOSOMA: (posx, posy) x nCameras
+
+            //vamos construyendo el mapita y eso (para llevar la cuenta de las camaras)
+            //basicamente, las camaras no ven a traves de las camaras
+            int[][] seen  = new int[map.length][map[0].length];
+            int[] cameras = new int[NCameras*2];
+            int puntuacion = 0;
+            boolean changeGenome = false;
+            c.calculateFenotipo();
+            Integer[] sol = (Integer[]) c.fenotipo;
+
+            //si el fenotipo no es correcto, lo corregimos
+
+            //recorremos la solución, viendo cuanto ven las camaras
+            for (int i = 0; i < sol.length; i+=2)
+            {
+                //si la posición no es correcta, la corregimos:
+                if(sol[i] > map.length-1 || sol[i+1] > map[sol[i]].length-1)
+                {
+                    sol[i] = min(map.length-1, sol[i]);
+                    sol[i+1] = min(map[sol[i]].length-1, sol[i+1]);
+                }
+                cameras[i] = sol[i];
+                cameras[i+1] = sol[i+1];
+
+                //si está en un obstaculo, la penalizamos
+                if(map[sol[i]][sol[i+1]])
+                {
+
+                }
+                //vemos como va
+                else{
+                    seen[sol[i]][sol[i+1]] = 2;
+                    //Se miran por los 4 lados
+                    boolean stopArriba = false;
+                    boolean stopAbajo = false;
+                    boolean stopIzquierda = false;
+                    boolean stopDerecha = false;
+                    int aux = 1;
+                    while (!stopArriba || ! stopAbajo|| ! stopDerecha|| ! stopIzquierda){
+                        if(sol[i+1] - aux < 0 || map[sol[i]][sol[i+1] - aux] ||seen[sol[i]][sol[i+1] - aux]==2) stopArriba = true;
+                        if(sol[i+1] + aux >= map[0].length || map[sol[i]][sol[i+1] + aux] ||seen[sol[i]][sol[i+1] + aux] ==2) stopAbajo = true;
+                        if(sol[i] - aux < 0 || map[sol[i]- aux][sol[i+1]]||seen[sol[i]- aux][sol[i+1]]==2) stopIzquierda = true;
+                        if(sol[i] + aux >= map.length || map[sol[i]+ aux][sol[i+1]]||seen[sol[i]+ aux][sol[i+1]]==2) stopDerecha = true;
+
+
+                        //Arriba
+                        if(!stopArriba && seen[sol[i]][sol[i+1] - aux]!=1){
+                            seen[sol[i]][sol[i+1] - aux] = 1;
+                        }
+
+                        //Abajo
+                        if(!stopAbajo && seen[sol[i]][sol[i+1] + aux]!= 1){
+                            seen[sol[i]][sol[i+1] + aux] = 1;
+
+                        }
+
+                        //Izquierda
+                        if(!stopIzquierda && seen[sol[i]- aux][sol[i+1]]!=1){
+                            seen[sol[i] - aux][sol[i+1]] = 1;
+
+                        }
+
+                        //Derecha
+                        if(!stopDerecha && seen[sol[i]+ aux][sol[i+1]]!=1){
+                            seen[sol[i] + aux][sol[i+1]] = 1;
+
+                        }
+
+                        aux++;
+                        if(aux > VisionRange) {
+                            stopArriba = true;
+                            stopAbajo = true;
+                            stopDerecha = true;
+                            stopIzquierda = true;
+                        }
+                    }
+                }
+            }
+
+            //transformamos seen
+        boolean[][]seenB = new boolean[seen.length][seen[0].length];
+            for (int i = 0; i < seenB.length; i++)
+            {
+                for(int j = 0; j < seenB[i].length; j++)
+                {
+                    if (seen[i][j] == 1)
+                    {
+                        seenB[i][j] = true;
+                    }
+
+                }
+            }
+        ui.setCameras(cameras, seenB);
+    }
 }

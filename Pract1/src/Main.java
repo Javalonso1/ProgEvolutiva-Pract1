@@ -29,7 +29,7 @@ public class Main {
                     ui.mutation());
 
             ChromosomeBinario solution = (ChromosomeBinario) ev.getBestSolution();
-
+            ev.drawSolutionMap(ui, solution);
         }
         else
         {
