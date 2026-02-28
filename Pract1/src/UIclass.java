@@ -11,6 +11,10 @@ public class UIclass extends JFrame {
 
     JRadioButton elitismOn;
     JRadioButton elitismOff;
+
+    JRadioButton ponderationOn;
+    JRadioButton ponderationOff;
+
     public JButton simulateButton;
     JComboBox MutationType;
     JComboBox CrossType;
@@ -41,6 +45,10 @@ public class UIclass extends JFrame {
     public boolean elitism()
     {
         return elitismOn.isSelected();
+    }
+    public boolean ponderation()
+    {
+        return ponderationOn.isSelected();
     }
     public GeneticManager.MUTATION_TYPE mutation()
     {
@@ -92,6 +100,13 @@ public class UIclass extends JFrame {
         group2.add(elitismOn);
         group2.add(elitismOff);
 
+        ponderationOn = new JRadioButton("Ponderation On", true);
+        ponderationOff = new JRadioButton("Ponderation Off");
+        ButtonGroup group3 = new ButtonGroup();
+        group3.add(ponderationOn);
+        group3.add(ponderationOff);
+
+
         String[] mutations = {"UNIFORM", "GAUSSEAN"};
         MutationType = new JComboBox(mutations);
 
@@ -132,6 +147,8 @@ public class UIclass extends JFrame {
         leftPanel.add(optionReal);
         leftPanel.add(elitismOn);
         leftPanel.add(elitismOff);
+        leftPanel.add(ponderationOn);
+        leftPanel.add(ponderationOff);
         leftPanel.add(popPanel);
         leftPanel.add(genPanel);
         leftPanel.add(MutationType);

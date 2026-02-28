@@ -23,7 +23,7 @@ public class Main {
         if (ui.isBinary())
         {
             BinaryCameraEvolver ev = new BinaryCameraEvolver(numCameras, rangVision, map, importancia, ui);
-            ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(), true,
+            ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(), ui.ponderation(),
                     ui.cross(),
                     ui.selection(),
                     ui.mutation());
@@ -34,7 +34,7 @@ public class Main {
         else
         {
             RealCameraEvolver ev = new RealCameraEvolver(numCameras, rangVision, angApertura, map, importancia, ui);
-            ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(), true,
+            ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(), ui.ponderation(),
                     ui.cross(),
                     ui.selection(),
                     ui.mutation());
