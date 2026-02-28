@@ -19,7 +19,8 @@ public class Main {
 
     public static void evolve(UIclass ui)
     {
-
+        LeerData("data"+ ui.mapChosen());
+        ui.setMap(map);
         if (ui.isBinary())
         {
             BinaryCameraEvolver ev = new BinaryCameraEvolver(numCameras, rangVision, map, importancia, ui);

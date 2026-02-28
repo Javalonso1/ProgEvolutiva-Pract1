@@ -17,6 +17,7 @@ public class UIclass extends JFrame {
 
     public JButton simulateButton;
     JComboBox MutationType;
+    JComboBox MapChosen;
     JComboBox CrossType;
     JComboBox SelectionType;
     JFormattedTextField popSize;
@@ -50,6 +51,10 @@ public class UIclass extends JFrame {
     {
         return ponderationOn.isSelected();
     }
+    public int mapChosen()
+    {
+        return MapChosen.getSelectedIndex() + 1;
+    }
     public GeneticManager.MUTATION_TYPE mutation()
     {
         return GeneticManager.MUTATION_TYPE.values()[MutationType.getSelectedIndex()];
@@ -69,7 +74,6 @@ public class UIclass extends JFrame {
     }
     public int getGenNumber()
     {
-
         return (int) nGens.getValue();
     }
 
@@ -106,6 +110,9 @@ public class UIclass extends JFrame {
         group3.add(ponderationOn);
         group3.add(ponderationOff);
 
+
+        String[] mapas = {"Mapa 1", "Mapa 2", "Mapa 3"};
+        MapChosen = new JComboBox(mapas);
 
         String[] mutations = {"UNIFORM", "GAUSSEAN"};
         MutationType = new JComboBox(mutations);
@@ -151,6 +158,7 @@ public class UIclass extends JFrame {
         leftPanel.add(ponderationOff);
         leftPanel.add(popPanel);
         leftPanel.add(genPanel);
+        leftPanel.add(MapChosen);
         leftPanel.add(MutationType);
         leftPanel.add(CrossType);
         leftPanel.add(SelectionType);
