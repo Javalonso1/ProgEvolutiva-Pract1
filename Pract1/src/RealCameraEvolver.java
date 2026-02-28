@@ -157,12 +157,11 @@ public class RealCameraEvolver extends GeneticManager{
 
     public void drawSolutionMap(UIclass ui, ChromosomeReal c)
     {
-
         //FORMATO CROMOSOMA: (posx, posy, angulo) x nCameras
         boolean[][] seen  = new boolean[map.length][map[0].length];
 
         Integer[] sol = (Integer[]) c.fenotipo;
-        int[] cameras = new int[NCameras*2];
+        float[] cameras = new float[NCameras*2];
 
         //recorremos la solución, viendo cuanto ven las camaras
         for (int i = 0; i < sol.length; i+=3)
@@ -171,6 +170,7 @@ public class RealCameraEvolver extends GeneticManager{
                 int camIndex = i / 3;
                 cameras[camIndex * 2] = sol[i];
                 cameras[camIndex * 2 + 1] = sol[i+1];
+
                 //Preguntamos a todas las casillas (dentro del rango "VisionRange") si estan siendo vigiladas
                 for(int x = sol[i] -VisionRange; x <= sol[i] + VisionRange; x++){
                     //Se comprueba que la casilla a comprobar esta dentro del mapa

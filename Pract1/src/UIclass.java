@@ -23,13 +23,13 @@ public class UIclass extends JFrame {
 
     boolean[][] mapMatrix;
     boolean[][] cameraMatrix = new boolean[20][20];
-    int[] cameras = new int[0];
+    float[] cameras = new float[0];
     public void setMap(boolean[][] map)
     {
         mapMatrix = map;
     }
 
-    public void setCameras(int[] cam, boolean[][] seenmap) {
+    public void setCameras(float[] cam, boolean[][] seenmap) {
         cameras = cam;
         cameraMatrix = seenmap;
         centerPanel.repaint();
@@ -190,11 +190,10 @@ public class UIclass extends JFrame {
                 }
 
                 //las camaras
-                g2.setColor(Color.red);
                 for(int i = 0; i < cameras.length; i+=2)
                 {
-                    g2.fillOval((cameras[i+1]) * cellW, (cameras[i]) * cellH, 10, 10);
-                    System.out.println("dot");
+                    g2.setColor(new Color((float) Math.random(),(float)Math.random(),(float)Math.random()));
+                    g2.fillOval((int)((cameras[i+1]) * cellW) + cellW/4, (int)((cameras[i]) * cellH)+ cellH/4, cellW/2, cellH/2);
                 }
             }
         };

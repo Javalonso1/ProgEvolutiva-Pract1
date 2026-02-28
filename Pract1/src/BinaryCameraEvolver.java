@@ -56,6 +56,7 @@ public class BinaryCameraEvolver extends GeneticManager{
         for(int i = 0; i < pop.length; i += 2){
             if(Pcruce < Math.random()){
                 sol[i] = new ChromosomeBinario(NCameras, cifX, cifY);
+
                 sol[i+1] = new ChromosomeBinario(NCameras, cifX, cifY);
                 switch (crossMethod){
                     case MONOPUNTO:
@@ -194,7 +195,7 @@ public class BinaryCameraEvolver extends GeneticManager{
             //vamos construyendo el mapita y eso (para llevar la cuenta de las camaras)
             //basicamente, las camaras no ven a traves de las camaras
             int[][] seen  = new int[map.length][map[0].length];
-            int[] cameras = new int[NCameras*2];
+            float[] cameras = new float[NCameras*2];
             int puntuacion = 0;
             boolean changeGenome = false;
             c.calculateFenotipo();
