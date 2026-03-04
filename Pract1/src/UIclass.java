@@ -287,6 +287,28 @@ public class UIclass extends JFrame {
 
             int nPoints = dataSeries[0].length; // assume all series same length
             double scale = plotHeight / (maxValue + 10);
+            int numTicks = 10;
+            double stepValue = (maxValue + 10) / numTicks;
+            Font normalFont = new Font("Arial", Font.PLAIN, 12);
+            Font bigFont = new Font("Arial", Font.BOLD, 18);
+
+            for (int i = 0; i <= numTicks; i++) {
+
+                double value = i * stepValue;
+                int y = (int) (height - marginY - value * scale);
+
+                // Tick mark
+                g2.drawLine(marginX - 5, y, marginX, y);
+
+                // If this tick matches the highest last value → make it bigger
+                if (Math.abs(value - maxValue) < stepValue / 2) {
+                    g2.setFont(bigFont);
+                } else {
+                    g2.setFont(normalFont);
+                }
+
+                g2.drawString(String.format("%.0f", value), marginX - 40, y + 5);
+            }
 
             for (int s = 0; s < dataSeries.length; s++) {
                 g2.setColor(colors[s % colors.length]);
