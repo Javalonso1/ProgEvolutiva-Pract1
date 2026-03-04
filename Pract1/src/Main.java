@@ -1,5 +1,3 @@
-import javax.swing.*;
-import java.awt.*;
 import java.io.*;
 public class Main {
     static int numCameras; // Numero de camaras
@@ -9,17 +7,17 @@ public class Main {
     static int[][] importancia; // Mapa de valor de vigilancia por cada casilla (solo si es codificacion real)
 
     public static void main(String[] args) {
-        LeerData("data1");
+        LeerDataP1("data1");
 
         UIclass ui = new UIclass();
         ui.setMap(map);
-        ui.simulateButton.addActionListener(e -> evolve(ui));
+        ui.simulateButton.addActionListener(e -> placeCameras(ui));
 
     }
 
-    public static void evolve(UIclass ui)
+    public static void placeCameras(UIclass ui)
     {
-        LeerData("data"+ ui.mapChosen());
+        LeerDataP1("data"+ ui.mapChosen());
         ui.setMap(map);
         if (ui.isBinary())
         {
@@ -49,7 +47,7 @@ public class Main {
     }
 
 
-    public static void LeerData(String filename) {
+    public static void LeerDataP1(String filename) {
         try (FileReader fr = new FileReader("./data/" + filename + ".txt")) {
             BufferedReader br = new BufferedReader(fr);
             // Lectura del fichero
