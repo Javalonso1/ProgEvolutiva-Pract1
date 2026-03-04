@@ -99,29 +99,53 @@ public class UIclass extends JFrame {
         group.add(optionReal);
 
         elitismOn = new JRadioButton("Elitism On", true);
-        elitismOff = new JRadioButton("Elitism Off", true);
+        elitismOff = new JRadioButton("Elitism Off", false);
         ButtonGroup group2 = new ButtonGroup();
         group2.add(elitismOn);
         group2.add(elitismOff);
 
         ponderationOn = new JRadioButton("Ponderation On", true);
-        ponderationOff = new JRadioButton("Ponderation Off");
+        ponderationOff = new JRadioButton("Off");
         ButtonGroup group3 = new ButtonGroup();
         group3.add(ponderationOn);
         group3.add(ponderationOff);
 
+        JPanel buttPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        buttPanel.add(optionBinary);
+        buttPanel.add(optionReal);
+        buttPanel.add(elitismOn);
+        buttPanel.add(elitismOff);
+        buttPanel.add(ponderationOn);
+        buttPanel.add(ponderationOff);
+        buttPanel.setPreferredSize(new Dimension(300, 60));
 
+        JLabel labelmap = new JLabel("mapa:");
         String[] mapas = {"Mapa 1", "Mapa 2", "Mapa 3"};
         MapChosen = new JComboBox(mapas);
+        JPanel mapPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        mapPanel.add(labelmap);
+        mapPanel.add(MapChosen);
 
+        JLabel labelmut = new JLabel("mutación:");
         String[] mutations = {"UNIFORM", "GAUSSEAN"};
         MutationType = new JComboBox(mutations);
+        JPanel mutPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        mutPanel.add(labelmut);
+        mutPanel.add(MutationType);
 
+        JLabel labelcross = new JLabel("cruce:");
         String[] cross = {"MONOPUNTO", "UNIFORME", "ARITMETICO", "BLXALPHA"};
         CrossType = new JComboBox(cross);
+        JPanel crossPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        crossPanel.add(labelcross);
+        crossPanel.add(CrossType);
 
+        JLabel labelsel = new JLabel("selections:");
         String[] selections = {"RULETA", "TORNEOS", "ESTOCASTICO", "TRUNCAMIENTO", "RESTOS"};
         SelectionType = new JComboBox(selections);
+        JPanel selPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        selPanel.add(labelsel);
+        selPanel.add(SelectionType);
 
         // Label
         JLabel label1 = new JLabel("Population:");
@@ -150,19 +174,15 @@ public class UIclass extends JFrame {
         genPanel.add(nGens);
 
 
-        leftPanel.add(optionBinary);
-        leftPanel.add(optionReal);
-        leftPanel.add(elitismOn);
-        leftPanel.add(elitismOff);
-        leftPanel.add(ponderationOn);
-        leftPanel.add(ponderationOff);
+        leftPanel.add(buttPanel);
         leftPanel.add(popPanel);
         leftPanel.add(genPanel);
-        leftPanel.add(MapChosen);
-        leftPanel.add(MutationType);
-        leftPanel.add(CrossType);
-        leftPanel.add(SelectionType);
+        leftPanel.add(mapPanel);
+        leftPanel.add(mutPanel);
+        leftPanel.add(crossPanel);
+        leftPanel.add(selPanel);
         leftPanel.add(simulateButton);
+
 
 
         leftPanel.setPreferredSize(new Dimension(200, 600));

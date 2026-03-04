@@ -83,10 +83,6 @@ public abstract class GeneticManager {
 
         }
 
-        System.out.println(Arrays.toString(generationAverage));
-        System.out.println(Arrays.toString(generationBest));
-        System.out.println(Arrays.toString(absoluteBest));
-
     }
 
 
