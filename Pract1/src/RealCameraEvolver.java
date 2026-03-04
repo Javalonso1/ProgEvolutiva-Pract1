@@ -137,7 +137,7 @@ public class RealCameraEvolver extends GeneticManager{
                                                 }
                                                 if(!bloquea){
                                                     if(casillaImport){
-                                                        puntuacion += importancia[sol[i]][sol[i+1]];
+                                                        puntuacion += importancia[x][y];
                                                     }
                                                     else  puntuacion += reward;
                                                     seen[x][y] = true;
