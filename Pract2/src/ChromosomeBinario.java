@@ -1,0 +1,129 @@
+public class ChromosomeBinario extends Chromosome<Boolean, Integer> {
+
+    int TX;
+    int TY;
+    public ChromosomeBinario(int NumCams, int X, int Y){
+        fenotipo = new Integer[NumCams * 2];
+        TX = X;
+        TY = Y;
+        genotipo = new Boolean[NumCams * (TX + TY)];
+    }
+
+    @Override
+    public void setFenotipo(Integer[] f) {
+        fenotipo = f;
+        recalculateGenome();
+
+    }
+
+    @Override
+    protected void recalculateGenome() {
+        int pos = 0;
+        for(int i = 0; i < fenotipo.length; i+=2){
+
+            for (int bit = 0; bit < TX; bit++) {
+                // MSB first
+                genotipo[pos + TX - 1 - bit] = ((fenotipo[i] >> bit) & 1) == 1;
+            }
+            pos +=TX;
+
+            //Luego con Y
+            for (int bit = 0; bit < TY; bit++) {
+                genotipo[pos + TY - 1 - bit] = ((fenotipo[i+1] >> bit) & 1) == 1;
+            }
+            pos += TY;
+        }
+    }
+
+    public void initializeRandom(){
+        for(int i = 0; i < genotipo.length; i++){
+            genotipo[i] = (int)(Math.random() * 2) == 1;
+        }
+        calculateFenotipo();
+    }
+
+    void calculateFenotipo(){
+        for(int i = 0; i < fenotipo.length * 0.5f; i++){
+            int sol = 0;
+            for(int j = 0; j < TX; j++){
+                int aux = 0;
+                if(genotipo[i*(TX+TY)+j]) aux = 1;
+                sol += Math.pow(2, TX-(j+1)) * aux;
+            }
+            fenotipo[i*2] = sol;
+            sol = 0;
+            for(int j = 0; j < TY; j++){
+                int aux = 0;
+                if(genotipo[i*(TX+TY)+TX +j]) aux = 1;
+                sol += Math.pow(2, TY-(j+1)) * aux;
+            }
+            fenotipo[i*2 + 1] = sol;
+        }
+    }
+
+    @Override
+    void mutate(GeneticManager.MUTATION_TYPE t, double mutationP) {
+
+        switch (t){
+            case UNIFORM:
+                for(int i = 0; i < genotipo.length; i++)
+                {
+                    double r = Math.random() * 100;
+                    if (r < mutationP)
+                        genotipo[i] = !genotipo[i];
+
+                }
+                calculateFenotipo();
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    @Override
+    void cruceMonopunto(Chromosome c1, Chromosome c2, int corte)
+    {
+        for(int i = 0; i < genotipo.length; i++){
+            if(i < corte) genotipo[i] = (Boolean) c1.getGenotipo()[i];
+            else genotipo[i] = (Boolean) c2.getGenotipo()[i];
+        }
+        calculateFenotipo();
+    };
+    @Override
+    void cruceUniforme(Chromosome c1, Chromosome c2, float prob, float[]results)
+    {
+        for(int i = 0; i < genotipo.length; i++){
+            if(results[i] < prob) genotipo[i] = (Boolean) c1.getGenotipo()[i];
+            else genotipo[i] = (Boolean) c2.getGenotipo()[i];
+        }
+        calculateFenotipo();
+    };
+    @Override
+    void cruceAritmetico(Chromosome c1, Chromosome c2)
+    {
+        //En el cromosoma binario no se utiliza
+    };
+    @Override
+    void cruceBLX_Alpha(Chromosome c1, Chromosome c2, float alpha)
+    {
+        //En el cromosoma binario no se utiliza
+    }
+
+    private ChromosomeBinario(ChromosomeBinario other) {
+        this.genotipo = other.genotipo.clone(); // deep copy array
+        this.aptitud = other.aptitud;
+        this.puntuacion = other.puntuacion;
+        this.punt_acumulada = other.punt_acumulada;
+        this.TX = other.TX;
+        this.TY = other.TY;
+        this.fenotipo = other.fenotipo.clone();
+    }
+
+    @Override
+    public Chromosome copy() {
+        return new ChromosomeBinario(this);
+    }
+
+    ;
+}
