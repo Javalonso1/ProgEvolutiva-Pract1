@@ -10,7 +10,7 @@ public abstract class GeneticManager {
 
     public enum SELECTION_METHOD {RULETA, TORNEOS, ESTOCASTICO, TRUNCAMIENTO, RESTOS}
     public enum CROSS_METHOD {MONOPUNTO, UNIFORME, ARITMETICO, BLXALPHA}
-    public enum MUTATION_TYPE {UNIFORM, GAUSSEAN}
+    public enum MUTATION_TYPE {UNIFORM, GAUSSEAN, INSERTION, EXCHANGE, INVERSION, HEURISTICA}
 
     protected CROSS_METHOD crossMethod;
     protected SELECTION_METHOD selectionMethod;

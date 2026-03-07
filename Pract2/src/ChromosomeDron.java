@@ -3,6 +3,8 @@ import java.util.Random;
 public class ChromosomeDron extends Chromosome<Float, Integer>{
     int C;  //Numero de camaras
     int D;  //Numero de drones
+    protected int MAX_INSERCIONES = 3;
+    protected int MAX_PERMUTACIONES = 4;
     public ChromosomeDron(int NumCams, int numDrones){
         fenotipo = new Integer[NumCams + (numDrones-1)];
         C = NumCams;
@@ -44,35 +46,78 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
     }
 
     @Override
-    void mutate(GeneticManager.MUTATION_TYPE t, double mutationp) {
-        //A hacer
-
-        /*
+    void mutate(GeneticManager.MUTATION_TYPE t, double mutationP) {
         switch (t){
-            case UNIFORM:
-                int pos = (int) (Math.random() * fenotipo.length);
-                if(pos%3 == 0){
-                    fenotipo[pos] = (int) (Math.random()*TX);
-                }
-                else if(pos%3 == 1){
-                    fenotipo[pos] = (int) (Math.random()*TY);
-                }
-                else {
-                    fenotipo[pos] =(int) (Math.random()*360);
+            case INSERTION:
+                double r = Math.random() * 100;
+                if (r < mutationP){
+                    r = (Math.random() * MAX_INSERCIONES)+1;
+                    for (int i = 0; i < r; i++){
+                        int pos1 = (int)(Math.random() * fenotipo.length);
+                        int pos2 = (int)(Math.random() * fenotipo.length);
+                        if(pos1 != pos2){
+                            int aux = fenotipo[pos1];
+                            int j = pos1;
+                            if(pos1 > pos2){
+                                while(j > pos2){
+                                    fenotipo[j] = fenotipo[j-1];
+                                    j--;
+                                }
+                                fenotipo[pos2] = aux;
+                            }
+                            else {
+                                while(j < pos2){
+                                    fenotipo[j] = fenotipo[j+1];
+                                    j++;
+                                }
+                                fenotipo[pos2] = aux;
+                            }
+                        }
+                    }
                 }
                 break;
-            case GAUSSEAN:
-                for(int i = 0; i < fenotipo.length; i +=3){
-                    fenotipo[i] = (int) (Math.random()*TX);
-                    fenotipo[i+1] = (int) (Math.random()*TY);
-                    fenotipo[i+2] = (int) (Math.random()*360);
+            case EXCHANGE:
+                r = Math.random() * 100;
+                if (r < mutationP){
+                    int pos1 = (int)(Math.random() * fenotipo.length);
+                    int pos2 = (int)(Math.random() * fenotipo.length);
+                    if(pos1 != pos2){
+                        int aux = fenotipo[pos1];
+                        fenotipo[pos1] = fenotipo[pos2];
+                        fenotipo[pos2] = aux;
+                    }
+                }
+                break;
+            case INVERSION:
+                r = Math.random() * 100;
+                if (r < mutationP){
+                    int pos1 = (int)(Math.random() * fenotipo.length);
+                    int pos2 = (int)(Math.random() * fenotipo.length);
+                    if(pos1 != pos2){
+                        if(pos1 > pos2){
+                            int aux = pos1;
+                            pos1 = pos2;
+                            pos2 = aux;
+                        }
+                        while (pos1 < pos2){
+                            int aux = fenotipo[pos1];
+                            fenotipo[pos1] = fenotipo[pos2];
+                            fenotipo[pos2] = aux;
+                            pos2--;
+                            pos1++;
+                        }
+                    }
+                }
+                break;
+            case HEURISTICA:
+                r = Math.random() * 100;
+                if (r < mutationP){
+                    //NO voy a hacer esto ahora
                 }
                 break;
             default:
                 break;
-
         }
-        */
     }
 
     @Override
