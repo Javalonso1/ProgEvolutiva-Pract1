@@ -219,9 +219,53 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
         }
     };
     @Override
-    void cruceOX(Chromosome c1, Chromosome c2)
+    void cruceOX(Chromosome c1, Chromosome c2, int corte1, int corte2, boolean first)
     {
-        //No se usa el cruce uniforme
+        int start = corte1;
+        for(int i = 0; i < c1.getFenotipo().length; i++){
+            if(i>= corte1 && i<=corte2){
+                if(first) fenotipo[i] = c2.getFenotipo()[i];
+                else fenotipo[i] = c1.getFenotipo()[i];
+            }
+            else {
+                if(first) {
+                    int sol = 0;
+                    boolean stop = false;
+                    while (!stop){
+                        sol = c1.getFenotipo()[start];
+                        stop = true;
+                        int j = corte1;
+                        while (j <=corte2 && stop){
+                            if(sol == c2.getFenotipo()[j]){
+                                stop = false;
+                                start++;
+                                if(start == c1.getFenotipo().length) start = 0;
+                            }
+                            j++;
+                        }
+                    }
+                    fenotipo[i] = sol;
+                }
+                else {
+                    int sol = 0;
+                    boolean stop = false;
+                    while (!stop){
+                        sol = c2.getFenotipo()[start];
+                        stop = true;
+                        int j = corte1;
+                        while (j <=corte2 && stop){
+                            if(sol == c1.getFenotipo()[j]){
+                                stop = false;
+                                start++;
+                                if(start == c2.getFenotipo().length) start = 0;
+                            }
+                            j++;
+                        }
+                    }
+                    fenotipo[i] = sol;
+                }
+            }
+        }
     };
     @Override
     void cruceOXPP(Chromosome c1, Chromosome c2)
