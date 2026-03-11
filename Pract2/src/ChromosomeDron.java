@@ -181,25 +181,60 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
         return sol;
     }
     @Override
-    void cruceMonopunto(Chromosome c1, Chromosome c2, int corte)
+    void crucePMX(Chromosome c1, Chromosome c2, int corte1, int corte2, boolean first)
     {
-        //No se usa el cruce monopunto
+        for(int i = 0; i < c1.getFenotipo().length; i++){
+            if(i>= corte1 && i<=corte2){
+                if(first) fenotipo[i] = c2.getFenotipo()[i];
+                else fenotipo[i] = c1.getFenotipo()[i];
+            }
+            else {
+                int sol;
+                if(first) {
+                    sol = c1.getFenotipo()[i];
+                    boolean isConflicting = false;
+                    int j = corte1;
+                    while (j <= corte2 && !isConflicting){
+                        if(sol == c2.getFenotipo()[j]) isConflicting = true;
+                        j++;
+                    }
+                    if(isConflicting){
+
+                    }
+                    fenotipo
+                }
+                else {
+                    sol = c2.getFenotipo()[i];
+                }
+            }
+        }
     };
     @Override
-    void cruceUniforme(Chromosome c1, Chromosome c2, float prob, float[]results)
+    void cruceOX(Chromosome c1, Chromosome c2)
     {
         //No se usa el cruce uniforme
     };
     @Override
-    void cruceAritmetico(Chromosome c1, Chromosome c2)
+    void cruceOXPP(Chromosome c1, Chromosome c2)
     {
         //No se usa el cruce aritmético
     };
     @Override
-    void cruceBLX_Alpha(Chromosome c1, Chromosome c2, float alpha)
+    void cruceCX(Chromosome c1, Chromosome c2)
     {
         //No se usa el cruce BLX_ALpha
     }
+    @Override
+    void cruceCO(Chromosome c1, Chromosome c2)
+    {
+        //No se usa el cruce BLX_ALpha
+    }
+    @Override
+    void cruceERX(Chromosome c1, Chromosome c2)
+    {
+        //No se usa el cruce BLX_ALpha
+    }
+
 
     private ChromosomeDron(ChromosomeDron other) {
         this.aptitud = other.aptitud;

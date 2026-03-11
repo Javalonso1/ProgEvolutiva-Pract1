@@ -17,10 +17,12 @@ public abstract class Chromosome <T, G> {
     public abstract void initializeRandom();
     abstract void calculateFenotipo();
     abstract void mutate(GeneticManager.MUTATION_TYPE t, double mutationP);
-    abstract void  cruceMonopunto(Chromosome c1, Chromosome c2, int corte);
-    abstract void  cruceUniforme(Chromosome c1, Chromosome c2, float prob, float[]results);
-    abstract void  cruceAritmetico(Chromosome c1, Chromosome c2);
-    abstract void  cruceBLX_Alpha(Chromosome c1, Chromosome c2, float alpha);
+    abstract void  crucePMX(Chromosome c1, Chromosome c2, int corte1, int corte2, boolean second);
+    abstract void  cruceOX(Chromosome c1, Chromosome c2);
+    abstract void  cruceOXPP(Chromosome c1, Chromosome c2);
+    abstract void  cruceCX(Chromosome c1, Chromosome c2);
+    abstract void  cruceCO(Chromosome c1, Chromosome c2);
+    abstract void  cruceERX(Chromosome c1, Chromosome c2);
 
     public abstract Chromosome copy();
 }
