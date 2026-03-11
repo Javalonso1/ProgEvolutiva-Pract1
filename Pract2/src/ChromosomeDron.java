@@ -189,22 +189,31 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
                 else fenotipo[i] = c1.getFenotipo()[i];
             }
             else {
-                int sol;
                 if(first) {
-                    sol = c1.getFenotipo()[i];
+                    int sol = c1.getFenotipo()[i];
                     boolean isConflicting = false;
                     int j = corte1;
                     while (j <= corte2 && !isConflicting){
-                        if(sol == c2.getFenotipo()[j]) isConflicting = true;
+                        if(sol == c2.getFenotipo()[j]){
+                            sol = c1.getFenotipo()[j];
+                            isConflicting = true;
+                        }
                         j++;
                     }
-                    if(isConflicting){
-
-                    }
-                    fenotipo
+                    fenotipo[i] = sol;
                 }
                 else {
-                    sol = c2.getFenotipo()[i];
+                    int sol = c2.getFenotipo()[i];
+                    boolean isConflicting = false;
+                    int j = corte1;
+                    while (j <= corte2 && !isConflicting){
+                        if(sol == c1.getFenotipo()[j]){
+                            sol = c2.getFenotipo()[j];
+                            isConflicting = true;
+                        }
+                        j++;
+                    }
+                    fenotipo[i] = sol;
                 }
             }
         }
