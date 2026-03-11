@@ -1,4 +1,7 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Main {
     static int numCameras; // Numero de camaras
     static int rangVision; // Alcance de camaras
@@ -11,39 +14,54 @@ public class Main {
 
         UIclass ui = new UIclass();
         ui.setMap(map);
-        ui.simulateButton.addActionListener(e -> placeCameras(ui));
+        ui.simulateButton.addActionListener(e -> evolve(ui));
 
     }
 
-    public static void placeCameras(UIclass ui)
+    public static void evolve(UIclass ui)
     {
         LeerDataP1("data"+ ui.mapChosen());
         ui.setMap(map);
-        if (ui.isBinary())
-        {
-            BinaryCameraEvolver ev = new BinaryCameraEvolver(numCameras, rangVision, map, importancia, ui);
-            ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(), ui.ponderation(),
-                    ui.cross(),
-                    ui.selection(),
-                    ui.mutation());
+        RealCameraEvolver ev = new RealCameraEvolver(numCameras, rangVision, angApertura, map, importancia, ui);
+        ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(), ui.ponderation(),
+                ui.cross(),
+                ui.selection(),
+                ui.mutation());
 
-            ChromosomeBinario solution = (ChromosomeBinario) ev.getBestSolution();
-            ev.drawSolutionMap(ui, solution);
+        //ChromosomeReal solution = (ChromosomeReal) ev.getBestSolution();
+        //ev.drawSolutionMap(ui, solution);
+    }
+
+    public static ArrayList<Integer> placeCameras(int seed) {
+        Random rand = new Random(seed);
+        //La semilla se selecciona de la interfaz
+
+        // Lista para guardar las posiciones (asumiendo una clase simple Punto(x,y))
+        ArrayList<Integer> posicionesCamaras = new ArrayList<>();
+
+        // 3. Generar las posiciones de las cámaras
+        while (posicionesCamaras.size() < numCameras*2) {
+            // Generar coordenadas aleatorias dentro de los límites del mapa
+            int x = rand.nextInt(map.length);
+            int y = rand.nextInt(map[0].length);
+
+            boolean valid = true;
+            for(int i = 0; i < posicionesCamaras.size()/2; i++)
+            {
+                if(posicionesCamaras.get(i) == x && posicionesCamaras.get(i+1) == y)
+                    valid = false;
+            }
+            if(map[x][y])
+                valid = false;
+
+            if(valid)
+            {
+                posicionesCamaras.add(x);
+                posicionesCamaras.add(y);
+            }
         }
-        else
-        {
-            RealCameraEvolver ev = new RealCameraEvolver(numCameras, rangVision, angApertura, map, importancia, ui);
-            ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(), ui.ponderation(),
-                    ui.cross(),
-                    ui.selection(),
-                    ui.mutation());
 
-            ChromosomeReal solution = (ChromosomeReal) ev.getBestSolution();
-            ev.drawSolutionMap(ui, solution);
-        }
-
-
-
+        return posicionesCamaras;
     }
 
 

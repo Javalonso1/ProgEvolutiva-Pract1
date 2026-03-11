@@ -127,21 +127,21 @@ public class UIclass extends JFrame {
         mapPanel.add(MapChosen);
 
         JLabel labelmut = new JLabel("mutación:");
-        String[] mutations = {"UNIFORM", "GAUSSEAN"};
+        String[] mutations = {"INSERCION", "INTERCAMBIO", "INVERSION", "HEURISTICA", "CUSTOM"};
         MutationType = new JComboBox(mutations);
         JPanel mutPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         mutPanel.add(labelmut);
         mutPanel.add(MutationType);
 
         JLabel labelcross = new JLabel("cruce:");
-        String[] cross = {"MONOPUNTO", "UNIFORME", "ARITMETICO", "BLXALPHA"};
+        String[] cross = {"PMX", "OX", "OXPP", "CX", "CO", "ERX", "CUSTOM"};
         CrossType = new JComboBox(cross);
         JPanel crossPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         crossPanel.add(labelcross);
         crossPanel.add(CrossType);
 
         JLabel labelsel = new JLabel("selections:");
-        String[] selections = {"RULETA", "TORNEOS", "ESTOCASTICO", "TRUNCAMIENTO", "RESTOS"};
+        String[] selections = {"RULETA", "TORNEOS", "ESTOCASTICO", "TRUNCAMIENTO", "RESTOS", "RANKING"};
         SelectionType = new JComboBox(selections);
         JPanel selPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         selPanel.add(labelsel);
