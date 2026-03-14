@@ -1,14 +1,16 @@
 import java.util.Random;
 
 public class ChromosomeDron extends Chromosome<Float, Integer>{
-    int C;  //Numero de camaras
-    int D;  //Numero de drones
+
     protected int MAX_INSERCIONES = 3;
     protected int MAX_PERMUTACIONES_HEURISTICA = 4;
-    public ChromosomeDron(int NumCams, int numDrones){
+
+    protected  DronEvolver DronEv;
+    protected boolean casImp;
+    public ChromosomeDron(int NumCams, int numDrones, DronEvolver mDronEv, boolean _casImp){
         fenotipo = new Integer[NumCams + (numDrones-1)];
-        C = NumCams;
-        D = numDrones;
+        DronEv = mDronEv;
+        casImp = _casImp;
     }
 
     @Override
@@ -48,7 +50,7 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
     @Override
     void mutate(GeneticManager.MUTATION_TYPE t, double mutationP) {
         switch (t){
-            case INSERTION:
+            case INSERCION:
                 double r = Math.random() * 100;
                 if (r < mutationP){
                     r = (Math.random() * MAX_INSERCIONES)+1;
@@ -76,7 +78,7 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
                     }
                 }
                 break;
-            case EXCHANGE:
+            case INTERCAMBIO:
                 r = Math.random() * 100;
                 if (r < mutationP){
                     int pos1 = (int)(Math.random() * fenotipo.length);
@@ -132,9 +134,21 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
                     int[][]permutaciones;
                     permutaciones = createPermutaciones(realval);
 
-                    //Ahora que tenemos las permutaciones tocara evaluar todas las posibilidades. Lo hare luego
+                    //Ahora que tenemos las permutaciones tocara evaluar todas las posibilidades
 
-
+                    Chromosome[] drons = new ChromosomeDron[permutaciones.length];
+                    for(int i = 0; i < permutaciones.length; i++){
+                        drons[i] = copy();
+                        for(int j = 0; j < permutaciones[0].length; j++){
+                            drons[i].fenotipo[pos[j]] = permutaciones[i][j];
+                        }
+                    }
+                    DronEv.evaluate(drons,casImp);
+                    int sol = 0;
+                    for(int i = 1; i < drons.length; i++){
+                        if(drons[i].aptitud > drons[sol].aptitud) sol = i;
+                    }
+                    fenotipo = (Integer[]) drons[sol].fenotipo.clone();
                 }
                 break;
             default:
@@ -185,17 +199,17 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
     {
         for(int i = 0; i < c1.getFenotipo().length; i++){
             if(i>= corte1 && i<=corte2){
-                if(first) fenotipo[i] = c2.getFenotipo()[i];
-                else fenotipo[i] = c1.getFenotipo()[i];
+                if(first) fenotipo[i] = (Integer) c2.getFenotipo()[i];
+                else fenotipo[i] = (Integer)c1.getFenotipo()[i];
             }
             else {
                 if(first) {
-                    int sol = c1.getFenotipo()[i];
+                    int sol = (int)c1.getFenotipo()[i];
                     boolean isConflicting = false;
                     int j = corte1;
                     while (j <= corte2 && !isConflicting){
-                        if(sol == c2.getFenotipo()[j]){
-                            sol = c1.getFenotipo()[j];
+                        if(sol == (int)c2.getFenotipo()[j]){
+                            sol = (int)c1.getFenotipo()[j];
                             isConflicting = true;
                         }
                         j++;
@@ -203,12 +217,12 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
                     fenotipo[i] = sol;
                 }
                 else {
-                    int sol = c2.getFenotipo()[i];
+                    int sol = (int)c2.getFenotipo()[i];
                     boolean isConflicting = false;
                     int j = corte1;
                     while (j <= corte2 && !isConflicting){
-                        if(sol == c1.getFenotipo()[j]){
-                            sol = c2.getFenotipo()[j];
+                        if(sol == (int)c1.getFenotipo()[j]){
+                            sol = (int)c2.getFenotipo()[j];
                             isConflicting = true;
                         }
                         j++;
@@ -224,19 +238,19 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
         int start = corte1;
         for(int i = 0; i < c1.getFenotipo().length; i++){
             if(i>= corte1 && i<=corte2){
-                if(first) fenotipo[i] = c2.getFenotipo()[i];
-                else fenotipo[i] = c1.getFenotipo()[i];
+                if(first) fenotipo[i] = (Integer)c2.getFenotipo()[i];
+                else fenotipo[i] = (Integer)c1.getFenotipo()[i];
             }
             else {
                 if(first) {
                     int sol = 0;
                     boolean stop = false;
                     while (!stop){
-                        sol = c1.getFenotipo()[start];
+                        sol = (int)c1.getFenotipo()[start];
                         stop = true;
                         int j = corte1;
                         while (j <=corte2 && stop){
-                            if(sol == c2.getFenotipo()[j]){
+                            if(sol == (int)c2.getFenotipo()[j]){
                                 stop = false;
                                 start++;
                                 if(start == c1.getFenotipo().length) start = 0;
@@ -250,11 +264,11 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
                     int sol = 0;
                     boolean stop = false;
                     while (!stop){
-                        sol = c2.getFenotipo()[start];
+                        sol = (int)c2.getFenotipo()[start];
                         stop = true;
                         int j = corte1;
                         while (j <=corte2 && stop){
-                            if(sol == c1.getFenotipo()[j]){
+                            if(sol == (int)c1.getFenotipo()[j]){
                                 stop = false;
                                 start++;
                                 if(start == c2.getFenotipo().length) start = 0;
@@ -268,24 +282,114 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
         }
     };
     @Override
-    void cruceOXPP(Chromosome c1, Chromosome c2)
+    void cruceOXPP(Chromosome c1, Chromosome c2, int[]pos, boolean first)
     {
-        //No se usa el cruce aritmético
+        int start = pos[0];
+        for(int i = 0; i < c1.getFenotipo().length; i++){
+            boolean found = false;
+            int k = 0;
+            while (k < pos.length && !found){
+                if(i == pos[k]) found = true;
+                else k++;
+            }
+
+            if(found){
+                if(first) fenotipo[i] = (Integer)c2.getFenotipo()[i];
+                else fenotipo[i] = (Integer)c1.getFenotipo()[i];
+            }
+            else {
+                if(first) {
+                    int sol = 0;
+                    boolean stop = false;
+                    while (!stop){
+                        sol = (int)c1.getFenotipo()[start];
+                        stop = true;
+                        int j = 0;
+                        while (j <=pos.length && stop){
+                            if(sol == (int)c2.getFenotipo()[pos[j]]){
+                                stop = false;
+                                start++;
+                                if(start == c1.getFenotipo().length) start = 0;
+                            }
+                            j++;
+                        }
+                    }
+                    fenotipo[i] = sol;
+                }
+                else {
+                    int sol = 0;
+                    boolean stop = false;
+                    while (!stop){
+                        sol = (int)c2.getFenotipo()[start];
+                        stop = true;
+                        int j = 0;
+                        while (j <=pos.length && stop){
+                            if(sol == (int)c1.getFenotipo()[pos[j]]){
+                                stop = false;
+                                start++;
+                                if(start == c2.getFenotipo().length) start = 0;
+                            }
+                            j++;
+                        }
+                    }
+                    fenotipo[i] = sol;
+                }
+            }
+        }
     };
     @Override
-    void cruceCX(Chromosome c1, Chromosome c2)
+    void cruceCX(Chromosome c1, Chromosome c2, int ini, boolean first)
     {
-        //No se usa el cruce BLX_ALpha
+        if(first){
+            boolean[] selected = new  boolean[fenotipo.length];
+            int a = ini;
+            boolean stop = false;
+            while (!stop){
+                selected[a] = true;
+                boolean stop2 = false;
+                int j = 0;
+                while (!stop2){
+                    if(c1.fenotipo[j] == c2.fenotipo[a])stop2 = true;
+                    else j++;
+                }
+                if(j == ini) stop = true;
+                else a = j;
+            }
+            for(int i = 0; i < fenotipo.length; i++){
+                if(selected[i]) fenotipo[i] = (Integer) c1.fenotipo[i];
+                else fenotipo[i] = (Integer) c2.fenotipo[i];
+            }
+        }
+        else {
+            boolean[] selected = new  boolean[fenotipo.length];
+            int a = ini;
+            boolean stop = false;
+            while (!stop){
+                selected[a] = true;
+                boolean stop2 = false;
+                int j = 0;
+                while (!stop2){
+                    if(c2.fenotipo[j] == c1.fenotipo[a])stop2 = true;
+                    else j++;
+                }
+                if(j == ini) stop = true;
+                else a = j;
+            }
+            for(int i = 0; i < fenotipo.length; i++){
+                if(selected[i]) fenotipo[i] = (Integer) c2.fenotipo[i];
+                else fenotipo[i] = (Integer) c1.fenotipo[i];
+            }
+        }
     }
     @Override
     void cruceCO(Chromosome c1, Chromosome c2)
     {
-        //No se usa el cruce BLX_ALpha
+
     }
     @Override
     void cruceERX(Chromosome c1, Chromosome c2)
     {
-        //No se usa el cruce BLX_ALpha
+
     }
 
 
@@ -293,9 +397,9 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
         this.aptitud = other.aptitud;
         this.puntuacion = other.puntuacion;
         this.punt_acumulada = other.punt_acumulada;
-        this.C = other.C;
-        this.D = other.D;
         this.fenotipo = other.fenotipo.clone();
+        this.DronEv = other.DronEv;
+        this.casImp = other.casImp;
     }
     @Override
     public Chromosome copy() {
