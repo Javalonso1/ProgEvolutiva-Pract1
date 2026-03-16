@@ -11,21 +11,100 @@ public class DronEvolver extends GeneticManager{
     private int nDrones;
     private ArrayList<Integer> posCameras;
     int  Xbase= 0, Ybase= 0;
-    public DronEvolver(UIclass g, int nDrones, ArrayList<Integer> posCameras, boolean[][] m, int[][] i)
+    private  boolean casImp;
+    int maxPosicionesCruceOXPP = 4;
+    public DronEvolver(UIclass g, int _nDrones, ArrayList<Integer> _posCameras, boolean[][] m, int[][] i, boolean _casImp)
     {
         super(g);
-        this.nDrones = nDrones;
+        this.nDrones = _nDrones;
         map =  m;
         importancia = i;
+        posCameras = _posCameras;
+        casImp = _casImp;
     }
     @Override
-    protected Chromosome[] initializePopulation(int p_size) {
-        return new Chromosome[0];
+    protected Chromosome[] initializePopulation(int p_size){
+        Chromosome[] ini_pop = new ChromosomeDron[p_size];
+        for ( int i = 0; i < p_size; i++)
+        {
+            ini_pop[i] = new ChromosomeDron(posCameras.size(), nDrones,this,casImp);
+            ini_pop[i].initializeRandom();
+        }
+        return  ini_pop;
     }
 
     @Override
-    protected Chromosome[] crossover(Chromosome[] pop) {
-        return new Chromosome[0];
+    protected Chromosome[] crossover(Chromosome[] pop){
+        Chromosome[] sol = new Chromosome[pop.length];
+        for(int i = 0; i < pop.length; i += 2){
+            if(Pcruce <= Math.random()){
+                sol[i] = new ChromosomeDron(posCameras.size(), nDrones,this,casImp);
+                sol[i+1] = new ChromosomeDron(posCameras.size(), nDrones,this,casImp);
+                switch (crossMethod){
+                    case PMX:
+                        int pos1 = (int)(Math.random() * pop[i].getFenotipo().length);
+                        int pos2 = (int)(Math.random() * pop[i].getFenotipo().length);
+                        if(pos1 == pos2) {
+                            if (pos1==0) pos2++;
+                            else  pos1--;
+                        }
+                        else if(pos1 > pos2){
+                            int aux = pos1;
+                            pos1 = pos2;
+                            pos2 = aux;
+                        }
+                        sol[i].crucePMX(pop[i], pop[i+1], pos1,pos2);
+                        sol[i+1].crucePMX(pop[i+1], pop[i], pos1,pos2);
+                        break;
+                    case OX:
+                        pos1 = (int)(Math.random() * pop[i].getFenotipo().length);
+                        pos2 = (int)(Math.random() * pop[i].getFenotipo().length);
+                        if(pos1 == pos2) {
+                            if (pos1==0) pos2++;
+                            else  pos1--;
+                        }
+                        else if(pos1 > pos2){
+                            int aux = pos1;
+                            pos1 = pos2;
+                            pos2 = aux;
+                        }
+                        sol[i].cruceOX(pop[i], pop[i+1], pos1,pos2);
+                        sol[i+1].cruceOX(pop[i+1], pop[i], pos1,pos2);
+                        break;
+                    case OXPP:
+                        int mx = (int)(Math.random() * maxPosicionesCruceOXPP);
+                        if(mx >= pop[i].getFenotipo().length) mx = pop[i].getFenotipo().length-1;
+                        int [] cruces = new  int[mx];
+                        for(int j = 0; j < mx; j++) cruces[j] =(int)(Math.random() * pop[i].getFenotipo().length);
+                        sol[i].cruceOXPP(pop[i], pop[i+1], cruces);
+                        sol[i+1].cruceOXPP(pop[i+1], pop[i], cruces);
+                        break;
+                    case CX:
+                        sol[i].cruceCX(pop[i], pop[i+1]);
+                        sol[i+1].cruceCX(pop[i+1], pop[i]);
+                        break;
+                    case CO:
+                        int cru = (int)(Math.random() * pop[i].getFenotipo().length);
+                        sol[i].cruceCO(pop[i], pop[i+1], cru);
+                        sol[i+1].cruceCO(pop[i+1], pop[i], cru);
+                        break;
+                    case ERX:
+                        sol[i].cruceERX(pop[i], pop[i+1]);
+                        sol[i+1].cruceERX(pop[i+1], pop[i]);
+                        break;
+                    case CUSTOM:
+                        //A hacer
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else {
+                sol[i] = pop[i].copy();
+                sol[i+1] =pop[i+1].copy();
+            }
+        }
+        return sol;
     }
 
     @Override

@@ -151,6 +151,9 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
                     fenotipo = (Integer[]) drons[sol].fenotipo.clone();
                 }
                 break;
+            case CUSTOM:
+                //A hacer
+                break;
             default:
                 break;
         }
@@ -280,10 +283,10 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
         }
     };
     @Override
-    void cruceCX(Chromosome c1, Chromosome c2, int ini)
+    void cruceCX(Chromosome c1, Chromosome c2)
     {
         boolean[] selected = new  boolean[fenotipo.length];
-        int a = ini;
+        int a = (int)c1.fenotipo[0];
         boolean stop = false;
         while (!stop){
             selected[a] = true;
@@ -293,7 +296,7 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
                 if(c1.fenotipo[j] == c2.fenotipo[a])stop2 = true;
                 else j++;
             }
-            if(j == ini) stop = true;
+            if(j == (int)c1.fenotipo[0]) stop = true;
             else a = j;
         }
         for(int i = 0; i < fenotipo.length; i++){

@@ -20,7 +20,7 @@ public abstract class Chromosome <T, G> {
     abstract void  crucePMX(Chromosome c1, Chromosome c2, int corte1, int corte2);
     abstract void  cruceOX(Chromosome c1, Chromosome c2, int corte1, int corte2);
     abstract void  cruceOXPP(Chromosome c1, Chromosome c2, int[] pos);
-    abstract void  cruceCX(Chromosome c1, Chromosome c2,int ini);
+    abstract void  cruceCX(Chromosome c1, Chromosome c2);
     abstract void  cruceCO(Chromosome c1, Chromosome c2, int corte);
     abstract void  cruceERX(Chromosome c1, Chromosome c2);
 
