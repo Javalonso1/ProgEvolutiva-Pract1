@@ -6,11 +6,9 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
     protected int MAX_PERMUTACIONES_HEURISTICA = 4;
 
     protected  DronEvolver DronEv;
-    protected boolean casImp;
-    public ChromosomeDron(int NumCams, int numDrones, DronEvolver mDronEv, boolean _casImp){
+    public ChromosomeDron(int NumCams, int numDrones, DronEvolver mDronEv){
         fenotipo = new Integer[NumCams + (numDrones-1)];
         DronEv = mDronEv;
-        casImp = _casImp;
     }
 
     @Override
@@ -143,7 +141,7 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
                             drons[i].fenotipo[pos[j]] = permutaciones[i][j];
                         }
                     }
-                    DronEv.evaluate(drons,casImp);
+                    DronEv.evaluate(drons, true);
                     int sol = 0;
                     for(int i = 1; i < drons.length; i++){
                         if(drons[i].aptitud > drons[sol].aptitud) sol = i;
@@ -416,7 +414,6 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
         this.punt_acumulada = other.punt_acumulada;
         this.fenotipo = other.fenotipo.clone();
         this.DronEv = other.DronEv;
-        this.casImp = other.casImp;
     }
     @Override
     public Chromosome copy() {

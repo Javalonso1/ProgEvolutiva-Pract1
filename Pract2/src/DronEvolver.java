@@ -11,23 +11,21 @@ public class DronEvolver extends GeneticManager{
     private int nDrones;
     private ArrayList<Integer> posCameras;
     int  Xbase= 0, Ybase= 0;
-    private  boolean casImp;
     int maxPosicionesCruceOXPP = 4;
-    public DronEvolver(UIclass g, int _nDrones, ArrayList<Integer> _posCameras, boolean[][] m, int[][] i, boolean _casImp)
+    public DronEvolver(UIclass g, int _nDrones, ArrayList<Integer> _posCameras, boolean[][] m, int[][] i)
     {
         super(g);
         this.nDrones = _nDrones;
         map =  m;
         importancia = i;
         posCameras = _posCameras;
-        casImp = _casImp;
     }
     @Override
     protected Chromosome[] initializePopulation(int p_size){
         Chromosome[] ini_pop = new ChromosomeDron[p_size];
         for ( int i = 0; i < p_size; i++)
         {
-            ini_pop[i] = new ChromosomeDron(posCameras.size(), nDrones,this,casImp);
+            ini_pop[i] = new ChromosomeDron(posCameras.size(), nDrones,this);
             ini_pop[i].initializeRandom();
         }
         return  ini_pop;
@@ -38,8 +36,8 @@ public class DronEvolver extends GeneticManager{
         Chromosome[] sol = new Chromosome[pop.length];
         for(int i = 0; i < pop.length; i += 2){
             if(Pcruce <= Math.random()){
-                sol[i] = new ChromosomeDron(posCameras.size(), nDrones,this,casImp);
-                sol[i+1] = new ChromosomeDron(posCameras.size(), nDrones,this,casImp);
+                sol[i] = new ChromosomeDron(posCameras.size(), nDrones,this);
+                sol[i+1] = new ChromosomeDron(posCameras.size(), nDrones,this);
                 switch (crossMethod){
                     case PMX:
                         int pos1 = (int)(Math.random() * pop[i].getFenotipo().length);

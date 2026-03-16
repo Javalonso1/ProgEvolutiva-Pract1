@@ -3,14 +3,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Main {
-    static int numCameras; // Numero de camaras
-    static int rangVision; // Alcance de camaras
-    static int angApertura; // Angulo de las camaras (solo si es con codificacion real)
     static boolean[][] map; // Mapa de bools para guardar objetos que bloqueen las camaras
     static int[][] importancia; // Mapa de valor de vigilancia por cada casilla (solo si es codificacion real)
-
+    static int numCameras = 40;
+    static  int numDrones = 3;
+    static  int semilla = 3000;
     public static void main(String[] args) {
-        LeerDataP1("data1");
+        LeerDataP1("data3");
 
         UIclass ui = new UIclass();
         ui.setMap(map);
@@ -22,7 +21,7 @@ public class Main {
     {
         LeerDataP1("data"+ ui.mapChosen());
         ui.setMap(map);
-        RealCameraEvolver ev = new RealCameraEvolver(numCameras, rangVision, angApertura, map, importancia, ui);
+        DronEvolver ev = new DronEvolver(ui, numDrones, placeCameras(semilla), map, importancia);
         ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(), ui.ponderation(),
                 ui.cross(),
                 ui.selection(),
@@ -71,14 +70,11 @@ public class Main {
             // Lectura del fichero
             String linea;
             br.readLine();
-            linea = br.readLine();
-            numCameras = Integer.parseInt(linea);
             br.readLine();
-            linea = br.readLine();
-            rangVision = Integer.parseInt(linea);
             br.readLine();
-            linea = br.readLine();
-            angApertura = (int)Float.parseFloat(linea);
+            br.readLine();
+            br.readLine();
+            br.readLine();
             br.readLine();
             linea = br.readLine();
             int x = Integer.parseInt(linea);
