@@ -25,7 +25,7 @@ public class DronEvolver extends GeneticManager{
         Chromosome[] ini_pop = new ChromosomeDron[p_size];
         for ( int i = 0; i < p_size; i++)
         {
-            ini_pop[i] = new ChromosomeDron(posCameras.size(), nDrones,this);
+            ini_pop[i] = new ChromosomeDron(posCameras.size()/2, nDrones,this);
             ini_pop[i].initializeRandom();
         }
         return  ini_pop;
@@ -36,8 +36,8 @@ public class DronEvolver extends GeneticManager{
         Chromosome[] sol = new Chromosome[pop.length];
         for(int i = 0; i < pop.length; i += 2){
             if(Pcruce <= Math.random()){
-                sol[i] = new ChromosomeDron(posCameras.size(), nDrones,this);
-                sol[i+1] = new ChromosomeDron(posCameras.size(), nDrones,this);
+                sol[i] = new ChromosomeDron(posCameras.size()/2, nDrones,this);
+                sol[i+1] = new ChromosomeDron(posCameras.size()/2, nDrones,this);
                 switch (crossMethod){
                     case PMX:
                         int pos1 = (int)(Math.random() * pop[i].getFenotipo().length);
@@ -119,7 +119,7 @@ public class DronEvolver extends GeneticManager{
             {
                 if(fenotipo[index] >= posCameras.size()/2)
                 {
-                    currDron++;
+//                    currDron++;
                     double coste = aStar(xOrigen, yOrigen, Xbase, Ybase);
                     tiempoDrones[currDron] += coste / velocidades[currDron];
 
