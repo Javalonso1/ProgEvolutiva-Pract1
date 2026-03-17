@@ -144,7 +144,7 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
                     DronEv.evaluate(drons, true);
                     int sol = 0;
                     for(int i = 1; i < drons.length; i++){
-                        if(drons[i].aptitud > drons[sol].aptitud) sol = i;
+                        if(drons[i].aptitud < drons[sol].aptitud) sol = i;
                     }
                     fenotipo = (Integer[]) drons[sol].fenotipo.clone();
                 }

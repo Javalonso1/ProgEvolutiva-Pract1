@@ -129,19 +129,19 @@ public abstract class GeneticManager {
         int n = pop.length;
         Chromosome[] selected = new Chromosome[n];
 
-        //cogemos el minimo
-        double aptitudMin = 0;
+        //cogemos el maximo
+        double aptitudMax = 0;
         for (Chromosome c : pop)
         {
-            if (c.aptitud < aptitudMin)
-                aptitudMin = c.aptitud;
+            if (c.aptitud > aptitudMax)
+                aptitudMax = c.aptitud;
         }
 
         //ajustamos y sumamos fitness
         double[] aptitudDesplazada = new double[pop.length];
         double totalFitness = 0.0;
         for (int i = 0; i < pop.length; i++) {
-            aptitudDesplazada[i] = pop[i].aptitud - aptitudMin;
+            aptitudDesplazada[i] = (pop[i].aptitud - aptitudMax) * -1;
             totalFitness += aptitudDesplazada[i];
         }
 
@@ -178,7 +178,7 @@ public abstract class GeneticManager {
 
                 int randomIndex = ThreadLocalRandom.current().nextInt(n);
 
-                if (best == null || pop[randomIndex].aptitud > best.aptitud) {
+                if (best == null || pop[randomIndex].aptitud < best.aptitud) {
                     best = pop[randomIndex];
                 }
             }
@@ -193,19 +193,19 @@ public abstract class GeneticManager {
         int n = pop.length;
         Chromosome[] selected = new Chromosome[n];
 
-        //cogemos el minimo
-        double aptitudMin = 0;
+        //cogemos el maximo
+        double aptitudMax = 0;
         for (Chromosome c : pop)
         {
-            if (c.aptitud < aptitudMin)
-                aptitudMin = c.aptitud;
+            if (c.aptitud > aptitudMax)
+                aptitudMax = c.aptitud;
         }
 
         //ajustamos y sumamos fitness
         double[] aptitudDesplazada = new double[pop.length];
         double totalFitness = 0.0;
         for (int i = 0; i < pop.length; i++) {
-            aptitudDesplazada[i] = pop[i].aptitud - aptitudMin;
+            aptitudDesplazada[i] = (pop[i].aptitud - aptitudMax) * -1;
             totalFitness += aptitudDesplazada[i];
         }
 
@@ -235,7 +235,7 @@ public abstract class GeneticManager {
         double trunc = 0.25;
         Chromosome[] selected = new Chromosome[n];
 
-        //organizamos los cromosomas de mayor a menor valor
+        //organizamos los cromosomas de menor a mayor valor
         int[] organizados = new int[pop.length];
         for (int pos = 0; pos < pop.length; pos++)
         {
@@ -248,7 +248,7 @@ public abstract class GeneticManager {
                     organizados[j] = aux;
                 }
                 else{
-                    if(pop[j].aptitud < pop[aux].aptitud){
+                    if(pop[j].aptitud > pop[aux].aptitud){
                         int aux2 = organizados[j];
                         organizados[j] = aux;
                         aux = aux2;
@@ -282,19 +282,19 @@ public abstract class GeneticManager {
         int n = pop.length;
         Chromosome[] selected = new Chromosome[n];
 
-        //cogemos el minimo
-        double aptitudMin = 0;
+        //cogemos el maximo
+        double aptitudMax = 0;
         for (Chromosome c : pop)
         {
-            if (c.aptitud < aptitudMin)
-                aptitudMin = c.aptitud;
+            if (c.aptitud > aptitudMax)
+                aptitudMax = c.aptitud;
         }
 
         //ajustamos y sumamos fitness
         double[] aptitudDesplazada = new double[pop.length];
         double totalFitness = 0.0;
         for (int i = 0; i < pop.length; i++) {
-            aptitudDesplazada[i] = pop[i].aptitud - aptitudMin;
+            aptitudDesplazada[i] = (pop[i].aptitud - aptitudMax) * -1;
             totalFitness += aptitudDesplazada[i];
         }
 
@@ -341,7 +341,7 @@ public abstract class GeneticManager {
         Chromosome best = population[i][0];
         for (int j = 0; j < population[i].length; j++)
         {
-            if(population[i][j].aptitud > best.aptitud)
+            if(population[i][j].aptitud < best.aptitud)
             {
                 best = population[i][j];
             }
@@ -352,7 +352,7 @@ public abstract class GeneticManager {
         generationAverage[i] = tot/ population[i].length;
         generationBest[i] = best.aptitud;
 
-        if(i == 0 ||best.aptitud > absoluteBest[i-1])
+        if(i == 0 ||best.aptitud < absoluteBest[i-1])
         {
             absoluteBest[i]= best.aptitud;
             bestSolution = best;
@@ -376,14 +376,14 @@ public abstract class GeneticManager {
     }
 
     private void AddElitismo(int pos){
-        //Primero se buscan los cromosomas de mayor valor
+        //Primero se buscan los cromosomas de menor valor
         int[] sustituciones = new int[numCromosomasElite];
         for(int i = 0; i < population[pos].length; i++){
             if(i < numCromosomasElite) sustituciones[i] = i;
             else {
                 int aux = i;
                 for (int j = 0; j < numCromosomasElite; j++){
-                    if(population[pos][aux].aptitud > population[pos][sustituciones[j]].aptitud){
+                    if(population[pos][aux].aptitud < population[pos][sustituciones[j]].aptitud){
                         int k = sustituciones[j];
                         sustituciones[j] = aux;
                         aux = k;
@@ -397,14 +397,14 @@ public abstract class GeneticManager {
         }
     }
     private void MixElite(int pos){
-        //Primero se buscan los cromosomas de menor valor
+        //Primero se buscan los cromosomas de mayor valor
         int[] sustituciones = new int[numCromosomasElite];
         for(int i = 0; i < population[pos].length; i++){
             if(i < numCromosomasElite) sustituciones[i] = i;
             else {
                 int aux = i;
                 for (int j = 0; j < numCromosomasElite; j++){
-                    if(population[pos][aux].aptitud < population[pos][sustituciones[j]].aptitud){
+                    if(population[pos][aux].aptitud > population[pos][sustituciones[j]].aptitud){
                         int k = sustituciones[j];
                         sustituciones[j] = aux;
                         aux = k;

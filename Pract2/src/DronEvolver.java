@@ -145,14 +145,17 @@ public class DronEvolver extends GeneticManager{
             double coste = aStar(xOrigen, yOrigen, Xbase, Ybase);
             tiempoDrones[currDron] += coste / velocidades[currDron];
 
-            // fitness = max(T_i)
+            // fitness = max(T_i) + Penalizacion_Desequilibrio[(max - min) * peso]
             double maxTiempo = tiempoDrones[0];
+            double minTiempo = tiempoDrones[0];
             for (int i = 1; i < tiempoDrones.length; i++) {
                 if (tiempoDrones[i] > maxTiempo)
                     maxTiempo = tiempoDrones[i];
+                if (tiempoDrones[i] < minTiempo)
+                    minTiempo = tiempoDrones[i];
             }
 
-            c.aptitud = maxTiempo;
+            c.aptitud = maxTiempo + ((maxTiempo - minTiempo) * 0.5);
         }
 
     }
