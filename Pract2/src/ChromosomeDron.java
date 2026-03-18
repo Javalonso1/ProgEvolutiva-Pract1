@@ -198,51 +198,56 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
     @Override
     void crucePMX(Chromosome c1, Chromosome c2, int corte1, int corte2)
     {
-        for(int i = 0; i < c1.getFenotipo().length; i++){
+        for(int i = 0; i < c1.fenotipo.length; i++){
             if(i>= corte1 && i<=corte2){
-                fenotipo[i] = (Integer) c2.getFenotipo()[i];
+                fenotipo[i] = (Integer) c2.fenotipo[i];
             }
             else {
-                int sol = (int)c1.getFenotipo()[i];
-                boolean isConflicting = false;
+                int sol = (int)c1.fenotipo[i];
                 int j = corte1;
-                while (j <= corte2 && !isConflicting){
-                    if(sol == (int)c2.getFenotipo()[j]){
-                        sol = (int)c1.getFenotipo()[j];
-                        isConflicting = true;
+                while (j <= corte2){
+                    if(sol == (int)c2.fenotipo[j]){
+                        sol = (int)c1.fenotipo[j];
+                        j = corte1;
                     }
-                    j++;
+                    else j++;
                 }
                 fenotipo[i] = sol;
             }
         }
+        int j = 0;
     };
     @Override
     void cruceOX(Chromosome c1, Chromosome c2, int corte1, int corte2)
     {
-        int start = corte1;
-        for(int i = 0; i < c1.getFenotipo().length; i++){
-            if(i>= corte1 && i<=corte2){
-                fenotipo[i] = (Integer)c2.getFenotipo()[i];
+        for(int i = corte1; i <= corte2; i++){
+            fenotipo[i] = (Integer)c2.getFenotipo()[i];
+        }
+        int k = corte2+1;
+        if(k == fenotipo.length) k =0;
+        for(int i = corte2+1; i < fenotipo.length; i++){
+            int l = corte1;
+            boolean stop = false;
+            while (l <= corte2 &&!stop){
+                if((int)c1.getFenotipo()[k] == (int)c2.getFenotipo()[l]) stop = true;
+                l++;
             }
-            else {
-                int sol = 0;
-                boolean stop = false;
-                while (!stop){
-                    sol = (int)c1.getFenotipo()[start];
-                    stop = true;
-                    int j = corte1;
-                    while (j <=corte2 && stop){
-                        if(sol == (int)c2.getFenotipo()[j]){
-                            stop = false;
-                            start++;
-                            if(start == c1.getFenotipo().length) start = 0;
-                        }
-                        j++;
-                    }
-                }
-                fenotipo[i] = sol;
+            if(stop) i--;
+            else fenotipo[i] = (int)c1.getFenotipo()[k];
+            k++;
+            if(k>= fenotipo.length) k = 0;
+        }
+        for(int i = 0; i < corte1; i++){
+            int l = corte1;
+            boolean stop = false;
+            while (l <= corte2 &&!stop){
+                if((int)c1.getFenotipo()[k] == (int)c2.getFenotipo()[l]) stop = true;
+                l++;
             }
+            if(stop) i--;
+            else fenotipo[i] = (int)c1.getFenotipo()[k];
+            k++;
+            if(k>= fenotipo.length) k = 0;
         }
     };
     @Override

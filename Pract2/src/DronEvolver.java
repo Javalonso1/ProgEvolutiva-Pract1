@@ -92,6 +92,8 @@ public class DronEvolver extends GeneticManager{
                         break;
                     case CUSTOM:
                         //A hacer
+                        sol[i] = pop[i].copy();
+                        sol[i+1] = pop[i+1].copy();
                         break;
                     default:
                         break;

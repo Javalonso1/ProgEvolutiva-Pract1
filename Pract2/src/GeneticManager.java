@@ -66,6 +66,8 @@ public abstract class GeneticManager {
             population[i+1] = crossover(parents);
             mutate(population[i+1]);
 
+
+
             evaluate(population[i+1]);
 
             if (elitism) {
