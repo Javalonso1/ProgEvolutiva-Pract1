@@ -5,9 +5,6 @@ import java.util.Random;
 public class Main {
     static boolean[][] map; // Mapa de bools para guardar objetos que bloqueen las camaras
     static int[][] importancia; // Mapa de valor de vigilancia por cada casilla (solo si es codificacion real)
-    static int numCameras = 40;
-    static  int numDrones = 3;
-    static  int semilla = 3000;
     public static void main(String[] args) {
         LeerDataP1("data3");
 
@@ -21,8 +18,8 @@ public class Main {
     {
         LeerDataP1("data"+ ui.mapChosen());
         ui.setMap(map);
-        DronEvolver ev = new DronEvolver(ui, numDrones, placeCameras(semilla), map, importancia);
-        ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(), ui.ponderation(),
+        DronEvolver ev = new DronEvolver(ui, ui.numDrons(), placeCameras(ui.seed(), ui.numCams()), map, importancia);
+        ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(),
                 ui.cross(),
                 ui.selection(),
                 ui.mutation());
@@ -31,7 +28,7 @@ public class Main {
         //ev.drawSolutionMap(ui, solution);
     }
 
-    public static ArrayList<Integer> placeCameras(int seed) {
+    public static ArrayList<Integer> placeCameras(int seed, int numCameras) {
         Random rand = new Random(seed);
         //La semilla se selecciona de la interfaz
 

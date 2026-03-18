@@ -141,7 +141,7 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
                             drons[i].fenotipo[pos[j]] = permutaciones[i][j];
                         }
                     }
-                    DronEv.evaluate(drons, true);
+                    DronEv.evaluate(drons);
                     int sol = 0;
                     for(int i = 1; i < drons.length; i++){
                         if(drons[i].aptitud < drons[sol].aptitud) sol = i;

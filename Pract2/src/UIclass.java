@@ -6,14 +6,9 @@ import java.text.NumberFormat;
 public class UIclass extends JFrame {
 
     private GraphPanel graphPanel;
-    JRadioButton optionBinary;
-    JRadioButton optionReal;
 
     JRadioButton elitismOn;
     JRadioButton elitismOff;
-
-    JRadioButton ponderationOn;
-    JRadioButton ponderationOff;
 
     public JButton simulateButton;
     JComboBox MutationType;
@@ -22,6 +17,9 @@ public class UIclass extends JFrame {
     JComboBox SelectionType;
     JFormattedTextField popSize;
     JFormattedTextField nGens;
+    JFormattedTextField nDrons;
+    JFormattedTextField nCamara;
+    JFormattedTextField seed;
     JPanel centerPanel;
 
 
@@ -39,22 +37,17 @@ public class UIclass extends JFrame {
         cameraMatrix = seenmap;
         centerPanel.repaint();
     }
-    public boolean isBinary()
-    {
-        return optionBinary.isSelected();
-    }
     public boolean elitism()
     {
         return elitismOn.isSelected();
-    }
-    public boolean ponderation()
-    {
-        return ponderationOn.isSelected();
     }
     public int mapChosen()
     {
         return MapChosen.getSelectedIndex() + 1;
     }
+    public int seed() {return  (int) seed.getValue();}
+    public int numDrons() { return (int) nDrons.getValue();}
+    public int numCams() {return (int) nCamara.getValue();}
     public GeneticManager.MUTATION_TYPE mutation()
     {
         return GeneticManager.MUTATION_TYPE.values()[MutationType.getSelectedIndex()];
@@ -91,32 +84,15 @@ public class UIclass extends JFrame {
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
-        optionBinary = new JRadioButton("Binary", true);
-        optionReal = new JRadioButton("Real");
-
-        ButtonGroup group = new ButtonGroup();
-        group.add(optionBinary);
-        group.add(optionReal);
-
         elitismOn = new JRadioButton("Elitism On", true);
         elitismOff = new JRadioButton("Elitism Off", false);
-        ButtonGroup group2 = new ButtonGroup();
-        group2.add(elitismOn);
-        group2.add(elitismOff);
-
-        ponderationOn = new JRadioButton("Ponderation On", true);
-        ponderationOff = new JRadioButton("Off");
-        ButtonGroup group3 = new ButtonGroup();
-        group3.add(ponderationOn);
-        group3.add(ponderationOff);
+        ButtonGroup group1 = new ButtonGroup();
+        group1.add(elitismOn);
+        group1.add(elitismOff);
 
         JPanel buttPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttPanel.add(optionBinary);
-        buttPanel.add(optionReal);
         buttPanel.add(elitismOn);
         buttPanel.add(elitismOff);
-        buttPanel.add(ponderationOn);
-        buttPanel.add(ponderationOff);
         buttPanel.setPreferredSize(new Dimension(300, 60));
 
         JLabel labelmap = new JLabel("mapa:");
@@ -149,7 +125,10 @@ public class UIclass extends JFrame {
 
         // Label
         JLabel label1 = new JLabel("Population:");
-        JLabel label2 = new JLabel("nº generations:");
+        JLabel label2 = new JLabel("Nº generations:");
+        JLabel label3 = new JLabel("Nº drones:");
+        JLabel label4 = new JLabel("Nº cámaras:");
+        JLabel label5 = new JLabel("Semilla:");
 
         // Number formatter
         NumberFormat format = NumberFormat.getIntegerInstance();
@@ -162,8 +141,19 @@ public class UIclass extends JFrame {
 
         popSize = new JFormattedTextField(formatter);
         popSize.setColumns(4);
+        popSize.setValue(100);
         nGens = new JFormattedTextField(formatter);
         nGens.setColumns(4);
+        nGens.setValue(100);
+        nDrons = new JFormattedTextField(formatter);
+        nDrons.setColumns(4);
+        nDrons.setValue(3);
+        nCamara = new JFormattedTextField(formatter);
+        nCamara.setColumns(4);
+        nCamara.setValue(40);
+        seed = new JFormattedTextField(formatter);
+        seed.setColumns(4);
+        seed.setValue(3000);
 
         JPanel popPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         popPanel.add(label1);
@@ -173,10 +163,25 @@ public class UIclass extends JFrame {
         genPanel.add(label2);
         genPanel.add(nGens);
 
+        JPanel dronsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        dronsPanel.add(label3);
+        dronsPanel.add(nDrons);
+
+        JPanel camerasPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        camerasPanel.add(label4);
+        camerasPanel.add(nCamara);
+
+        JPanel seedPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        seedPanel.add(label5);
+        seedPanel.add(seed);
+
 
         leftPanel.add(buttPanel);
         leftPanel.add(popPanel);
         leftPanel.add(genPanel);
+        leftPanel.add(dronsPanel);
+        leftPanel.add(camerasPanel);
+        leftPanel.add(seedPanel);
         leftPanel.add(mapPanel);
         leftPanel.add(mutPanel);
         leftPanel.add(crossPanel);

@@ -106,7 +106,7 @@ public class DronEvolver extends GeneticManager{
     }
 
     @Override
-    protected void evaluate(Chromosome[] pop, boolean _casillaImport) {
+    protected void evaluate(Chromosome[] pop) {
         //por cada dron, calculamos el coste de su trayecto
         for (Chromosome c: pop)
         {
