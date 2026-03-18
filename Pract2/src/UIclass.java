@@ -93,7 +93,7 @@ public class UIclass extends JFrame {
         JPanel buttPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttPanel.add(elitismOn);
         buttPanel.add(elitismOff);
-        buttPanel.setPreferredSize(new Dimension(300, 60));
+        buttPanel.setPreferredSize(new Dimension(300, 30));
 
         JLabel labelmap = new JLabel("mapa:");
         String[] mapas = {"Mapa 1", "Mapa 2", "Mapa 3"};
