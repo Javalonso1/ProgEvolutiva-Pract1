@@ -27,7 +27,7 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
     public void initializeRandom(){
         //Primero se colocan todos los numeros
         for(int i = 0; i < fenotipo.length; i++){
-            fenotipo[i] = i;
+            fenotipo[i] = i + 1;
         }
         //Luego se barajan
         for(int i = 0; i <fenotipo.length; i++){
