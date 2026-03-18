@@ -10,7 +10,7 @@ public class DronEvolver extends GeneticManager{
     private int[][] importancia;
     private int nDrones;
     private ArrayList<Integer> posCameras;
-    int  Xbase= 0, Ybase= 0;
+    int  Xbase= 1, Ybase= 1;
     int maxPosicionesCruceOXPP = 4;
     public DronEvolver(UIclass g, int _nDrones, ArrayList<Integer> _posCameras, boolean[][] m, int[][] i)
     {
@@ -117,20 +117,23 @@ public class DronEvolver extends GeneticManager{
             int xOrigen = Xbase, yOrigen = Ybase, xDestino, yDestino;
             while(index < fenotipo.length)
             {
-                if(fenotipo[index] >= posCameras.size()/2)
+                if(fenotipo[index]-1 >= posCameras.size()/2)
                 {
-//                    currDron++;
                     double coste = aStar(xOrigen, yOrigen, Xbase, Ybase);
                     tiempoDrones[currDron] += coste / velocidades[currDron];
 
                     currDron++;
+                    if(currDron == 3)
+                    {
+                        int i = 0;
+                    }
                     xOrigen = Xbase;
                     yOrigen = Ybase;
                 }
                 else {
 
-                    xDestino = posCameras.get(fenotipo[index]*2);
-                    yDestino = posCameras.get(fenotipo[index]*2 +1);
+                    xDestino = posCameras.get((fenotipo[index]-1)*2);
+                    yDestino = posCameras.get((fenotipo[index]-1)*2 +1);
 
                     double coste = aStar(xOrigen, yOrigen, xDestino, yDestino);
                     tiempoDrones[currDron] += coste / velocidades[currDron];
@@ -162,57 +165,69 @@ public class DronEvolver extends GeneticManager{
 
     public double aStar(int xo, int yo, int xd, int yd) {
 
-        double[][] costeMin = new double[map.length][map[0].length];   
-        boolean[][] closed = new boolean[map.length][map[0].length];
+        PriorityQueue<Node> open = new PriorityQueue<>(Comparator.comparingDouble(n -> n.f));
 
-        for (int i = 0; i < map.length; i++)
-            Arrays.fill(costeMin[i], Double.POSITIVE_INFINITY);
+        boolean[][] closed = new boolean[importancia.length][importancia[0].length];
+        double[][] gScore = new double[map.length][map[0].length];
+        for (int i = 0; i < map.length; i++) {
+            Arrays.fill(gScore[i], Double.MAX_VALUE);
+        }
 
-        PriorityQueue<int[]> open = new PriorityQueue<>(    //aqui con nuestra eurisitica y eso
-                Comparator.comparingDouble(a -> costeMin[a[0]][a[1]] + Math.abs(a[0] - xd) + Math.abs(a[1] - yd))
-        );
+        Node startNode = new Node(xo, yo);
+        gScore[xo][yo] = 0;
+        open.add(startNode);
+
+        while(!open.isEmpty()){
+
+            Node current = open.poll();
+
+            if (closed[current.x][current.y])
+                continue;
 
 
-        costeMin[xo][yo] = 0;
-        open.add(new int[]{xo, yo});
+            if(current.x == xd && current.y == yd){
+                return current.g;
+            }
 
-        int[][] mov = {{1,0},{-1,0},{0,1},{0,-1}};
+            closed[current.x][current.y] = true;
 
-        while (!open.isEmpty()) {
+            int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
 
-            int[] actual = open.poll();
-            int x = actual[0];
-            int y = actual[1];
+            for(int[] d : dirs) {
 
-            if (x == xd && y == yd)
-                return costeMin[x][y];
+                int nx = current.x + d[0];
+                int ny = current.y + d[1];
 
-            closed[x][y] = true;
-
-            for (int[] m : mov) {
-
-                int nx = x + m[0];
-                int ny = y + m[1];
-
-                if (nx < 0 || ny < 0 || nx >= map.length || ny >= map[0].length ||closed[nx][ny] ||map[nx][ny])
+                if(nx<0 || ny<0 || nx>=map.length || ny>=map[0].length)
                     continue;
 
+                if(importancia[nx][ny] == 0) // muro
+                    continue;
 
-                double coste = importancia[nx][ny];
+                if(closed[nx][ny])
+                    continue;
 
-                if (hayCamara(nx, ny) && !(nx == xd && ny == yd))
-                    coste += 500;
+                double cost = (double) importancia[nx][ny];
 
-                double nuevoCoste = costeMin[x][y] + coste;
+                double tentativeG = current.g + cost;
 
-                if (nuevoCoste < costeMin[nx][ny]) {
-                    costeMin[nx][ny] = nuevoCoste;
-                    open.add(new int[]{nx, ny});
+                // solo aceptar si mejora el camino
+                if (tentativeG < gScore[nx][ny]) {
+
+                    gScore[nx][ny] = tentativeG;
+
+                    Node n = new Node(nx, ny);
+                    n.g = tentativeG;
+                    n.h = Math.abs(xd - nx) + Math.abs(yd - ny);
+                    n.f = n.g + n.h;
+                    n.parent = current;
+
+                    open.add(n);
                 }
             }
         }
 
-        return Double.POSITIVE_INFINITY;
+        return Double.MAX_VALUE;
     }
 
     private boolean hayCamara(int x, int y) {
