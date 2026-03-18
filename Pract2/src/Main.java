@@ -9,7 +9,7 @@ public class Main {
         LeerDataP1("data3");
 
         UIclass ui = new UIclass();
-        ui.setMap(map);
+        ui.setMap(map, importancia);
         ui.simulateButton.addActionListener(e -> evolve(ui));
 
     }
@@ -17,7 +17,7 @@ public class Main {
     public static void evolve(UIclass ui)
     {
         LeerDataP1("data"+ ui.mapChosen());
-        ui.setMap(map);
+        ui.setMap(map, importancia);
         DronEvolver ev = new DronEvolver(ui, ui.numDrons(), placeCameras(ui.seed(), ui.numCams()), map, importancia);
         ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(),
                 ui.cross(),

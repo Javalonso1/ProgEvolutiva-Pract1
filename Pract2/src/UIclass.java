@@ -25,11 +25,13 @@ public class UIclass extends JFrame {
 
 
     boolean[][] mapMatrix;
+    int[][] importancia;
     boolean[][] cameraMatrix = new boolean[20][20];
     float[] cameras = new float[0];
-    public void setMap(boolean[][] map)
+    public void setMap(boolean[][] map, int[][] _importancia)
     {
         mapMatrix = map;
+        importancia = _importancia;
     }
 
     public void setCameras(float[] cam, boolean[][] seenmap) {
@@ -100,6 +102,7 @@ public class UIclass extends JFrame {
         MapChosen = new JComboBox(mapas);
         JPanel mapPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         mapPanel.add(labelmap);
+        MapChosen.setSelectedIndex(2);
         mapPanel.add(MapChosen);
 
         JLabel labelmut = new JLabel("mutación:");
@@ -215,14 +218,21 @@ public class UIclass extends JFrame {
                         if (mapMatrix[i][j]) {
                             g2.setColor(Color.BLACK);
                         } else {
-                            if(cameraMatrix[i][j])
+                            if(importancia[i][j] >= 15)
                             {
-                                g2.setColor(Color.gray);
+                                g2.setColor(Color.red);
                             }
                             else
                             {
-                                g2.setColor(Color.white);
+                                if(importancia[i][j] >= 5)
+                                {
+                                    g2.setColor(Color.yellow);
+                                }
+                                else
+                                {
+                                    g2.setColor(Color.white);
 
+                                }
                             }
 
                         }
