@@ -287,15 +287,7 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
                 if(k>= fenotipo.length) k = 0;
             }
         }
-
-        for(int i = 0; i < fenotipo.length; i++){
-            for(int j = i+1; j < fenotipo.length; j++){
-                if(fenotipo[i] == fenotipo[j]){
-                    int ñ = 0;
-                }
-            }
-        }
-    };
+    }
     @Override
     void cruceCX(Chromosome c1, Chromosome c2)
     {
@@ -321,48 +313,61 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
     @Override
     void cruceCO(Chromosome c1, Chromosome c2, int corte)
     {
-        int[] L1 = new int[fenotipo.length];
-        int[] L2 = new int[fenotipo.length];
-        boolean[] B1 = new boolean[fenotipo.length];
-        boolean[] B2 = new boolean[fenotipo.length];
-        for(int i = 0; i < fenotipo.length; i++){
-            int j = 0;
-            int resta = 0;
-            boolean stop = false;
-            if(i <= corte){
-                while (!stop){
-                    if((int)c1.fenotipo[j] == i) stop = true;
-                    if(B1[j]) resta++;
-                    j++;
-                }
-                L1[i] = j-resta;
-            }
-            j = 0;
-            resta = 0;
-            stop = false;
-            while (!stop){
-                if((int)c2.fenotipo[j] == i) stop = true;
-                if(B2[j]) resta++;
-                j++;
-            }
-            L2[i] = j-resta;
-        }
-        for(int i = 0; i <= corte; i++) L2[i] = L1[i];
-        boolean[] B3 = new boolean[fenotipo.length];
+        int[] I1 =new int[fenotipo.length];
+        int[] aux =new int[fenotipo.length];
+        for(int i = 0; i < aux.length; i++) aux[i] = i+1;
 
         for(int i = 0; i < fenotipo.length; i++){
-            int j = 0;
-            int resta = 0;
-            boolean stop = false;
-            while (!stop){
-                if(B3[j]) resta++;
-                j++;
-                if(j - resta == L2[i]){
-                    stop = true;
-                    B3[j] = true;
-                    fenotipo[i] = (Integer) c1.fenotipo[j];
-                }
+            int k = 0;
+            boolean found = false;
+            while (!found){
+                if(aux[k] == (int)c1.fenotipo[i]) found = true;
+                else k++;
             }
+            I1[i] = k + 1;
+            int[] aux2 = new int[aux.length -1];
+            for(int j = 0; j < aux.length; j++){
+                if(j < k) aux2[j] = aux[j];
+                else if(j>k) aux2[j-1] = aux[j];
+            }
+            aux = aux2;
+        }
+
+        int[] I2 =new int[fenotipo.length];
+        aux =new int[fenotipo.length];
+        for(int i = 0; i < aux.length; i++) aux[i] = i+1;
+
+        for(int i = 0; i < fenotipo.length; i++){
+            int k = 0;
+            boolean found = false;
+            while (!found){
+                if(aux[k] == (int)c2.fenotipo[i]) found = true;
+                else k++;
+            }
+            I2[i] = k + 1;
+            int[] aux2 = new int[aux.length -1];
+            for(int j = 0; j < aux.length; j++){
+                if(j < k) aux2[j] = aux[j];
+                else if(j>k) aux2[j-1] = aux[j];
+            }
+            aux = aux2;
+        }
+
+        aux = new int[fenotipo.length];
+        for(int i =0; i< fenotipo.length; i++) {
+            aux[i] = (int)c1.fenotipo[i];
+            if(i >= corte) I1[i] = I2[i];
+        }
+
+        for(int i = 0; i < fenotipo.length; i++){
+            fenotipo[i] = aux[I1[i] -1];
+
+            int[] aux2 = new int[aux.length -1];
+            for(int j = 0; j < aux.length; j++){
+                if(j < I1[i] -1) aux2[j] = aux[j];
+                else if(j>I1[i] -1) aux2[j-1] = aux[j];
+            }
+            aux = aux2;
         }
     }
     @Override
