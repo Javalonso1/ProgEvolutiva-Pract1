@@ -254,35 +254,45 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
     @Override
     void cruceOXPP(Chromosome c1, Chromosome c2, int[]pos)
     {
-        int start = pos[0];
-        for(int i = 0; i < c1.getFenotipo().length; i++){
-            boolean found = false;
-            int k = 0;
-            while (k < pos.length && !found){
-                if(i == pos[k]) found = true;
-                else k++;
+        int k = 0;
+        for(int i = 0; i < pos.length; i++){
+            fenotipo[i] = (Integer)c2.getFenotipo()[pos[i]];
+            if(pos[i]+1 > k) k = pos[i]+1;
+        }
+        int iniPos = k;
+        if(k == fenotipo.length) k =0;
+        for(int i = iniPos; i < fenotipo.length; i++){
+            int l = 0;
+            boolean stop = false;
+            while (l < pos.length &&!stop){
+                if((int)c1.getFenotipo()[k] == (int)c2.getFenotipo()[pos[l]]) stop = true;
+                l++;
             }
-
-            if(found){
-                fenotipo[i] = (Integer)c2.getFenotipo()[i];
-            }
-            else {
-                int sol = 0;
+            if(stop) i--;
+            else fenotipo[i] = (int)c1.getFenotipo()[k];
+            k++;
+            if(k>= fenotipo.length) k = 0;
+        }
+        for(int i = 0; i < iniPos; i++){
+            if(fenotipo[i] == null){
+                int l = 0;
                 boolean stop = false;
-                while (!stop){
-                    sol = (int)c1.getFenotipo()[start];
-                    stop = true;
-                    int j = 0;
-                    while (j <=pos.length && stop){
-                        if(sol == (int)c2.getFenotipo()[pos[j]]){
-                            stop = false;
-                            start++;
-                            if(start == c1.getFenotipo().length) start = 0;
-                        }
-                        j++;
-                    }
+                while (l < pos.length &&!stop){
+                    if((int)c1.getFenotipo()[k] == (int)c2.getFenotipo()[pos[l]]) stop = true;
+                    l++;
                 }
-                fenotipo[i] = sol;
+                if(stop) i--;
+                else fenotipo[i] = (int)c1.getFenotipo()[k];
+                k++;
+                if(k>= fenotipo.length) k = 0;
+            }
+        }
+
+        for(int i = 0; i < fenotipo.length; i++){
+            for(int j = i+1; j < fenotipo.length; j++){
+                if(fenotipo[i] == fenotipo[j]){
+                    int ñ = 0;
+                }
             }
         }
     };

@@ -73,7 +73,16 @@ public class DronEvolver extends GeneticManager{
                         int mx = (int)(Math.random() * maxPosicionesCruceOXPP);
                         if(mx >= pop[i].getFenotipo().length) mx = pop[i].getFenotipo().length-1;
                         int [] cruces = new  int[mx];
-                        for(int j = 0; j < mx; j++) cruces[j] =(int)(Math.random() * pop[i].getFenotipo().length);
+                        for(int j = 0; j < mx; j++) {
+                            cruces[j] =(int)(Math.random() * pop[i].getFenotipo().length);
+                            boolean correct = true;
+                            int k = j-1;
+                            while (k>=0 && correct){
+                                if(cruces[j] == cruces[k]) correct = false;
+                                k--;
+                            }
+                            if(!correct) j--;
+                        }
                         sol[i].cruceOXPP(pop[i], pop[i+1], cruces);
                         sol[i+1].cruceOXPP(pop[i+1], pop[i], cruces);
                         break;
