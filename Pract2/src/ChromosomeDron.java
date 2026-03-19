@@ -365,62 +365,86 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
     @Override
     void cruceERX(Chromosome c1, Chromosome c2)
     {
-        int[][] rutas = new int[c1.fenotipo.length][4];
-        for(int i = 0; i < c1.fenotipo.length; i++){
-            int aux;
-            if(i -1 < 0) aux = (int)c1.fenotipo[c1.fenotipo.length -1];
-            else aux = (int)c1.fenotipo[i - 1];
-            rutas[i][0] = aux;
-
-            if(i +1 >= c1.fenotipo.length) aux = (int)c1.fenotipo[0];
-            else aux = (int)c1.fenotipo[i + 1];
-            rutas[i][1] = aux;
-
-            if(i -1 < 0) aux = (int)c2.fenotipo[c2.fenotipo.length -1];
-            else aux = (int)c2.fenotipo[i - 1];
-            if(rutas[i][0] != aux && rutas[i][1] != aux) rutas[i][2] = aux;
-            else rutas[i][2] = -1;
-
-            if(i +1 >= c2.fenotipo.length) aux = (int)c2.fenotipo[0];
-            else aux = (int)c2.fenotipo[i + 1];
-            if(rutas[i][0] != aux && rutas[i][1] != aux) rutas[i][3] = aux;
-            else rutas[i][3] = -1;
+        int[][] rutas = new int[fenotipo.length][4];
+        for (int i = 0; i < fenotipo.length; i++) {
+            for (int j = 0; j < 4; j++) {
+                rutas[i][j] = -1;
+            }
         }
-        fenotipo[0] = (Integer) c2.fenotipo[0];
-        ERXAuxiliarVoid(rutas,0);
-    }
 
-    public boolean ERXAuxiliarVoid(int[][]rutas, int pos){
-        if(pos == fenotipo.length -1 ){
-            return true;
-        }
-        else {
-            boolean exitoso = false;
-            int vueltas = 0;
-            int rnd = (int)(Math.random() * 4);
-            while (!exitoso && vueltas < 4){
-                if(rutas[pos][rnd] != -1){
-                    boolean stop = false;
-                    int j = 0;
-                    while (!stop && j <= pos){
-                        if(fenotipo[j] == rutas[pos][rnd]) stop = true;
-                        j++;
-                    }
-                    if(!stop) {
-                        fenotipo[pos+1] = rutas[pos][rnd];
-                        exitoso = ERXAuxiliarVoid(rutas, pos+1);
+        for (int i = 0; i < fenotipo.length; i++) {
+            int gen = (int) c1.fenotipo[i];
+
+            int izq1 = (int) c1.fenotipo[(i - 1 + fenotipo.length) % fenotipo.length];
+            int der1 = (int) c1.fenotipo[(i + 1) % fenotipo.length];
+
+            int pos2 = 0;
+            while ((int) c2.fenotipo[pos2] != gen) pos2++;
+
+            int izq2 = (int) c2.fenotipo[(pos2 - 1 + fenotipo.length) % fenotipo.length];
+            int der2 = (int) c2.fenotipo[(pos2 + 1) % fenotipo.length];
+
+            int idx = 0;
+            int[] vecinos = {izq1, der1, izq2, der2};
+            for (int v : vecinos) {
+                boolean existe = false;
+                for (int k = 0; k < idx; k++) {
+                    if (rutas[gen - 1][k] == v) {
+                        existe = true;
+                        break;
                     }
                 }
-                if(!exitoso) {
-                    vueltas++;
-                    rnd++;
-                    if(rnd == 4) rnd = 0;
+                if (!existe) {
+                    rutas[gen - 1][idx++] = v;
                 }
             }
-            return exitoso;
+        }
+        boolean[] usados = new boolean[fenotipo.length];
+        int actual = (int) c2.fenotipo[0];
+        fenotipo[0] = actual;
+        usados[actual - 1] = true;
+
+        for (int pos = 1; pos < fenotipo.length; pos++) {
+            for (int i = 0; i < fenotipo.length; i++) {
+                for (int j = 0; j < 4; j++) {
+                    if (rutas[i][j] == actual) {
+                        rutas[i][j] = -1;
+                    }
+                }
+            }
+
+            int[] vecinos = rutas[actual - 1];
+            int mejor = -1;
+            int minGrado = Integer.MAX_VALUE;
+
+            for (int v : vecinos) {
+                if (v != -1 && !usados[v - 1]) {
+
+                    int grado = 0;
+                    for (int x : rutas[v - 1]) {
+                        if (x != -1) grado++;
+                    }
+
+                    if (grado < minGrado) {
+                        minGrado = grado;
+                        mejor = v;
+                    }
+                }
+            }
+            
+            if (mejor == -1) {
+                int rnd;
+                do {
+                    rnd = (int) (Math.random() * fenotipo.length) + 1;
+                } while (usados[rnd - 1]);
+                mejor = rnd;
+            }
+
+            fenotipo[pos] = mejor;
+            usados[mejor - 1] = true;
+            actual = mejor;
         }
     }
-
     private ChromosomeDron(ChromosomeDron other) {
         this.aptitud = other.aptitud;
         this.puntuacion = other.puntuacion;
