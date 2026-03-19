@@ -291,24 +291,16 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
     @Override
     void cruceCX(Chromosome c1, Chromosome c2)
     {
-        boolean[] selected = new  boolean[fenotipo.length];
-        int a = (int)c1.fenotipo[0];
-        boolean stop = false;
-        while (!stop){
-            selected[a] = true;
-            boolean stop2 = false;
-            int j = 0;
-            while (!stop2){
-                if(c1.fenotipo[j] == c2.fenotipo[a])stop2 = true;
-                else j++;
-            }
-            if(j == (int)c1.fenotipo[0]) stop = true;
-            else a = j;
+        int ini = (int)c1.fenotipo[0];
+        fenotipo[0] = (int)c1.fenotipo[0];
+        int a = (int)c2.fenotipo[0];
+        while (a != ini){
+            int k = 0;
+            while ((int)c1.fenotipo[k] != a) k++;
+            fenotipo[k] = (int)c1.fenotipo[k];
+            a = (int)c2.fenotipo[k];
         }
-        for(int i = 0; i < fenotipo.length; i++){
-            if(selected[i]) fenotipo[i] = (Integer) c1.fenotipo[i];
-            else fenotipo[i] = (Integer) c2.fenotipo[i];
-        }
+        for(int i = 0; i < fenotipo.length; i++) if(fenotipo[i] == null) fenotipo[i] = (int)c2.fenotipo[i];
     }
     @Override
     void cruceCO(Chromosome c1, Chromosome c2, int corte)
