@@ -151,7 +151,16 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
                 }
                 break;
             case CUSTOM:
-                //A hacer
+                int n = (int)(Math.random() * fenotipo.length);
+                for(int i = 0; i < n; i++){
+                    int p1 = (int)(Math.random() * fenotipo.length);
+                    int p2 = (int)(Math.random() * fenotipo.length);
+                    if(p1 != p2){
+                        int aux = fenotipo[p1];
+                        fenotipo[p1] = fenotipo[p2];
+                        fenotipo[p2] = aux;
+                    }
+                }
                 break;
             default:
                 break;
@@ -443,6 +452,39 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
             fenotipo[pos] = mejor;
             usados[mejor - 1] = true;
             actual = mejor;
+        }
+    }
+    @Override
+    void cruceCustom(Chromosome c1, Chromosome c2){
+        boolean[] escogidos = new boolean[fenotipo.length];
+        for(int i = 0; i < fenotipo.length; i++){
+            if(i%2 == 0){
+                fenotipo[i] = (int)c1.fenotipo[i];
+                escogidos[fenotipo[i] -1] = true;
+            }
+            else {
+                fenotipo[i] = (int)c2.fenotipo[i];
+                escogidos[fenotipo[i] -1] = true;
+            }
+        }
+        for(int i = 0; i < fenotipo.length; i++){
+            int j = 0;
+            boolean error = false;
+            while (!error && j < i){
+                if(fenotipo[i] == fenotipo[j]) error = true;
+                j++;
+            }
+            if(error){
+                j = 0;
+                while (error){
+                    if(!escogidos[j]) {
+                        escogidos[j] = true;
+                        fenotipo[i] = j+1;
+                        error = false;
+                    }
+                    j++;
+                }
+            }
         }
     }
     private ChromosomeDron(ChromosomeDron other) {

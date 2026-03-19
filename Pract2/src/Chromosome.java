@@ -23,6 +23,7 @@ public abstract class Chromosome <T, G> {
     abstract void  cruceCX(Chromosome c1, Chromosome c2);
     abstract void  cruceCO(Chromosome c1, Chromosome c2, int corte);
     abstract void  cruceERX(Chromosome c1, Chromosome c2);
+    abstract void  cruceCustom(Chromosome c1, Chromosome c2);
 
     public abstract Chromosome copy();
 }
