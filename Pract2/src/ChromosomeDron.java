@@ -112,7 +112,7 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
             case HEURISTICA:
                 r = Math.random() * 100;
                 if (r < mutationP){
-                    int n = (int)((Math.random() * MAX_PERMUTACIONES_HEURISTICA-1)+2);
+                    int n = (int)(Math.random() * (MAX_PERMUTACIONES_HEURISTICA - 1)) + 2;
 
                     int[] pos = new int[n];
                     for(int i = 0; i < n; i++){
@@ -124,6 +124,7 @@ public class ChromosomeDron extends Chromosome<Float, Integer>{
                                 i--;
                                 stop = true;
                             }
+                            j--;
                         }
                     }
                     int realval[] = new int[n];

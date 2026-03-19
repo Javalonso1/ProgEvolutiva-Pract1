@@ -211,6 +211,9 @@ public class DronEvolver extends GeneticManager{
 
                 double cost = (double) importancia[nx][ny];
 
+                if(hayCamara(nx, ny) && nx != xd && ny !=yd)
+                    cost+=500;
+
                 double tentativeG = current.g + cost;
 
                 // solo aceptar si mejora el camino

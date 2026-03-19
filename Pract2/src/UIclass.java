@@ -21,6 +21,7 @@ public class UIclass extends JFrame {
     JFormattedTextField nCamara;
     JFormattedTextField seed;
     JPanel centerPanel;
+    JLabel bottomLabel;
 
 
 
@@ -70,6 +71,12 @@ public class UIclass extends JFrame {
     public int getGenNumber()
     {
         return (int) nGens.getValue();
+    }
+
+    public void setBottomText(String htmlText) {
+        SwingUtilities.invokeLater(() -> {
+            bottomLabel.setText("<html>" + htmlText + "</html>");
+        });
     }
 
 
@@ -263,6 +270,13 @@ public class UIclass extends JFrame {
         // === RIGHT PANEL: Graph with Two Points ===
         graphPanel = new GraphPanel();
         add(graphPanel, BorderLayout.EAST);
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        bottomLabel = new JLabel("Ready"); // default text
+        bottomPanel.add(bottomLabel);
+
+        bottomPanel.setPreferredSize(new Dimension(1250, 30));
+
+        add(bottomPanel, BorderLayout.SOUTH);
 
         setVisible(true);
     }
@@ -277,7 +291,7 @@ public class UIclass extends JFrame {
         private double[][] dataSeries;   // Each row = one series
         private Color[] colors;       // Colors for each series
         private String[] labels = {"generationBest", "absoluteBest", "generationAverage"};
-        double maxValue;
+        double maxValue, minValue;
 
         public GraphPanel() {
             setPreferredSize(new Dimension(500, 600));
@@ -289,10 +303,14 @@ public class UIclass extends JFrame {
             dataSeries = new double[][] {series1, series2, series3};
 
             maxValue = Double.MIN_VALUE;
+            minValue = Double.MAX_VALUE;
             for (double[] series : dataSeries) {
                 for (double v : series) {
                     if (v > maxValue) {
                         maxValue = v;
+                    }
+                    if (v < minValue && v != 0) {
+                        minValue = v;
                     }
                 }
             }
@@ -336,7 +354,7 @@ public class UIclass extends JFrame {
                 g2.drawLine(marginX - 5, y, marginX, y);
 
                 // If this tick matches the highest last value → make it bigger
-                if (Math.abs(value - maxValue) < stepValue / 2) {
+                if (Math.abs(value - minValue) < stepValue / 2) {
                     g2.setFont(bigFont);
                 } else {
                     g2.setFont(normalFont);
@@ -349,7 +367,7 @@ public class UIclass extends JFrame {
                 g2.setColor(colors[s % colors.length]);
                 double[] series = dataSeries[s];
 
-                for (int i = 0; i < series.length-1; i++) {
+                for (int i = 1; i < series.length-1; i++) {
                     double x1 = marginX + i * plotWidth / (nPoints - 1);
                     double x2 = marginX + (i + 1) * plotWidth / (nPoints - 1);
 

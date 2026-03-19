@@ -354,7 +354,7 @@ public abstract class GeneticManager {
         generationAverage[i] = tot/ population[i].length;
         generationBest[i] = best.aptitud;
 
-        if(i == 0 ||best.aptitud < absoluteBest[i-1])
+        if(i == 1 ||best.aptitud < absoluteBest[i-1])
         {
             absoluteBest[i]= best.aptitud;
             bestSolution = best;
