@@ -1,4 +1,6 @@
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class DronEvolver extends GeneticManager{
 
@@ -271,7 +273,17 @@ public class DronEvolver extends GeneticManager{
 
     public void showSolution(Chromosome c) {
 
+        String[] colors = {
+                "#FF0000", // red
+                "#0000FF", // blue
+                "#00FF00", // green
+                "#FFA500", // orange
+                "#404040"  // dark gray
+        };
+
+        double[] tiempoDrones = new double[nDrones];
         Integer[] fenotipo = (Integer[]) c.fenotipo;
+        StringBuilder coolText = new StringBuilder("<html>");
 
         List<List<Integer>> trayectos = new ArrayList<>();
 
@@ -286,8 +298,8 @@ public class DronEvolver extends GeneticManager{
         while (index < fenotipo.length) {
 
             if (fenotipo[index] - 1 >= posCameras.size() / 2) {
-
-                aStar(xOrigen, yOrigen, Xbase, Ybase);
+                double coste = aStar(xOrigen, yOrigen, Xbase, Ybase);
+                tiempoDrones[currDron] += coste / velocidades[currDron];
 
                 trayectos.get(currDron).addAll(lastPath);
 
@@ -295,12 +307,27 @@ public class DronEvolver extends GeneticManager{
                 xOrigen = Xbase;
                 yOrigen = Ybase;
 
-            } else {
+                coolText.append("</span>");
 
+                coolText.append(" || ");
+                if (currDron < nDrones) {
+                    coolText.append("<span style='color:")
+                            .append(colors[currDron])
+                            .append(";'>");
+                }
+
+            } else {
+                if (index == 0 || fenotipo[index - 1] - 1 >= posCameras.size() / 2) {
+                    coolText.append("<span style='color:")
+                            .append(colors[currDron])
+                            .append(";'>");
+                }
+                coolText.append(fenotipo[index]).append(" ");
                 xDestino = posCameras.get((fenotipo[index] - 1) * 2);
                 yDestino = posCameras.get((fenotipo[index] - 1) * 2 + 1);
 
-                aStar(xOrigen, yOrigen, xDestino, yDestino);
+                double coste = aStar(xOrigen, yOrigen, xDestino, yDestino);
+                tiempoDrones[currDron] += coste / velocidades[currDron];
 
                 trayectos.get(currDron).addAll(lastPath);
 
@@ -311,10 +338,36 @@ public class DronEvolver extends GeneticManager{
             index++;
         }
 
-        aStar(xOrigen, yOrigen, Xbase, Ybase);
+        double coste = aStar(xOrigen, yOrigen, Xbase, Ybase);
+        tiempoDrones[currDron] += coste / velocidades[currDron];
         trayectos.get(currDron).addAll(lastPath);
 
+        coolText.append("</span><br>");
+
+        //añadimos velocidades
+        for (int i = 0; i < tiempoDrones.length; i++) {
+            // Open color span
+            coolText.append("<span style='color:")
+                    .append(colors[i])
+                    .append(";'>");
+
+            // Add formatted text
+            coolText.append("D").append(i + 1)
+                    .append(" (").append(velocidades[i]).append("): ")
+                    .append(tiempoDrones[i]).append(" s");
+
+            coolText.append("</span>");
+
+            // Add separator if not last
+            if (i < velocidades.length - 1) {
+                coolText.append(" || ");
+            }
+        }
+
+        coolText.append("</span></html>");
+
         Ui.setPaths(trayectos);
+        Ui.setBottomText(coolText.toString());
     }
 
 

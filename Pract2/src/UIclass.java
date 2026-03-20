@@ -308,7 +308,8 @@ public class UIclass extends JFrame {
         bottomLabel = new JLabel("Ready"); // default text
         bottomPanel.add(bottomLabel);
 
-        bottomPanel.setPreferredSize(new Dimension(1250, 30));
+        bottomLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        bottomPanel.setPreferredSize(new Dimension(1250, 90));
 
         add(bottomPanel, BorderLayout.SOUTH);
 
