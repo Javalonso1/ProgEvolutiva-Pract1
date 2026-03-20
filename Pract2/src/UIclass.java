@@ -162,7 +162,7 @@ public class UIclass extends JFrame {
         popSize.setValue(100);
         nGens = new JFormattedTextField(formatter);
         nGens.setColumns(4);
-        nGens.setValue(100);
+        nGens.setValue(200);
         nDrons = new JFormattedTextField(formatter);
         nDrons.setColumns(4);
         nDrons.setValue(3);
