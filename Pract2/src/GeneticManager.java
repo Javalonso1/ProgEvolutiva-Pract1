@@ -336,31 +336,17 @@ public abstract class GeneticManager {
     private Chromosome[] rankingSelection(Chromosome[] pop)
     {
         int n = pop.length;
-        float beta = 1;
+        float beta = 1.5f;
         Chromosome[] selected = new Chromosome[n];
 
         //organizamos los cromosomas de menor a mayor valor
-        int[] organizados = new int[pop.length];
-        for (int pos = 0; pos < pop.length; pos++)
-        {
-            int aux = pos;
-            boolean stop = false;
-            int j = 0;
-            while (!stop){
-                if(j >= aux){
-                    stop = true;
-                    organizados[j] = aux;
-                }
-                else{
-                    if(pop[j].aptitud > pop[aux].aptitud){
-                        int aux2 = organizados[j];
-                        organizados[j] = aux;
-                        aux = aux2;
-                    }
-                }
-                j++;
-            }
+        Integer[] organizados = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            organizados[i] = i;
         }
+        for (int i = 0; i < n; i++) organizados[i] = i;
+
+        Arrays.sort(organizados, (a, b) -> Double.compare(pop[a].aptitud, pop[b].aptitud));
 
         // 2. Calcular probabilidades según la fórmula dada
         double[] prob = new double[n];
@@ -383,6 +369,7 @@ public abstract class GeneticManager {
             for (int i = 0; i < n; i++) {
                 if (r <= acumulada[i]) {
                     selected[s] = pop[organizados[i]].copy();
+                    break;
                 }
             }
 
