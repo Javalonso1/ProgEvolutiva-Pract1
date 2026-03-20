@@ -120,6 +120,10 @@ public abstract class GeneticManager {
                 out = restSelection(pop);
                 break;
 
+            case RANKING:
+                out = rankingSelection(pop);
+                break;
+
             default:
                 break;
         }
@@ -325,6 +329,65 @@ public abstract class GeneticManager {
                 }
             }
         }
+
+        return selected;
+    }
+
+    private Chromosome[] rankingSelection(Chromosome[] pop)
+    {
+        int n = pop.length;
+        float beta = 1;
+        Chromosome[] selected = new Chromosome[n];
+
+        //organizamos los cromosomas de menor a mayor valor
+        int[] organizados = new int[pop.length];
+        for (int pos = 0; pos < pop.length; pos++)
+        {
+            int aux = pos;
+            boolean stop = false;
+            int j = 0;
+            while (!stop){
+                if(j >= aux){
+                    stop = true;
+                    organizados[j] = aux;
+                }
+                else{
+                    if(pop[j].aptitud > pop[aux].aptitud){
+                        int aux2 = organizados[j];
+                        organizados[j] = aux;
+                        aux = aux2;
+                    }
+                }
+                j++;
+            }
+        }
+
+        // 2. Calcular probabilidades según la fórmula dada
+        double[] prob = new double[n];
+        for (int i = 0; i < n; i++) {
+            int ranking = i + 1; // i = 1 mejor, i = n peor
+            prob[i] = (1.0 / n) * (beta - 2.0 * (beta - 1.0) * (ranking - 1) / (n - 1));
+        }
+
+        // 3. Ruleta acumulada
+        double[] acumulada = new double[n];
+        acumulada[0] = prob[0];
+        for (int i = 1; i < n; i++) {
+            acumulada[i] = acumulada[i - 1] + prob[i];
+        }
+
+        // 4. Selección por ruleta
+        for (int s = 0; s < pop.length; s++)
+        {
+            double r = Math.random();
+            for (int i = 0; i < n; i++) {
+                if (r <= acumulada[i]) {
+                    selected[s] = pop[organizados[i]].copy();
+                }
+            }
+
+        }
+
 
         return selected;
     }
