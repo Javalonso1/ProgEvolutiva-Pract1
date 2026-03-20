@@ -31,7 +31,7 @@ public abstract class GeneticManager {
      private int numCromosomasElite = 1;
      private Chromosome[] eliteChromosomes;
 
-     private UIclass Ui;
+     protected UIclass Ui;
 
      public GeneticManager(UIclass g)
      {

@@ -2,6 +2,8 @@ import javax.swing.*;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UIclass extends JFrame {
 
@@ -22,22 +24,24 @@ public class UIclass extends JFrame {
     JFormattedTextField seed;
     JPanel centerPanel;
     JLabel bottomLabel;
-
+    private Color[] droneColors = {Color.red, Color.blue, Color.green, Color.orange, Color.DARK_GRAY};
 
 
     boolean[][] mapMatrix;
     int[][] importancia;
     boolean[][] cameraMatrix = new boolean[20][20];
-    float[] cameras = new float[0];
+    ArrayList<Integer> cameras = new ArrayList<Integer>();
+    List<List<Integer>> paths = null;
+
+
     public void setMap(boolean[][] map, int[][] _importancia)
     {
         mapMatrix = map;
         importancia = _importancia;
     }
 
-    public void setCameras(float[] cam, boolean[][] seenmap) {
+    public void setCameras(ArrayList<Integer> cam) {
         cameras = cam;
-        cameraMatrix = seenmap;
         centerPanel.repaint();
     }
     public boolean elitism()
@@ -77,6 +81,10 @@ public class UIclass extends JFrame {
         SwingUtilities.invokeLater(() -> {
             bottomLabel.setText("<html>" + htmlText + "</html>");
         });
+    }
+    public void setPaths(List<List<Integer>> paths) {
+        this.paths = paths;
+        repaint();
     }
 
 
@@ -257,10 +265,36 @@ public class UIclass extends JFrame {
                 }
 
                 //las camaras
-                for(int i = 0; i < cameras.length; i+=2)
+                for(int i = 0; i < cameras.size(); i+=2)
                 {
-                    g2.setColor(new Color((float) Math.random(),(float)Math.random(),(float)Math.random()));
-                    g2.fillOval((int)((cameras[i+1]) * cellW) + cellW/4, (int)((cameras[i]) * cellH)+ cellH/4, cellW/2, cellH/2);
+                    g2.setColor(new Color(1,1,1));
+                    g2.fillOval((int)((cameras.get(i+1)) * cellW) + cellW/4, (int)((cameras.get(i)) * cellH)+ cellH/4, cellW/2, cellH/2);
+                }
+
+                if (paths != null) {
+                    for (int p = 0; p < paths.size(); p++) {
+                        List<Integer> path = paths.get(p);
+
+                        // stable color per path
+                        Color color = droneColors[p];
+                        g2.setColor(color);
+                        g2.setStroke(new BasicStroke(3));
+
+                        // loop through all points
+                        for (int k = 0; k < path.size() - 3; k += 2) {
+                            int x1 = path.get(k);
+                            int y1 = path.get(k + 1);
+                            int x2 = path.get(k + 2);
+                            int y2 = path.get(k + 3);
+
+                            int px1 = x1 * cellW + cellW / 2;
+                            int py1 = y1 * cellH + cellH / 2;
+                            int px2 = x2 * cellW + cellW / 2;
+                            int py2 = y2 * cellH + cellH / 2;
+
+                            g2.drawLine(px1, py1, px2, py2);
+                        }
+                    }
                 }
             }
         };

@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class DronEvolver extends GeneticManager{
 
@@ -12,9 +9,12 @@ public class DronEvolver extends GeneticManager{
     private ArrayList<Integer> posCameras;
     int  Xbase= 1, Ybase= 1;
     int maxPosicionesCruceOXPP = 4;
+    ArrayList<Integer> lastPath;
+
     public DronEvolver(UIclass g, int _nDrones, ArrayList<Integer> _posCameras, boolean[][] m, int[][] i)
     {
         super(g);
+        lastPath = new ArrayList<>();
         this.nDrones = _nDrones;
         map =  m;
         importancia = i;
@@ -176,6 +176,8 @@ public class DronEvolver extends GeneticManager{
 
     public double aStar(int xo, int yo, int xd, int yd) {
 
+        lastPath.clear(); // reset previous path
+
         PriorityQueue<Node> open = new PriorityQueue<>(Comparator.comparingDouble(n -> n.f));
 
         boolean[][] closed = new boolean[importancia.length][importancia[0].length];
@@ -185,18 +187,22 @@ public class DronEvolver extends GeneticManager{
         }
 
         Node startNode = new Node(xo, yo);
+        startNode.g = 0;
+        startNode.h = Math.abs(xd - xo) + Math.abs(yd - yo);
+        startNode.f = startNode.h;
+
         gScore[xo][yo] = 0;
         open.add(startNode);
 
-        while(!open.isEmpty()){
+        while (!open.isEmpty()) {
 
             Node current = open.poll();
 
             if (closed[current.x][current.y])
                 continue;
 
-
-            if(current.x == xd && current.y == yd){
+            if (current.x == xd && current.y == yd) {
+                reconstructPath(current);
                 return current.g;
             }
 
@@ -204,18 +210,18 @@ public class DronEvolver extends GeneticManager{
 
             int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
 
-            for(int[] d : dirs) {
+            for (int[] d : dirs) {
 
                 int nx = current.x + d[0];
                 int ny = current.y + d[1];
 
-                if(nx<0 || ny<0 || nx>=map.length || ny>=map[0].length)
+                if (nx < 0 || ny < 0 || nx >= map.length || ny >= map[0].length)
                     continue;
 
                 if(importancia[nx][ny] == 0) // muro
                     continue;
 
-                if(closed[nx][ny])
+                if (closed[nx][ny])
                     continue;
 
                 double cost = (double) importancia[nx][ny];
@@ -225,7 +231,6 @@ public class DronEvolver extends GeneticManager{
 
                 double tentativeG = current.g + cost;
 
-                // solo aceptar si mejora el camino
                 if (tentativeG < gScore[nx][ny]) {
 
                     gScore[nx][ny] = tentativeG;
@@ -250,5 +255,68 @@ public class DronEvolver extends GeneticManager{
                 return true;
         return false;
     }
+
+    private void reconstructPath(Node goal) {
+
+        Node current = goal;
+
+        while (current != null) {
+            lastPath.add(current.x);
+            lastPath.add(current.y);
+            current = current.parent;
+        }
+
+        Collections.reverse(lastPath);
+    }
+
+    public void showSolution(Chromosome c) {
+
+        Integer[] fenotipo = (Integer[]) c.fenotipo;
+
+        List<List<Integer>> trayectos = new ArrayList<>();
+
+        for (int i = 0; i < nDrones; i++) {
+            trayectos.add(new ArrayList<>());
+        }
+
+        int index = 0, currDron = 0;
+
+        int xOrigen = Xbase, yOrigen = Ybase, xDestino, yDestino;
+
+        while (index < fenotipo.length) {
+
+            if (fenotipo[index] - 1 >= posCameras.size() / 2) {
+
+                aStar(xOrigen, yOrigen, Xbase, Ybase);
+
+                trayectos.get(currDron).addAll(lastPath);
+
+                currDron++;
+                xOrigen = Xbase;
+                yOrigen = Ybase;
+
+            } else {
+
+                xDestino = posCameras.get((fenotipo[index] - 1) * 2);
+                yDestino = posCameras.get((fenotipo[index] - 1) * 2 + 1);
+
+                aStar(xOrigen, yOrigen, xDestino, yDestino);
+
+                trayectos.get(currDron).addAll(lastPath);
+
+                xOrigen = xDestino;
+                yOrigen = yDestino;
+            }
+
+            index++;
+        }
+
+        aStar(xOrigen, yOrigen, Xbase, Ybase);
+        trayectos.get(currDron).addAll(lastPath);
+
+        Ui.setPaths(trayectos);
+    }
+
+
 
 }

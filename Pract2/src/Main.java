@@ -10,6 +10,7 @@ public class Main {
 
         UIclass ui = new UIclass();
         ui.setMap(map, importancia);
+
         ui.simulateButton.addActionListener(e -> evolve(ui));
 
     }
@@ -18,14 +19,15 @@ public class Main {
     {
         LeerDataP1("data"+ ui.mapChosen());
         ui.setMap(map, importancia);
+        ui.setCameras(placeCameras(ui.seed(), ui.numCams()));
         DronEvolver ev = new DronEvolver(ui, ui.numDrons(), placeCameras(ui.seed(), ui.numCams()), map, importancia);
         ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(),
                 ui.cross(),
                 ui.selection(),
                 ui.mutation());
 
-        //ChromosomeReal solution = (ChromosomeReal) ev.getBestSolution();
-        //ev.drawSolutionMap(ui, solution);
+        ChromosomeDron solution = (ChromosomeDron) ev.getBestSolution();
+        ev.showSolution(solution);
     }
 
     public static ArrayList<Integer> placeCameras(int seed, int numCameras) {
