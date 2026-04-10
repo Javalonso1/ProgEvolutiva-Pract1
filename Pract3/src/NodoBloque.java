@@ -7,4 +7,12 @@ public class NodoBloque extends NodoAST{
     public  NodoBloque(){
         //TO DO
     }
+    @Override
+    public void randomize(){
+        //No hace nada
+    }
+
+    public void AddNodo(NodoAST n){
+        listaNodos.add(n);
+    }
 }

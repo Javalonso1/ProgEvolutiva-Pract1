@@ -6,4 +6,8 @@ public class NodoAccion extends NodoAST{
     NodoAccion(){
         //TO DO
     }
+    @Override
+    public void randomize(){
+        tipoAccion = Accion.values()[(int)(Math.random()*3)];
+    }
 }

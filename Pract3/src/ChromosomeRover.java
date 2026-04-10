@@ -1,7 +1,10 @@
 public class ChromosomeRover extends Chromosome{
 
-    public ChromosomeRover(){
+    protected  int MAX_NODOS_BLOQUE = 5;
+    private int PROFUNDIDAD_MAXIMA;
 
+    public ChromosomeRover(int profMax){
+        PROFUNDIDAD_MAXIMA = profMax;
     }
 
     @Override
@@ -9,13 +12,65 @@ public class ChromosomeRover extends Chromosome{
         fenotipo = f;
     }
     @Override
-    public void initializeRandomFull(){
+    public void initializeRandom(boolean full){
 
     }
-    @Override
-    public void initializeRandomGrow(){
-
+    private NodoAST initializeRandomFull(int prof){
+        if(prof >= PROFUNDIDAD_MAXIMA){
+            NodoAccion a = new NodoAccion();
+            a.randomize();
+            return a;
+        }
+        else {
+            int rnd = (int)(Math.random() * 2);
+            if(rnd == 0){
+                NodoBloque b = new NodoBloque();
+                rnd = (int)(Math.random() * (MAX_NODOS_BLOQUE-2)) +2;
+                for(int i = 0; i < rnd; i++){
+                    b.AddNodo(initializeRandomFull(prof + 1));
+                }
+                return b;
+            }
+            else {
+                NodoCondicional c = new NodoCondicional();
+                c.randomize();
+                c.setHijoD(initializeRandomFull(prof + 1));
+                c.setHijoI(initializeRandomFull(prof + 1));
+                return c;
+            }
+        }
     }
+    private NodoAST initializeRandomGrow(int prof){
+        if(prof >= PROFUNDIDAD_MAXIMA){
+            NodoAccion a = new NodoAccion();
+            a.randomize();
+            return a;
+        }
+        else {
+            int rnd = (int)(Math.random() * 3);
+            if(rnd == 0){
+                NodoBloque b = new NodoBloque();
+                rnd = (int)(Math.random() * (MAX_NODOS_BLOQUE-2)) +2;
+                for(int i = 0; i < rnd; i++){
+                    b.AddNodo(initializeRandomFull(prof + 1));
+                }
+                return b;
+            }
+            else if(rnd == 1) {
+                NodoCondicional c = new NodoCondicional();
+                c.randomize();
+                c.setHijoD(initializeRandomFull(prof + 1));
+                c.setHijoI(initializeRandomFull(prof + 1));
+                return c;
+            }
+            else {
+                NodoAccion a = new NodoAccion();
+                a.randomize();
+                return a;
+            }
+        }
+    }
+
     @Override
     void mutate(GeneticManager.MUTATION_TYPE t, double mutationP){
 
