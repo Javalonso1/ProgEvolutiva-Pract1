@@ -6,8 +6,4 @@ public class NodoAccion extends NodoAST{
     NodoAccion(){
         //TO DO
     }
-    @Override
-    public  void ejecutar(){
-        //TO DO
-    }
 }
