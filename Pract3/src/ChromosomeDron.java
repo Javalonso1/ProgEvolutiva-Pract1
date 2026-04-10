@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class ChromosomeDron extends Chromosome<Float, Integer>{
+public class ChromosomeDron extends Chromosome{
 
     protected int MAX_INSERCIONES = 3;
     protected int MAX_PERMUTACIONES_HEURISTICA = 4;
