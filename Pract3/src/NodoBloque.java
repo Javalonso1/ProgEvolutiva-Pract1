@@ -10,6 +10,9 @@ public class NodoBloque extends NodoAST{
 
     @Override
     public  void ejecutar(){
-        //TO DO
+        for (NodoAST n: listaNodos)
+        {
+            n.ejecutar();
+        }
     }
 }
