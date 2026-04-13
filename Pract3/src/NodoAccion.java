@@ -19,4 +19,9 @@ public class NodoAccion extends NodoAST{
     public void changeNodoAtPos(int[]pos, int prof, NodoAST n){
         //No deberia llegar aqui en primer lugar ._.
     }
+
+    @Override
+    public int ranomizeBranch(){
+        return -1;
+    }
 }

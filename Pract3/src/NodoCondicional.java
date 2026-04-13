@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class NodoCondicional extends NodoAST{
 
     public enum Sensores{DIST_MUESTRA, DIST_ARENA, DIST_OBSTACULO, NIVEL_ENERGIA};
@@ -39,6 +41,12 @@ public class NodoCondicional extends NodoAST{
             else hijoDerecho.changeNodoAtPos(pos, prof + 1, n);
         }
     }
+
+    @Override
+    public int ranomizeBranch(){
+        return (int)(Math.random() * 2);
+    }
+
     public void setHijoD(NodoAST n){
         hijoDerecho = n;
     }

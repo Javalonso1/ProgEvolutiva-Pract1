@@ -13,7 +13,8 @@ public class ChromosomeRover extends Chromosome{
     }
     @Override
     public void initializeRandom(boolean full){
-
+        if(full) initializeRandomFull(0);
+        else initializeRandomGrow(0);
     }
     private NodoAST initializeRandomFull(int prof){
         if(prof >= PROFUNDIDAD_MAXIMA){
@@ -52,15 +53,15 @@ public class ChromosomeRover extends Chromosome{
                 NodoBloque b = new NodoBloque();
                 rnd = (int)(Math.random() * (MAX_NODOS_BLOQUE-2)) +2;
                 for(int i = 0; i < rnd; i++){
-                    b.AddNodo(initializeRandomFull(prof + 1));
+                    b.AddNodo(initializeRandomGrow(prof + 1));
                 }
                 return b;
             }
             else if(rnd == 1) {
                 NodoCondicional c = new NodoCondicional();
                 c.randomize();
-                c.setHijoD(initializeRandomFull(prof + 1));
-                c.setHijoI(initializeRandomFull(prof + 1));
+                c.setHijoD(initializeRandomGrow(prof + 1));
+                c.setHijoI(initializeRandomGrow(prof + 1));
                 return c;
             }
             else {

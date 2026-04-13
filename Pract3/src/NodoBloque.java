@@ -29,6 +29,11 @@ public class NodoBloque extends NodoAST{
         }
     }
 
+    @Override
+    public int ranomizeBranch(){
+        return (int)(Math.random() * listaNodos.size());
+    }
+
     public void AddNodo(NodoAST n){
         listaNodos.add(n);
     }
