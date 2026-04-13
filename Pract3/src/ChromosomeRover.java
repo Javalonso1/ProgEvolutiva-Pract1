@@ -72,6 +72,11 @@ public class ChromosomeRover extends Chromosome{
     }
 
     @Override
+    void cruceSUBARBOL(int[]pos, NodoAST n){
+        fenotipo.changeNodoAtPos(pos, 0, n);
+    }
+
+    @Override
     void mutate(GeneticManager.MUTATION_TYPE t, double mutationP){
 
     }

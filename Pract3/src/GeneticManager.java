@@ -9,8 +9,8 @@ public abstract class GeneticManager {
     private Chromosome[][] population;
 
     public enum SELECTION_METHOD {RULETA, TORNEOS, ESTOCASTICO, TRUNCAMIENTO, RESTOS, RANKING}
-    public enum CROSS_METHOD {PMX, OX, OXPP, CX, CO, ERX, CUSTOM}
-    public enum MUTATION_TYPE {INSERCION, INTERCAMBIO, INVERSION, HEURISTICA, CUSTOM}
+    public enum CROSS_METHOD {SUBARBOL}
+    public enum MUTATION_TYPE {SUBARBOL, FUNCIONAL, TERMINAL, PODA, ALEATORIA}
 
     protected CROSS_METHOD crossMethod;
     protected SELECTION_METHOD selectionMethod;

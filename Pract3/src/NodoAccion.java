@@ -4,10 +4,19 @@ public class NodoAccion extends NodoAST{
     Accion tipoAccion;
 
     NodoAccion(){
-        //TO DO
     }
     @Override
     public void randomize(){
         tipoAccion = Accion.values()[(int)(Math.random()*3)];
+    }
+
+    @Override
+    public NodoAST getNodoAtPos(int[]pos, int prof){
+        return this;
+    }
+
+    @Override
+    public void changeNodoAtPos(int[]pos, int prof, NodoAST n){
+        //No deberia llegar aqui en primer lugar ._.
     }
 }

@@ -11,7 +11,6 @@ public class NodoCondicional extends NodoAST{
     NodoAST hijoDerecho;
 
     public  NodoCondicional(){
-        //TO DO
     }
     @Override
     public void randomize(){
@@ -20,10 +19,36 @@ public class NodoCondicional extends NodoAST{
         Umbral = UmbralValues[(int)(Math.random()*3)];
     }
 
+    @Override
+    public NodoAST getNodoAtPos(int[]pos, int prof){
+        if(prof == pos.length) return this;
+        else {
+            if(pos[prof] == 0) return hijoIzquierdo.getNodoAtPos(pos, prof + 1);
+            else  return hijoDerecho.getNodoAtPos(pos, prof + 1);
+        }
+    }
+
+    @Override
+    public void changeNodoAtPos(int[]pos, int prof, NodoAST n){
+        if(prof >= pos.length -1){
+            if(pos[prof] == 0) hijoIzquierdo = n;
+            else hijoDerecho = n;
+        }
+        else {
+            if(pos[prof] == 0) hijoIzquierdo.changeNodoAtPos(pos, prof + 1, n);
+            else hijoDerecho.changeNodoAtPos(pos, prof + 1, n);
+        }
+    }
     public void setHijoD(NodoAST n){
         hijoDerecho = n;
     }
+    public NodoAST getHijoD() {return  hijoDerecho;}
     public void setHijoI(NodoAST n){
         hijoIzquierdo = n;
     }
+    public NodoAST getHijoI() {return  hijoIzquierdo;}
+
+    public  int getUmbral() {return Umbral;}
+    public Sensores getSensor() {return sensor;}
+    public Operdor getOperador() {return operador;}
 }
