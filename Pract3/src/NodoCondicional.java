@@ -31,6 +31,24 @@ public class NodoCondicional extends NodoAST{
     }
 
     @Override
+    public boolean setNodoAtPos(int[]pos, int prof, NodoAST n){
+        if(prof == pos.length) return false;
+        else {
+            if(pos[prof] == 0) {
+                if(!hijoIzquierdo.setNodoAtPos(pos, prof + 1, n)){
+                    hijoIzquierdo = n;
+                }
+            }
+            else {
+                if(!hijoDerecho.setNodoAtPos(pos, prof + 1, n)){
+                    hijoDerecho = n;
+                }
+            }
+            return true;
+        }
+    }
+
+    @Override
     public void changeNodoAtPos(int[]pos, int prof, NodoAST n){
         if(prof >= pos.length -1){
             if(pos[prof] == 0) hijoIzquierdo = n;
@@ -45,6 +63,35 @@ public class NodoCondicional extends NodoAST{
     @Override
     public int ranomizeBranch(){
         return (int)(Math.random() * 2);
+    }
+
+    @Override
+    public void randomizeNodoFuncional(){
+        if((int)(Math.random() * 2) == 0) hijoIzquierdo.randomizeNodoFuncional();
+        else hijoDerecho.randomizeNodoFuncional();
+    }
+
+    @Override
+    public boolean randomizeNodoTerminal(){
+        if((int)(Math.random() * 2) == 0){
+            randomize();
+            return true;
+        }
+        else {
+            int i = (int)(Math.random() * 2);
+            if(i == 0){
+                boolean a = hijoIzquierdo.randomizeNodoTerminal();
+                if(!a) a = hijoDerecho.randomizeNodoTerminal();
+                if(!a) randomize();
+                return true;
+            }
+            else {
+                boolean a = hijoDerecho.randomizeNodoTerminal();
+                if(!a) a = hijoIzquierdo.randomizeNodoTerminal();
+                if(!a) randomize();
+                return true;
+            }
+        }
     }
 
     public void setHijoD(NodoAST n){

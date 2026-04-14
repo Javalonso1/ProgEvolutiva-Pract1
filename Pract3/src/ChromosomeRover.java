@@ -79,7 +79,49 @@ public class ChromosomeRover extends Chromosome{
 
     @Override
     void mutate(GeneticManager.MUTATION_TYPE t, double mutationP){
+        double r = Math.random() * 100;
+        if (r < mutationP){
+            switch (t){
+                case SUBARBOL:
+                    int[] path = new int[0];
+                    boolean stop = false;
+                    while (!stop){
+                        int a = fenotipo.getNodoAtPos(path, 0).ranomizeBranch();
+                        if(a == -1){
+                            stop = true;
+                        }
+                        else {
+                            int[] pathAux = new int[path.length +1];
+                            for(int j = 0; j < path.length; j++){
+                                pathAux[j] = path[j];
+                            }
+                            pathAux[path.length] = a;
+                            path = pathAux;
 
+                            if(Math.random() * 2 == 0) stop = true;
+                        }
+                    }
+                    NodoAST n;
+                    if(Math.random() * 2 == 0) n = initializeRandomFull(path.length);
+                    else n = initializeRandomGrow(path.length);
+                    fenotipo.setNodoAtPos(path, 0, n);
+                    break;
+                case FUNCIONAL:
+                    fenotipo.randomizeNodoFuncional();
+                    break;
+                case TERMINAL:
+                    fenotipo.randomizeNodoTerminal();
+                    break;
+                case PODA:
+
+                    break;
+                case ALEATORIA:
+
+                    break;
+                default:
+                    break;
+            }
+        }
     }
     private ChromosomeRover(ChromosomeRover other) {
         this.aptitud = other.aptitud;

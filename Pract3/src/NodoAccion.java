@@ -16,6 +16,11 @@ public class NodoAccion extends NodoAST{
     }
 
     @Override
+    public boolean setNodoAtPos(int[]pos, int prof, NodoAST n){
+        return false;
+    }
+
+    @Override
     public void changeNodoAtPos(int[]pos, int prof, NodoAST n){
         //No deberia llegar aqui en primer lugar ._.
     }
@@ -23,5 +28,14 @@ public class NodoAccion extends NodoAST{
     @Override
     public int ranomizeBranch(){
         return -1;
+    }
+
+    @Override
+    public void randomizeNodoFuncional(){
+        randomize();
+    }
+    @Override
+    public boolean randomizeNodoTerminal(){
+        return false;
     }
 }
