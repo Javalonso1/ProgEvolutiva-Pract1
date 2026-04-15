@@ -139,7 +139,14 @@ public class RoverInfo {
     }
     public boolean checkIfMuestraInVision()
     {
-        //TODO
+        for (int i = 0; i *directions[currDir][0]+posX < map.length || i *directions[currDir][1] +posY < map.length; i++)
+        {
+            if (map[i *directions[currDir][0]+posX][i *directions[currDir][1]+posY] == 3)
+            {
+                return true;
+            }
+
+        }
         return false;
     }
     public boolean isLazy()
