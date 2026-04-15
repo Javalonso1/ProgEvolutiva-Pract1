@@ -117,6 +117,30 @@ public class RoverEvolver extends GeneticManager{
         }
         else if (n.getType() == NodoAST.NODETYPE.ACTION)
         {
+            NodoAccion nodo = (NodoAccion) n;
+            if (nodo.tipoAccion == NodoAccion.Accion.AVANZAR)
+            {
+                info.girosSeguidos = 0;
+
+            }
+            else if (nodo.tipoAccion == NodoAccion.Accion.GIRAR_DER)
+            {
+                info.girosSeguidos++;
+                if(info.girosSeguidos >= 4)
+                    info.energyLevel-=100;
+
+                info.girarIzq();
+            }
+            else if (nodo.tipoAccion == NodoAccion.Accion.GIRAR_IZQ)
+            {
+                info.girosSeguidos++;
+                if(info.girosSeguidos >= 4)
+                    info.energyLevel-=100;
+                info.girarDer();
+            }
+            info.nTurnos --;
+            if (info.checkIfMuestraInVision())
+                aptitud += 2;
 
         }
         else if (n.getType() == NodoAST.NODETYPE.CONDITIONAL)
