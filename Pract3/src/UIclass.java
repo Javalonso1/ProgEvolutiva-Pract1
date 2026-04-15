@@ -230,21 +230,24 @@ public class UIclass extends JFrame {
                     for (int j = 0; j < cols; j++) {
                         switch (mapMatrix[i][j]){
                             case 1:
-                                g2.setColor(Color.red);
+                                g2.setColor(new Color(0.6f,0f,0f));
                                 g2.fillRect(j * cellW, i * cellH, cellW, cellH);
+                                g2.setColor(Color.red);
+                                g2.drawLine(j * cellW, i * cellH, (j +1) * cellW, (i +1)* cellH);
+                                g2.drawLine((j +1) * cellW, i * cellH, j * cellW, (i +1)* cellH);
                                 break;
                             case 2:
                                 g2.setColor(Color.orange);
                                 g2.fillRect(j * cellW, i * cellH, cellW, cellH);
                                 break;
                             case 3:
-                                g2.setColor(Color.gray);
+                                g2.setColor(Color.darkGray);
                                 g2.fillRect(j * cellW, i * cellH, cellW, cellH);
                                 g2.setColor(Color.yellow);
-                                g2.fillOval(j * cellW, i * cellH, cellW, cellH);
+                                g2.fillOval(j * cellW + cellW/4, i * cellH + cellH/4, cellW/2, cellH/2);
                                 break;
                             default:
-                                g2.setColor(Color.gray);
+                                g2.setColor(Color.darkGray);
                                 g2.fillRect(j * cellW, i * cellH, cellW, cellH);
                                 break;
                         }
