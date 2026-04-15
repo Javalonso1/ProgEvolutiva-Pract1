@@ -93,7 +93,82 @@ public class RoverEvolver extends GeneticManager{
         //TO DO
         for (Chromosome c: pop)
         {
+            int[][] map = new int[2][2];    //TODO: MAPA
+            RoverInfo info = new RoverInfo(map);
+            int aptitud = evaluateNode(c.getFenotipo(), info);
 
+
+        }
+    }
+
+    private int evaluateNode(NodoAST n, RoverInfo info)
+    {
+        int aptitud = 0;
+        if (n.getType() == NodoAST.NODETYPE.BLOCK)
+        {
+            NodoBloque nodo = (NodoBloque) n;
+            List<NodoAST>nodos = nodo.GetNodos();
+            for (int i = 0; i < nodos.size(); i++)
+            {
+                aptitud = evaluateNode(nodos.get(i), info);
+            }
+            return aptitud;
+
+        }
+        else if (n.getType() == NodoAST.NODETYPE.ACTION)
+        {
+
+        }
+        else if (n.getType() == NodoAST.NODETYPE.CONDITIONAL)
+        {
+            NodoCondicional nodo = (NodoCondicional) n;
+            int value = translateSensor(nodo.getSensor(), info);
+
+            if(evaluateExpression(value, nodo.getOperador(), nodo.getUmbral()))
+            {
+                aptitud = evaluateNode(nodo.hijoIzquierdo, info);
+            }
+            else
+            {
+                aptitud = evaluateNode(nodo.hijoDerecho, info);
+            }
+
+        }
+        return aptitud;
+
+    }
+
+    private boolean evaluateExpression(int value1, NodoCondicional.Operdor o, int value2)
+    {
+
+        switch (o)
+        {
+            case IGUAL:
+                return value1 == value2;
+            case MAYOR_QUE:
+                return value1 > value2;
+            case MENOR_QUE:
+                return value1 < value2;
+            default:
+                return false;
+        }
+
+    }
+
+    private int translateSensor(NodoCondicional.Sensores s, RoverInfo info)
+    {
+        switch (s)
+        {
+            case DIST_ARENA:
+                return info.distToNearestArena();
+            case NIVEL_ENERGIA:
+                return info.energyLevel;
+            case DIST_OBSTACULO:
+                return info.distToNearestObstaculo();
+            case DIST_MUESTRA:
+                return info.distToNearestMuestra();
+            default:
+                return -1;
         }
     }
 

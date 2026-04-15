@@ -77,6 +77,10 @@ public class NodoBloque extends NodoAST{
         }
     }
 
+    @Override
+    public NODETYPE getType() {
+        return NODETYPE.BLOCK;
+    }
 
     public void AddNodo(NodoAST n){
         listaNodos.add(n);

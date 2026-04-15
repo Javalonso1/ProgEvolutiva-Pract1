@@ -95,35 +95,37 @@ public class NodoCondicional extends NodoAST{
     }
 
     @Override
-    public boolean podar(){
-        if((int)(Math.random() * 2) == 0){
-            if((int)(Math.random() * 2) == 0){
+    public boolean podar() {
+        if ((int) (Math.random() * 2) == 0) {
+            if ((int) (Math.random() * 2) == 0) {
                 hijoIzquierdo = new NodoAccion();
                 hijoIzquierdo.randomize();
-            }
-            else {
+            } else {
                 hijoDerecho = new NodoAccion();
                 hijoDerecho.randomize();
             }
             return true;
-        }
-        else {
-            int i = (int)(Math.random() * 2);
-            if(i == 0){
-                if(!hijoIzquierdo.podar()) {
+        } else {
+            int i = (int) (Math.random() * 2);
+            if (i == 0) {
+                if (!hijoIzquierdo.podar()) {
                     hijoIzquierdo = new NodoAccion();
                     hijoIzquierdo.randomize();
                 }
                 return true;
-            }
-            else {
-                if(!hijoDerecho.podar()) {
+            } else {
+                if (!hijoDerecho.podar()) {
                     hijoDerecho = new NodoAccion();
                     hijoDerecho.randomize();
                 }
                 return true;
             }
         }
+    }
+
+    @Override
+    public NODETYPE getType() {
+        return NODETYPE.CONDITIONAL;
     }
 
     public void setHijoD(NodoAST n){
