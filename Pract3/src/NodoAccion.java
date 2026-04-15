@@ -39,8 +39,10 @@ public class NodoAccion extends NodoAST{
         return false;
     }
     @Override
-    public boolean podar(){
+    public boolean podar() {
         return false;
+    }
+    @Override
     public NODETYPE getType() {
         return NODETYPE.ACTION;
     }

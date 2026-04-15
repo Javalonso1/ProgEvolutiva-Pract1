@@ -25,7 +25,7 @@ public class Main {
                 ui.selection(),
                 ui.mutation());
 
-        ChromosomeDron solution = (ChromosomeDron) ev.getBestSolution();
+        ChromosomeRover solution = (ChromosomeRover) ev.getBestSolution();
         ev.showSolution(solution);
     }
 
@@ -38,8 +38,8 @@ public class Main {
             for (int j = 0; j < ANCHO; j++) {
                 if (i == 0 || i == ALTO - 1 || j == 0 || j == ANCHO - 1) map[i][j] = 1;
                 else  if (rand.nextDouble() < 0.15 && (i != 1 || j != 1)) map[i][j] = 1;
-                else  if (rand.nextDouble() < 0.15 && (i != 1 || j != 1)) map[i][j] = 2;
-                else  if (rand.nextDouble() < 0.08 && (i != 1 || j != 1)) map[i][j] = 3;
+                else  if (rand.nextDouble() < 0.15 && (i != 1 || j != 1)) map[i][j] = 3;
+                else  if (rand.nextDouble() < 0.08 && (i != 1 || j != 1)) map[i][j] = 2;
             }
         }
         /*
