@@ -113,7 +113,7 @@ public class ChromosomeRover extends Chromosome{
                     fenotipo.randomizeNodoTerminal();
                     break;
                 case PODA:
-
+                    fenotipo.podar();
                     break;
                 case ALEATORIA:
                     int rnd = (int)(Math.random() * 4);
