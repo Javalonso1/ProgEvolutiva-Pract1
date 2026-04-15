@@ -3,12 +3,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Main {
-    static boolean[][] map; // Mapa de bools para guardar objetos que bloqueen las camaras
-    static int[][] importancia; // Mapa de valor de vigilancia por cada casilla (solo si es codificacion real)
+    static int ANCHO = 15;
+    static  int ALTO = 15;
+    static int[][] map;
     public static void main(String[] args) {
-        LeerDataP1("data3");
-
-        UIclass ui = new UIclass();
+      UIclass ui = new UIclass();
+        GenerateMap(3000);
         ui.setMap(map, importancia);
 
         ui.simulateButton.addActionListener(e -> evolve(ui));
@@ -17,10 +17,9 @@ public class Main {
 
     public static void evolve(UIclass ui)
     {
-        LeerDataP1("data"+ ui.mapChosen());
+        GenerateMap(ui.seed());
         ui.setMap(map, importancia);
-        ui.setCameras(placeCameras(ui.seed(), ui.numCams()));
-        DronEvolver ev = new DronEvolver(ui, ui.numDrons(), placeCameras(ui.seed(), ui.numCams()), map, importancia);
+        RoverEvolver ev = new RoverEvolver(ui, 5, false);
         ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(),
                 ui.cross(),
                 ui.selection(),
@@ -30,73 +29,21 @@ public class Main {
         ev.showSolution(solution);
     }
 
-    public static ArrayList<Integer> placeCameras(int seed, int numCameras) {
-        Random rand = new Random(seed);
-        //La semilla se selecciona de la interfaz
+    public static void GenerateMap(int semilla){
+        map = new int[ANCHO][ALTO];
+        Random rand = new Random(semilla);
 
-        // Lista para guardar las posiciones (asumiendo una clase simple Punto(x,y))
-        ArrayList<Integer> posicionesCamaras = new ArrayList<>();
-
-        // 3. Generar las posiciones de las cámaras
-        while (posicionesCamaras.size() < numCameras*2) {
-            // Generar coordenadas aleatorias dentro de los límites del mapa
-            int x = rand.nextInt(map.length);
-            int y = rand.nextInt(map[0].length);
-
-            boolean valid = true;
-            for(int i = 0; i < posicionesCamaras.size()/2; i++)
-            {
-                if(posicionesCamaras.get(i) == x && posicionesCamaras.get(i+1) == y)
-                    valid = false;
-            }
-            if(map[x][y])
-                valid = false;
-
-            if(valid)
-            {
-                posicionesCamaras.add(x);
-                posicionesCamaras.add(y);
+        // 1  muro     2  arena   3  muestra
+        for (int i = 0; i < ALTO; i++) {
+            for (int j = 0; j < ANCHO; j++) {
+                if (i == 0 || i == ALTO - 1 || j == 0 || j == ANCHO - 1) map[i][j] = 1;
+                else  if (rand.nextDouble() < 0.15 && (i != 1 || j != 1)) map[i][j] = 1;
+                else  if (rand.nextDouble() < 0.15 && (i != 1 || j != 1)) map[i][j] = 2;
+                else  if (rand.nextDouble() < 0.08 && (i != 1 || j != 1)) map[i][j] = 3;
             }
         }
-
-        return posicionesCamaras;
-    }
-
-
-    public static void LeerDataP1(String filename) {
-        try (FileReader fr = new FileReader("./data/" + filename + ".txt")) {
-            BufferedReader br = new BufferedReader(fr);
-            // Lectura del fichero
-            String linea;
-            br.readLine();
-            br.readLine();
-            br.readLine();
-            br.readLine();
-            br.readLine();
-            br.readLine();
-            br.readLine();
-            linea = br.readLine();
-            int x = Integer.parseInt(linea);
-            linea = br.readLine();
-            int y = Integer.parseInt(linea);
-            map = new boolean[x] [y];
-            for (int i = 0; i < x; i++) {
-                String[] valores = br.readLine().trim().split("\\s+");
-                for (int j = 0; j < y; j++) {
-                    map[i][j] = (valores[j].equals("1"));
-                }
-            }
-            importancia = new int[x][y];
-            br.readLine();
-            for (int i = 0; i < x; i++) {
-                String[] valores = br.readLine().trim().split("\\s+");
-                for (int j = 0; j < y; j++) {
-                    importancia[i][j] = Integer.parseInt(valores[j]);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        /*
+        visitado = new boolean[ALTO][ANCHO];
+        visitado[y][x] = true;*/
     }
 }

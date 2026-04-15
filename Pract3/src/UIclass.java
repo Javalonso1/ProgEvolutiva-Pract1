@@ -27,17 +27,15 @@ public class UIclass extends JFrame {
     private Color[] droneColors = {Color.red, Color.blue, Color.green, Color.orange, Color.DARK_GRAY};
 
 
-    boolean[][] mapMatrix;
-    int[][] importancia;
+    int[][] mapMatrix;
     boolean[][] cameraMatrix = new boolean[20][20];
     ArrayList<Integer> cameras = new ArrayList<Integer>();
     List<List<Integer>> paths = null;
 
 
-    public void setMap(boolean[][] map, int[][] _importancia)
+    public void setMap(int[][] map)
     {
         mapMatrix = map;
-        importancia = _importancia;
     }
 
     public void setCameras(ArrayList<Integer> cam) {
