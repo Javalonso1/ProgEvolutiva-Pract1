@@ -124,6 +124,10 @@ public class NodoCondicional extends NodoAST{
                 return true;
             }
         }
+
+    @Override
+    public NODETYPE getType() {
+        return NODETYPE.CONDITIONAL;
     }
 
     public void setHijoD(NodoAST n){

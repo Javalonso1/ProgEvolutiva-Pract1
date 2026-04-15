@@ -1,5 +1,6 @@
 public abstract class NodoAST {
 
+    public enum NODETYPE{ACTION, BLOCK, CONDITIONAL}
     public NodoAST() {}
     public abstract void randomize();
     public abstract NodoAST getNodoAtPos(int[]pos, int prof);
@@ -9,4 +10,5 @@ public abstract class NodoAST {
     public abstract void randomizeNodoFuncional();
     public abstract boolean randomizeNodoTerminal();
     public abstract boolean podar();
+    public abstract NODETYPE getType();
 }
