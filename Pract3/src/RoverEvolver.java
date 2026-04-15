@@ -101,16 +101,18 @@ public class RoverEvolver extends GeneticManager{
         }
     }
 
-    private int evaluateNode(NodoAST n, RoverInfo info)
+    private int evaluateNode(NodoAST n, RoverInfo rover)
     {
         int aptitud = 0;
         if (n.getType() == NodoAST.NODETYPE.BLOCK)
         {
             NodoBloque nodo = (NodoBloque) n;
             List<NodoAST>nodos = nodo.GetNodos();
-            for (int i = 0; i < nodos.size(); i++)
+            int i = 0;
+            while (i < nodos.size() && rover.nTurnos > 0 && rover.energyLevel > 0)
             {
-                aptitud = evaluateNode(nodos.get(i), info);
+                aptitud = evaluateNode(nodos.get(i), rover);
+                i++;
             }
             return aptitud;
 
@@ -120,41 +122,34 @@ public class RoverEvolver extends GeneticManager{
             NodoAccion nodo = (NodoAccion) n;
             if (nodo.tipoAccion == NodoAccion.Accion.AVANZAR)
             {
-                info.girosSeguidos = 0;
-
+                //TODO: q avance. ya de por si.
+                rover.avanzar();
             }
             else if (nodo.tipoAccion == NodoAccion.Accion.GIRAR_DER)
             {
-                info.girosSeguidos++;
-                if(info.girosSeguidos >= 4)
-                    info.energyLevel-=100;
-
-                info.girarIzq();
+                rover.girarIzq();
             }
             else if (nodo.tipoAccion == NodoAccion.Accion.GIRAR_IZQ)
             {
-                info.girosSeguidos++;
-                if(info.girosSeguidos >= 4)
-                    info.energyLevel-=100;
-                info.girarDer();
+                rover.girarDer();
             }
-            info.nTurnos --;
-            if (info.checkIfMuestraInVision())
+            rover.nTurnos --;
+            if (rover.checkIfMuestraInVision())
                 aptitud += 2;
 
         }
         else if (n.getType() == NodoAST.NODETYPE.CONDITIONAL)
         {
             NodoCondicional nodo = (NodoCondicional) n;
-            int value = translateSensor(nodo.getSensor(), info);
+            int value = translateSensor(nodo.getSensor(), rover);
 
             if(evaluateExpression(value, nodo.getOperador(), nodo.getUmbral()))
             {
-                aptitud = evaluateNode(nodo.hijoIzquierdo, info);
+                aptitud = evaluateNode(nodo.hijoIzquierdo, rover);
             }
             else
             {
-                aptitud = evaluateNode(nodo.hijoDerecho, info);
+                aptitud = evaluateNode(nodo.hijoDerecho, rover);
             }
 
         }
