@@ -116,7 +116,42 @@ public class ChromosomeRover extends Chromosome{
 
                     break;
                 case ALEATORIA:
+                    int rnd = (int)(Math.random() * 4);
+                    switch (rnd){
+                        case 0:
+                            path = new int[0];
+                            stop = false;
+                            while (!stop){
+                                int a = fenotipo.getNodoAtPos(path, 0).ranomizeBranch();
+                                if(a == -1){
+                                    stop = true;
+                                }
+                                else {
+                                    int[] pathAux = new int[path.length +1];
+                                    for(int j = 0; j < path.length; j++){
+                                        pathAux[j] = path[j];
+                                    }
+                                    pathAux[path.length] = a;
+                                    path = pathAux;
 
+                                    if(Math.random() * 2 == 0) stop = true;
+                                }
+                            }
+                            if(Math.random() * 2 == 0) n = initializeRandomFull(path.length);
+                            else n = initializeRandomGrow(path.length);
+                            fenotipo.setNodoAtPos(path, 0, n);
+                            break;
+                        case 1:
+                            fenotipo.randomizeNodoFuncional();
+                            break;
+                        case 2:
+                            fenotipo.randomizeNodoTerminal();
+                            break;
+                        case 3:
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 default:
                     break;

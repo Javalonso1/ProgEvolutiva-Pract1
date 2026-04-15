@@ -8,4 +8,5 @@ public abstract class NodoAST {
     public abstract int ranomizeBranch();
     public abstract void randomizeNodoFuncional();
     public abstract boolean randomizeNodoTerminal();
+    public abstract boolean podar();
 }

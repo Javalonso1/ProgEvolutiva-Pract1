@@ -58,6 +58,26 @@ public class NodoBloque extends NodoAST{
         return found;
     }
 
+    @Override
+    public boolean podar(){
+        if((int)(Math.random() * 2) == 0){
+            NodoAccion n = new NodoAccion();
+            n.randomize();
+            listaNodos.set((int)(Math.random() * listaNodos.size()), n);
+            return true;
+        }
+        else {
+            int i = (int)(Math.random() * listaNodos.size());
+            if(!listaNodos.get(i).podar()) {
+                NodoAccion n = new NodoAccion();
+                n.randomize();
+                listaNodos.set(i, n);
+            }
+            return true;
+        }
+    }
+
+
     public void AddNodo(NodoAST n){
         listaNodos.add(n);
     }

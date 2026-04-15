@@ -38,4 +38,8 @@ public class NodoAccion extends NodoAST{
     public boolean randomizeNodoTerminal(){
         return false;
     }
+    @Override
+    public boolean podar(){
+        return false;
+    }
 }

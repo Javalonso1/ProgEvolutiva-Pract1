@@ -94,6 +94,38 @@ public class NodoCondicional extends NodoAST{
         }
     }
 
+    @Override
+    public boolean podar(){
+        if((int)(Math.random() * 2) == 0){
+            if((int)(Math.random() * 2) == 0){
+                hijoIzquierdo = new NodoAccion();
+                hijoIzquierdo.randomize();
+            }
+            else {
+                hijoDerecho = new NodoAccion();
+                hijoDerecho.randomize();
+            }
+            return true;
+        }
+        else {
+            int i = (int)(Math.random() * 2);
+            if(i == 0){
+                if(!hijoIzquierdo.podar()) {
+                    hijoIzquierdo = new NodoAccion();
+                    hijoIzquierdo.randomize();
+                }
+                return true;
+            }
+            else {
+                if(!hijoDerecho.podar()) {
+                    hijoDerecho = new NodoAccion();
+                    hijoDerecho.randomize();
+                }
+                return true;
+            }
+        }
+    }
+
     public void setHijoD(NodoAST n){
         hijoDerecho = n;
     }
