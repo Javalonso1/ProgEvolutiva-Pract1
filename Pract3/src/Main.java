@@ -6,13 +6,14 @@ import java.util.Random;
 public class Main {
     static int ANCHO = 15;
     static  int ALTO = 15;
-    static List<int[][]> maps;
+    static ArrayList<int[][]> maps;
     public static void main(String[] args) {
       UIclass ui = new UIclass();
-        GenerateMap(3000);
-        ui.setMap(maps.get(0));
+      maps = new ArrayList<>();
+      GenerateMap(3000);
+      ui.setMap(maps.get(0));
 
-        ui.simulateButton.addActionListener(e -> evolve(ui));
+      ui.simulateButton.addActionListener(e -> evolve(ui));
 
     }
 
@@ -20,7 +21,7 @@ public class Main {
     {
         GenerateMap(ui.seed());
         ui.setMap(maps.get(0));
-        RoverEvolver ev = new RoverEvolver(ui, 5, false);
+        RoverEvolver ev = new RoverEvolver(ui, 5, false, maps);
         ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(),
                 ui.cross(),
                 ui.selection(),

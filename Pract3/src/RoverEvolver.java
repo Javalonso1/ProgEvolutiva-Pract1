@@ -4,14 +4,14 @@ public class RoverEvolver extends GeneticManager{
 
     private int profundidadMax; //Profunidad maxima de los arboles
     private boolean initFull;   //Si la inicializacion random es Full o Grow
-    private List<int[][]> maps;
+    private ArrayList<int[][]> maps;
 
-    public RoverEvolver(UIclass g, int prof, boolean _inFull)
+    public RoverEvolver(UIclass g, int prof, boolean _inFull, ArrayList<int[][]> maps)
     {
         super(g);
         profundidadMax = prof;
         initFull = _inFull;
-        //TODO: generar mapas
+        this.maps = maps;
     }
     @Override
     protected Chromosome[] initializePopulation(int p_size){
