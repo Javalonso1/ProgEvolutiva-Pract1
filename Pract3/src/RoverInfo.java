@@ -33,19 +33,52 @@ public class RoverInfo {
 
     public int distToNearestMuestra()
     {
-        //TODO
-        return -1;
+        int dist = map.length;
+        for (int i = 0; i *directions[currDir][0]+posX < map.length || i *directions[currDir][1] +posY < map.length; i++)
+        {
+            if (map[i *directions[currDir][0]+posX][i *directions[currDir][1]+posY] == 3)
+            {
+                if (i < dist)
+                    dist = i;
+            }
+
+        }
+        if (dist == map.length)
+            return 100;
+        else
+            return dist -1;
     }
     public int distToNearestObstaculo()
     {
-        //TODO
-        return -1;
+        int dist = map.length;
+        for (int i = 0; i *directions[currDir][0]+posX < map.length || i *directions[currDir][1] +posY < map.length; i++)
+        {
+            if (map[i *directions[currDir][0]+posX][i *directions[currDir][1]+posY] == 1)
+            {
+                if (i < dist)
+                    dist = i;
+            }
+
+        }
+        return dist -1;
     }
 
     public int distToNearestArena()
     {
-        //TODO
-        return -1;
+        int dist = map.length;
+        for (int i = 0; i *directions[currDir][0]+posX < map.length || i *directions[currDir][1] +posY < map.length; i++)
+        {
+            if (map[i *directions[currDir][0]+posX][i *directions[currDir][1]+posY] == 2)
+            {
+                if (i < dist)
+                    dist = i;
+            }
+
+        }
+        if (dist == map.length)
+            return 100;
+        else
+            return dist -1;
     }
 
     public void girarIzq()
