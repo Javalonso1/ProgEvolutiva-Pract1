@@ -96,6 +96,8 @@ public class RoverEvolver extends GeneticManager{
             int[][] map = new int[2][2];    //TODO: MAPA
             RoverInfo info = new RoverInfo(map);
             int aptitud = evaluateNode(c.getFenotipo(), info);
+            if (info.isLazy())
+                aptitud -= 1000;
 
 
         }
@@ -122,8 +124,7 @@ public class RoverEvolver extends GeneticManager{
             NodoAccion nodo = (NodoAccion) n;
             if (nodo.tipoAccion == NodoAccion.Accion.AVANZAR)
             {
-                //TODO: q avance. ya de por si.
-                rover.avanzar();
+                aptitud += rover.avanzar();
             }
             else if (nodo.tipoAccion == NodoAccion.Accion.GIRAR_DER)
             {
@@ -194,4 +195,5 @@ public class RoverEvolver extends GeneticManager{
     public void showSolution(Chromosome c) {
         //TO DO
     }
+
 }

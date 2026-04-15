@@ -4,8 +4,8 @@ public class RoverInfo {
     public boolean[][] visitedSquares;
     public int posX;
     public int posY;
-    public int dirX;
-    public int dirY;
+    public int currDir;
+    public int[][] directions = {{1, 0},{0, 1}, {-1, 0}, {0, -1}};
     public int nTurnos;
     public int girosSeguidos = 0;
 
@@ -14,8 +14,7 @@ public class RoverInfo {
         this.map = map;
         posX = 1;
         posY = 1;
-        dirX = 1;
-        dirY = 0;
+        currDir = 0;
         this.nTurnos = 0;
         this.energyLevel = 100; //CONSTANTE
         this.visitedSquares = new boolean[15][15];
@@ -27,51 +26,55 @@ public class RoverInfo {
         this.nTurnos = 0;
         posX = 1;
         posY = 1;
-        dirX = 1;
-        dirY = 0;
+        currDir = 0;
         this.energyLevel = 100; //CONSTANTE
         this.visitedSquares = new boolean[15][15];
     }
 
     public int distToNearestMuestra()
     {
+        //TODO
         return -1;
     }
     public int distToNearestObstaculo()
     {
+        //TODO
         return -1;
     }
 
     public int distToNearestArena()
     {
+        //TODO
         return -1;
     }
 
     public void girarIzq()
     {
-        //TODO: q gire
         energyLevel--;
         girosSeguidos++;
         if(girosSeguidos >= 4)
             energyLevel-=100;
+
+        currDir = (currDir + currDir - 1) % 4;
     }
     public void girarDer()
     {
-        //TODO: q gire
         energyLevel--;
         girosSeguidos++;
         if(girosSeguidos >= 4)
             energyLevel-=100;
+
+        currDir = (currDir + 1)%4;
     }
     public int avanzar()
     {
         girosSeguidos = 0;
-        posX+= dirX;
-        posY += dirY;
+        posX += directions[currDir][0];
+        posY += directions[currDir][1];
         int recompensa = 0;
-        if (map[posX][posY] == 3)
+        if (map[posX][posY] == 3)   //si es una muestra
         {
-            energyLevel --;
+            //energyLevel --;
             map[posX][posY] = 0;    //quitamos la muestra
             recompensa += 500;
             visitedSquares[posX][posY] = true;
@@ -87,8 +90,8 @@ public class RoverInfo {
             recompensa -= 30;
 
             //y te desmueves
-            posX -= dirX;
-            posY -= dirY;
+            posX -= directions[currDir][0];
+            posY -= directions[currDir][1];
         }
         else                    //si es un sitio libre
         {
@@ -103,6 +106,22 @@ public class RoverInfo {
     }
     public boolean checkIfMuestraInVision()
     {
+        //TODO
         return false;
+    }
+    public boolean isLazy()
+    {
+        int visitadas = 0;
+        int i = 0;
+        while (i < map.length && visitadas < 4)
+        {
+            for (int j = 0; j < map[i].length; j++)
+            {
+                if (visitedSquares[i][j])
+                    visitadas++;
+            }
+        }
+
+        return visitadas < 4;
     }
 }
