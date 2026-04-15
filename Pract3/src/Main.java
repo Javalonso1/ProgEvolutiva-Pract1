@@ -19,6 +19,7 @@ public class Main {
 
     public static void evolve(UIclass ui)
     {
+        maps.clear();
         GenerateMap(ui.seed());
         ui.setMap(maps.get(0));
         RoverEvolver ev = new RoverEvolver(ui, 5, false, maps);

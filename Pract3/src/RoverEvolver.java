@@ -98,7 +98,7 @@ public class RoverEvolver extends GeneticManager{
             for (int i = 0; i < maps.size(); i++)
             {
                 RoverInfo info = new RoverInfo(maps.get(i));
-                aptitud += evaluateNode(c.getFenotipo(), info);
+                aptitud += evaluateNode(c.fenotipo, info);
                 if (info.isLazy())
                     aptitud -= 1000;
             }
@@ -113,7 +113,7 @@ public class RoverEvolver extends GeneticManager{
         if (n.getType() == NodoAST.NODETYPE.BLOCK)
         {
             NodoBloque nodo = (NodoBloque) n;
-            List<NodoAST>nodos = nodo.GetNodos();
+            ArrayList<NodoAST>nodos = nodo.GetNodos();
             int i = 0;
             while (i < nodos.size() && rover.nTurnos > 0 && rover.energyLevel > 0)
             {

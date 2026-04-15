@@ -1,10 +1,13 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NodoBloque extends NodoAST{
 
-    List<NodoAST> listaNodos;
+    ArrayList<NodoAST> listaNodos;
 
     public  NodoBloque(){
+        listaNodos = new ArrayList<>();
     }
     @Override
     public void randomize(){
@@ -86,5 +89,5 @@ public class NodoBloque extends NodoAST{
         listaNodos.add(n);
     }
 
-    public List<NodoAST> GetNodos() {return  listaNodos;}
+    public ArrayList<NodoAST> GetNodos() {return  listaNodos;}
 }
