@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
       UIclass ui = new UIclass();
         GenerateMap(3000);
-        ui.setMap(map, importancia);
+        ui.setMap(map);
 
         ui.simulateButton.addActionListener(e -> evolve(ui));
 
@@ -18,7 +18,7 @@ public class Main {
     public static void evolve(UIclass ui)
     {
         GenerateMap(ui.seed());
-        ui.setMap(map, importancia);
+        ui.setMap(map);
         RoverEvolver ev = new RoverEvolver(ui, 5, false);
         ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(),
                 ui.cross(),

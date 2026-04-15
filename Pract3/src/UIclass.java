@@ -228,28 +228,26 @@ public class UIclass extends JFrame {
 
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < cols; j++) {
-                        if (mapMatrix[i][j]) {
-                            g2.setColor(Color.BLACK);
-                        } else {
-                            if(importancia[i][j] >= 15)
-                            {
+                        switch (mapMatrix[i][j]){
+                            case 1:
                                 g2.setColor(Color.red);
-                            }
-                            else
-                            {
-                                if(importancia[i][j] >= 5)
-                                {
-                                    g2.setColor(Color.yellow);
-                                }
-                                else
-                                {
-                                    g2.setColor(Color.white);
-
-                                }
-                            }
-
+                                g2.fillRect(j * cellW, i * cellH, cellW, cellH);
+                                break;
+                            case 2:
+                                g2.setColor(Color.orange);
+                                g2.fillRect(j * cellW, i * cellH, cellW, cellH);
+                                break;
+                            case 3:
+                                g2.setColor(Color.gray);
+                                g2.fillRect(j * cellW, i * cellH, cellW, cellH);
+                                g2.setColor(Color.yellow);
+                                g2.fillOval(j * cellW, i * cellH, cellW, cellH);
+                                break;
+                            default:
+                                g2.setColor(Color.gray);
+                                g2.fillRect(j * cellW, i * cellH, cellW, cellH);
+                                break;
                         }
-                        g2.fillRect(j * cellW, i * cellH, cellW, cellH);
                     }
                 }
 
