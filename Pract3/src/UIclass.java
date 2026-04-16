@@ -14,14 +14,13 @@ public class UIclass extends JFrame {
 
     public JButton simulateButton;
     JComboBox MutationType;
-    JComboBox MapChosen;
     JComboBox CrossType;
     JComboBox SelectionType;
     JFormattedTextField popSize;
     JFormattedTextField nGens;
-    JFormattedTextField nDrons;
-    JFormattedTextField nCamara;
     JFormattedTextField seed;
+    JFormattedTextField profundidad;
+    JComboBox InicializacionFull;
     JPanel centerPanel;
     JLabel bottomLabel;
     private Color[] droneColors = {Color.red, Color.blue, Color.green, Color.orange, Color.DARK_GRAY};
@@ -46,13 +45,8 @@ public class UIclass extends JFrame {
     {
         return elitismOn.isSelected();
     }
-    public int mapChosen()
-    {
-        return MapChosen.getSelectedIndex() + 1;
-    }
     public int seed() {return  (int) seed.getValue();}
-    public int numDrons() { return (int) nDrons.getValue();}
-    public int numCams() {return (int) nCamara.getValue();}
+    public int profundidad() { return (int) profundidad.getValue();}
     public GeneticManager.MUTATION_TYPE mutation()
     {
         return GeneticManager.MUTATION_TYPE.values()[MutationType.getSelectedIndex()];
@@ -64,6 +58,10 @@ public class UIclass extends JFrame {
     public GeneticManager.SELECTION_METHOD selection()
     {
         return GeneticManager.SELECTION_METHOD.values()[SelectionType.getSelectedIndex()];
+    }
+    public boolean inicializacionFull()
+    {
+        return InicializacionFull.getSelectedIndex() == 0;
     }
     public int getPopSize()
     {
@@ -110,23 +108,23 @@ public class UIclass extends JFrame {
         buttPanel.add(elitismOff);
         buttPanel.setPreferredSize(new Dimension(300, 30));
 
-        JLabel labelmap = new JLabel("mapa:");
-        String[] mapas = {"Mapa 1", "Mapa 2", "Mapa 3"};
-        MapChosen = new JComboBox(mapas);
-        JPanel mapPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        mapPanel.add(labelmap);
-        MapChosen.setSelectedIndex(2);
-        mapPanel.add(MapChosen);
+        JLabel labelmap = new JLabel("Generación:");
+        String[] inicial = {"Full", "Grow"};
+        InicializacionFull = new JComboBox(inicial);
+        JPanel inicialPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        inicialPanel.add(labelmap);
+        InicializacionFull.setSelectedIndex(0);
+        inicialPanel.add(InicializacionFull);
 
         JLabel labelmut = new JLabel("mutación:");
-        String[] mutations = {"INSERCION", "INTERCAMBIO", "INVERSION", "HEURISTICA", "CUSTOM"};
+        String[] mutations = {"SUBARBOL", "FUNCIONAL", "TERMINAL", "PODA", "ALEATORIA"};
         MutationType = new JComboBox(mutations);
         JPanel mutPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         mutPanel.add(labelmut);
         mutPanel.add(MutationType);
 
         JLabel labelcross = new JLabel("cruce:");
-        String[] cross = {"PMX", "OX", "OXPP", "CX", "CO", "ERX", "CUSTOM"};
+        String[] cross = {"SUBARBOL"};
         CrossType = new JComboBox(cross);
         JPanel crossPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         crossPanel.add(labelcross);
@@ -142,9 +140,8 @@ public class UIclass extends JFrame {
         // Label
         JLabel label1 = new JLabel("Population:");
         JLabel label2 = new JLabel("Nº generations:");
-        JLabel label3 = new JLabel("Nº drones:");
-        JLabel label4 = new JLabel("Nº cámaras:");
-        JLabel label5 = new JLabel("Semilla:");
+        JLabel label3 = new JLabel("Prof. árboles:");
+        JLabel label4 = new JLabel("Semilla:");
 
         // Number formatter
         NumberFormat format = NumberFormat.getIntegerInstance();
@@ -161,12 +158,9 @@ public class UIclass extends JFrame {
         nGens = new JFormattedTextField(formatter);
         nGens.setColumns(4);
         nGens.setValue(200);
-        nDrons = new JFormattedTextField(formatter);
-        nDrons.setColumns(4);
-        nDrons.setValue(3);
-        nCamara = new JFormattedTextField(formatter);
-        nCamara.setColumns(4);
-        nCamara.setValue(40);
+        profundidad = new JFormattedTextField(formatter);
+        profundidad.setColumns(4);
+        profundidad.setValue(5);
         seed = new JFormattedTextField(formatter);
         seed.setColumns(4);
         seed.setValue(3000);
@@ -179,26 +173,22 @@ public class UIclass extends JFrame {
         genPanel.add(label2);
         genPanel.add(nGens);
 
-        JPanel dronsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        dronsPanel.add(label3);
-        dronsPanel.add(nDrons);
+        JPanel profPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        profPanel.add(label3);
+        profPanel.add(profundidad);
 
-        JPanel camerasPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        camerasPanel.add(label4);
-        camerasPanel.add(nCamara);
 
         JPanel seedPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        seedPanel.add(label5);
+        seedPanel.add(label4);
         seedPanel.add(seed);
 
 
         leftPanel.add(buttPanel);
         leftPanel.add(popPanel);
         leftPanel.add(genPanel);
-        leftPanel.add(dronsPanel);
-        leftPanel.add(camerasPanel);
+        leftPanel.add(profPanel);
+        leftPanel.add(inicialPanel);
         leftPanel.add(seedPanel);
-        leftPanel.add(mapPanel);
         leftPanel.add(mutPanel);
         leftPanel.add(crossPanel);
         leftPanel.add(selPanel);

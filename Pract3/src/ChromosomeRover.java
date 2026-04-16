@@ -13,8 +13,8 @@ public class ChromosomeRover extends Chromosome{
     }
     @Override
     public void initializeRandom(boolean full){
-        if(full) initializeRandomFull(0);
-        else initializeRandomGrow(0);
+        if(full) fenotipo = initializeRandomFull(0);
+        else fenotipo = initializeRandomGrow(0);
     }
     private NodoAST initializeRandomFull(int prof){
         if(prof >= PROFUNDIDAD_MAXIMA){

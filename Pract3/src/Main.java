@@ -22,7 +22,7 @@ public class Main {
         maps.clear();
         GenerateMap(ui.seed());
         ui.setMap(maps.get(0));
-        RoverEvolver ev = new RoverEvolver(ui, 5, false, maps);
+        RoverEvolver ev = new RoverEvolver(ui, ui.profundidad(), ui.inicializacionFull(), maps);
         ev.evolve(ui.getGenNumber(), ui.getPopSize(), ui.elitism(),
                 ui.cross(),
                 ui.selection(),
