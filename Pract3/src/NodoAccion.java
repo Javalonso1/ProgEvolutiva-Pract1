@@ -46,4 +46,12 @@ public class NodoAccion extends NodoAST{
     public NODETYPE getType() {
         return NODETYPE.ACTION;
     }
+
+    private NodoAccion(NodoAccion other) {
+        this.tipoAccion = other.tipoAccion;
+    }
+    @Override
+    public NodoAST copy() {
+        return new NodoAccion(this);
+    }
 }

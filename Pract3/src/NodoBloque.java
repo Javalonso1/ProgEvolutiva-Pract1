@@ -90,4 +90,16 @@ public class NodoBloque extends NodoAST{
     }
 
     public ArrayList<NodoAST> GetNodos() {return  listaNodos;}
+
+    private NodoBloque(NodoBloque other) {
+        this.listaNodos = new ArrayList<>();
+        for (NodoAST n : other.listaNodos)
+        {
+            this.listaNodos.add(n.copy());
+        }
+    }
+    @Override
+    public NodoAST copy() {
+        return new NodoBloque(this);
+    }
 }

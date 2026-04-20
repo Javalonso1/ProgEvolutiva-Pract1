@@ -74,7 +74,7 @@ public class ChromosomeRover extends Chromosome{
 
     @Override
     void cruceSUBARBOL(int[]pos, NodoAST n){
-        fenotipo.changeNodoAtPos(pos, 0, n);
+        fenotipo.changeNodoAtPos(pos, 0, n.copy());
     }
 
     @Override

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 public class NodoCondicional extends NodoAST{
@@ -140,4 +141,16 @@ public class NodoCondicional extends NodoAST{
     public  int getUmbral() {return Umbral;}
     public Sensores getSensor() {return sensor;}
     public Operdor getOperador() {return operador;}
+
+    private NodoCondicional(NodoCondicional other) {
+        this.Umbral = other.Umbral;
+        this.operador = other.operador;
+        this.sensor = other.sensor;
+        this.hijoDerecho = other.hijoDerecho.copy();
+        this.hijoIzquierdo = other.hijoIzquierdo.copy();
+    }
+    @Override
+    public NodoAST copy() {
+        return new NodoCondicional(this);
+    }
 }

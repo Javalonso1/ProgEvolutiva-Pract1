@@ -30,8 +30,8 @@ public class RoverEvolver extends GeneticManager{
         Chromosome[] sol = new Chromosome[pop.length];
         for(int i = 0; i < pop.length; i += 2){
             if(Pcruce <= Math.random()){
-                sol[i] = new ChromosomeRover(profundidadMax);
-                sol[i+1] = new ChromosomeRover(profundidadMax);
+                sol[i] = pop[i].copy();
+                sol[i+1] = pop[i+1].copy();
                 switch (crossMethod){
                     case SUBARBOL:
                         int[] path1 = new int[0];
@@ -52,12 +52,12 @@ public class RoverEvolver extends GeneticManager{
                                 path1 = pathAux;
                                 n1 = sol[i].fenotipo.getNodoAtPos(path1, 0);
 
-                                if(Math.random() * 2 == 0) stop = true;
+                                if (Math.random() < 0.5) stop = true;
                             }
                         }
                         int[] path2 = new  int[0];
                         NodoAST n2;
-                        n2 = sol[i].fenotipo;
+                        n2 = sol[i+1].fenotipo;
                         stop = false;
                         while (!stop){
                             int a = n2.ranomizeBranch();
@@ -73,7 +73,7 @@ public class RoverEvolver extends GeneticManager{
                                 path2 = pathAux;
                                 n2 = sol[i+1].fenotipo.getNodoAtPos(path2, 0);
 
-                                if(Math.random() * 2 == 0) stop = true;
+                                if (Math.random() < 0.5) stop = true;
                             }
                         }
                         sol[i].cruceSUBARBOL(path1, n2);
@@ -155,11 +155,11 @@ public class RoverEvolver extends GeneticManager{
 
             if(evaluateExpression(value, nodo.getOperador(), nodo.getUmbral()))
             {
-                aptitud = evaluateNode(nodo.hijoIzquierdo, rover);
+                aptitud += evaluateNode(nodo.hijoIzquierdo, rover);
             }
             else
             {
-                aptitud = evaluateNode(nodo.hijoDerecho, rover);
+                aptitud += evaluateNode(nodo.hijoDerecho, rover);
             }
 
         }
