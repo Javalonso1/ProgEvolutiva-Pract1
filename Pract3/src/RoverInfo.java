@@ -34,51 +34,63 @@ public class RoverInfo {
     public int distToNearestMuestra()
     {
         int dist = map.length;
-        for (int i = 0; i *directions[currDir][0]+posX < map.length || i *directions[currDir][1] +posY < map.length; i++)
-        {
-            if (map[i *directions[currDir][0]+posX][i *directions[currDir][1]+posY] == 3)
-            {
-                if (i < dist)
-                    dist = i;
+        int x = posX, y = posY;
+        for (int i = 1; i < map.length; i++) {
+            x += directions[currDir][0];
+            y += directions[currDir][1];
+
+            // Check bounds properly
+            if (x < 0 || y < 0 || x >= map.length || y >= map[0].length) {
+                return 100; // nothing found
             }
 
+            if (map[x][y] == 3) {
+                return i - 1; // distance excluding current position
+            }
         }
-        if (dist == map.length)
-            return 100;
-        else
-            return dist -1;
+
+        return 100; // nothing found
     }
     public int distToNearestObstaculo()
     {
         int dist = map.length;
-        for (int i = 0; i *directions[currDir][0]+posX < map.length || i *directions[currDir][1] +posY < map.length; i++)
-        {
-            if (map[i *directions[currDir][0]+posX][i *directions[currDir][1]+posY] == 1)
-            {
-                if (i < dist)
-                    dist = i;
+        int x = posX, y = posY;
+        for (int i = 1; i < map.length; i++) {
+            x += directions[currDir][0];
+            y += directions[currDir][1];
+
+            // Check bounds properly
+            if (x < 0 || y < 0 || x >= map.length || y >= map[0].length) {
+                return 100; // nothing found
             }
 
+            if (map[x][y] == 1) {
+                return i - 1; // distance excluding current position
+            }
         }
-        return dist -1;
+
+        return 100; // nothing found
     }
 
     public int distToNearestArena()
     {
         int dist = map.length;
-        for (int i = 0; i *directions[currDir][0]+posX < map.length || i *directions[currDir][1] +posY < map.length; i++)
-        {
-            if (map[i *directions[currDir][0]+posX][i *directions[currDir][1]+posY] == 2)
-            {
-                if (i < dist)
-                    dist = i;
+        int x = posX, y = posY;
+        for (int i = 1; i < map.length; i++) {
+            x += directions[currDir][0];
+            y += directions[currDir][1];
+
+            // Check bounds properly
+            if (x < 0 || y < 0 || x >= map.length || y >= map[0].length) {
+                return 100; // nothing found
             }
 
+            if (map[x][y] == 2) {
+                return i - 1; // distance excluding current position
+            }
         }
-        if (dist == map.length)
-            return 100;
-        else
-            return dist -1;
+
+        return 100; // nothing found
     }
 
     public void girarIzq()
@@ -88,7 +100,7 @@ public class RoverInfo {
         if(girosSeguidos >= 4)
             energyLevel-=100;
 
-        currDir = (currDir + currDir - 1) % 4;
+        currDir = (currDir + 4 - 1) % 4;
     }
     public void girarDer()
     {
@@ -137,18 +149,27 @@ public class RoverInfo {
         }
         return recompensa;
     }
-    public boolean checkIfMuestraInVision()
-    {
-        for (int i = 0; i *directions[currDir][0]+posX < map.length || i *directions[currDir][1] +posY < map.length; i++)
-        {
-            if (map[i *directions[currDir][0]+posX][i *directions[currDir][1]+posY] == 3)
-            {
-                return true;
+    public boolean checkIfMuestraInVision() {
+        int x = posX;
+        int y = posY;
+
+        for (int i = 1; i < map.length; i++) {
+            x += directions[currDir][0];
+            y += directions[currDir][1];
+
+            // Bounds check
+            if (x < 0 || y < 0 || x >= map.length || y >= map[0].length) {
+                return false;
             }
 
+            if (map[x][y] == 3) {
+                return true;
+            }
         }
+
         return false;
     }
+
     public boolean isLazy()
     {
         int visitadas = 0;
@@ -160,6 +181,7 @@ public class RoverInfo {
                 if (visitedSquares[i][j])
                     visitadas++;
             }
+            i++;
         }
 
         return visitadas < 4;

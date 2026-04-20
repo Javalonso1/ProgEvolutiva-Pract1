@@ -5,6 +5,7 @@ public class RoverEvolver extends GeneticManager{
     private int profundidadMax; //Profunidad maxima de los arboles
     private boolean initFull;   //Si la inicializacion random es Full o Grow
     private ArrayList<int[][]> maps;
+    private int NTicks = 100;
 
     public RoverEvolver(UIclass g, int prof, boolean _inFull, ArrayList<int[][]> maps)
     {
@@ -70,7 +71,7 @@ public class RoverEvolver extends GeneticManager{
                                 }
                                 pathAux[path2.length] = a;
                                 path2 = pathAux;
-                                n2 = sol[i].fenotipo.getNodoAtPos(path2, 0);
+                                n2 = sol[i+1].fenotipo.getNodoAtPos(path2, 0);
 
                                 if(Math.random() * 2 == 0) stop = true;
                             }
@@ -109,15 +110,19 @@ public class RoverEvolver extends GeneticManager{
 
     private int evaluateNode(NodoAST n, RoverInfo rover)
     {
+        if (rover.nTurnos >= NTicks || rover.energyLevel <= 0) {
+            return 0;
+        }
+
         int aptitud = 0;
         if (n.getType() == NodoAST.NODETYPE.BLOCK)
         {
             NodoBloque nodo = (NodoBloque) n;
             ArrayList<NodoAST>nodos = nodo.GetNodos();
             int i = 0;
-            while (i < nodos.size() && rover.nTurnos > 0 && rover.energyLevel > 0)
+            while (i < nodos.size() && rover.nTurnos < NTicks && rover.energyLevel > 0)
             {
-                aptitud = evaluateNode(nodos.get(i), rover);
+                aptitud += evaluateNode(nodos.get(i), rover);
                 i++;
             }
             return aptitud;
@@ -132,13 +137,13 @@ public class RoverEvolver extends GeneticManager{
             }
             else if (nodo.tipoAccion == NodoAccion.Accion.GIRAR_DER)
             {
-                rover.girarIzq();
+                rover.girarDer();
             }
             else if (nodo.tipoAccion == NodoAccion.Accion.GIRAR_IZQ)
             {
-                rover.girarDer();
+                rover.girarIzq();
             }
-            rover.nTurnos --;
+            rover.nTurnos ++;
             if (rover.checkIfMuestraInVision())
                 aptitud += 2;
 
@@ -159,7 +164,6 @@ public class RoverEvolver extends GeneticManager{
 
         }
         return aptitud;
-
     }
 
     private boolean evaluateExpression(int value1, NodoCondicional.Operdor o, int value2)
