@@ -99,8 +99,9 @@ public class RoverEvolver extends GeneticManager{
             for (int i = 0; i < maps.size(); i++)
             {
                 RoverInfo info = new RoverInfo(maps.get(i));
+                ArrayList<Integer> path = new ArrayList<Integer>();
                 while (info.nTurnos < NTicks && info.energyLevel > 0)
-                    aptitud += evaluateNode(c.fenotipo, info);
+                    aptitud += evaluateNode(c.fenotipo, info, path);
 
                 if (info.isLazy())
                     aptitud -= 1000;
@@ -110,7 +111,7 @@ public class RoverEvolver extends GeneticManager{
         }
     }
 
-    private int evaluateNode(NodoAST n, RoverInfo rover)
+    private int evaluateNode(NodoAST n, RoverInfo rover, ArrayList<Integer> path)
     {
         if (rover.nTurnos >= NTicks || rover.energyLevel <= 0) {
             return 0;
@@ -124,7 +125,7 @@ public class RoverEvolver extends GeneticManager{
             int i = 0;
             while (i < nodos.size() && rover.nTurnos < NTicks && rover.energyLevel > 0)
             {
-                aptitud += evaluateNode(nodos.get(i), rover);
+                aptitud += evaluateNode(nodos.get(i), rover, path);
                 i++;
             }
             return aptitud;
@@ -136,6 +137,8 @@ public class RoverEvolver extends GeneticManager{
             if (nodo.tipoAccion == NodoAccion.Accion.AVANZAR)
             {
                 aptitud += rover.avanzar();
+                path.add(rover.posY);
+                path.add(rover.posX);
             }
             else if (nodo.tipoAccion == NodoAccion.Accion.GIRAR_DER)
             {
@@ -157,11 +160,11 @@ public class RoverEvolver extends GeneticManager{
 
             if(evaluateExpression(value, nodo.getOperador(), nodo.getUmbral()))
             {
-                aptitud += evaluateNode(nodo.hijoIzquierdo, rover);
+                aptitud += evaluateNode(nodo.hijoIzquierdo, rover, path);
             }
             else
             {
-                aptitud += evaluateNode(nodo.hijoDerecho, rover);
+                aptitud += evaluateNode(nodo.hijoDerecho, rover, path);
             }
 
         }
@@ -203,7 +206,14 @@ public class RoverEvolver extends GeneticManager{
     }
 
     public void showSolution(Chromosome c) {
-        //TO DO
+        RoverInfo info = new RoverInfo(maps.get(0));
+        ArrayList<Integer> path = new ArrayList<Integer>();
+        path.add(1); path.add(1);
+        while (info.nTurnos < NTicks && info.energyLevel > 0)
+            evaluateNode(c.fenotipo, info, path);
+
+        Ui.setPath(path);
+
     }
 
 }

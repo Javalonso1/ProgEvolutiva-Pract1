@@ -139,7 +139,7 @@ public class ChromosomeRover extends Chromosome{
                             }
                             if(Math.random() * 2 == 0) n = initializeRandomFull(path.length);
                             else n = initializeRandomGrow(path.length);
-                            fenotipo.setNodoAtPos(path, 0, n);
+                            fenotipo.setNodoAtPos(path, 0, n.copy());
                             break;
                         case 1:
                             fenotipo.randomizeNodoFuncional();

@@ -11,24 +11,26 @@ public class RoverInfo {
 
     public RoverInfo(int[][] map)
     {
-        this.map = map;
+        this.map = deepCopyArray(map);
         posX = 1;
         posY = 1;
         currDir = 0;
         this.nTurnos = 0;
         this.energyLevel = 100; //CONSTANTE
         this.visitedSquares = new boolean[15][15];
+        this.visitedSquares[1][1] = true;
     }
 
     public void clearState(int[][] map)
     {
-        this.map = map;
+        this.map = deepCopyArray(map);
         this.nTurnos = 0;
         posX = 1;
         posY = 1;
         currDir = 0;
         this.energyLevel = 100; //CONSTANTE
         this.visitedSquares = new boolean[15][15];
+        this.visitedSquares[1][1] = true;
     }
 
     public int distToNearestMuestra()
@@ -114,38 +116,39 @@ public class RoverInfo {
     public int avanzar()
     {
         girosSeguidos = 0;
-        posX += directions[currDir][0];
-        posY += directions[currDir][1];
         int recompensa = 0;
-        if (map[posX][posY] == 3)   //si es una muestra
+
+        if (map[posX+directions[currDir][0]][posY+directions[currDir][1]] != 1)
         {
-            //energyLevel --;
-            map[posX][posY] = 0;    //quitamos la muestra
-            recompensa += 500;
-            visitedSquares[posX][posY] = true;
+            posX += directions[currDir][0];
+            posY += directions[currDir][1];
+            if (map[posX][posY] == 3)   //si es una muestra
+            {
+                //energyLevel --;
+                map[posX][posY] = 0;    //quitamos la muestra
+                recompensa += 500;
+                visitedSquares[posX][posY] = true;
+            }
+            else if(map[posX][posY] == 2)   //si es arena
+            {
+                energyLevel -= 10;
+                recompensa -= 30;
+            }
+            else
+            {
+                energyLevel --;
+                if (!visitedSquares[posX][posY])
+                {
+                    visitedSquares[posX][posY] = true;
+                    recompensa += 20;
+                }
+            }
+
         }
-        else if(map[posX][posY] == 2)   //si es arena
-        {
-            energyLevel -= 10;
-            recompensa -= 30;
-        }
-        else if(map[posX][posY] == 1)   //si es un muro
+        else
         {
             energyLevel -= 2;
             recompensa -= 30;
-
-            //y te desmueves
-            posX -= directions[currDir][0];
-            posY -= directions[currDir][1];
-        }
-        else                    //si es un sitio libre
-        {
-            energyLevel --;
-            if (!visitedSquares[posX][posY])
-            {
-                visitedSquares[posX][posY] = true;
-                recompensa += 20;
-            }
         }
         return recompensa;
     }
@@ -185,5 +188,23 @@ public class RoverInfo {
         }
 
         return visitadas < 4;
+    }
+
+    private int[][] deepCopyArray(int[][] array)
+    {
+        int rows = array.length;
+        int columns = array[0].length;
+
+        int[][] copiedArray = new int[rows][columns];
+        for (int i = 0; i < rows; i++)
+        {
+            for(int j = 0; j <columns; j++)
+            {
+                copiedArray[i][j] = array[i][j];
+            }
+
+        }
+        return copiedArray;
+
     }
 }
