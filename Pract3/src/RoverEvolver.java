@@ -99,7 +99,9 @@ public class RoverEvolver extends GeneticManager{
             for (int i = 0; i < maps.size(); i++)
             {
                 RoverInfo info = new RoverInfo(maps.get(i));
-                aptitud += evaluateNode(c.fenotipo, info);
+                while (info.nTurnos < NTicks && info.energyLevel > 0)
+                    aptitud += evaluateNode(c.fenotipo, info);
+
                 if (info.isLazy())
                     aptitud -= 1000;
             }

@@ -162,7 +162,7 @@ public class ChromosomeRover extends Chromosome{
         this.aptitud = other.aptitud;
         this.puntuacion = other.puntuacion;
         this.punt_acumulada = other.punt_acumulada;
-        this.fenotipo = other.fenotipo;
+        this.fenotipo = other.fenotipo.copy();
     }
     @Override
     public Chromosome copy() {

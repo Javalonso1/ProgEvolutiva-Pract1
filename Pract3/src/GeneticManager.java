@@ -85,6 +85,8 @@ public abstract class GeneticManager {
 
         }
 
+        System.out.print(bestSolution.aptitud);
+
     }
 
 
