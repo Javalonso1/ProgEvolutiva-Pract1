@@ -53,12 +53,7 @@ public class NodoBloque extends NodoAST{
     @Override
     public boolean randomizeNodoTerminal(){
         int i = (int)(Math.random() * listaNodos.size());
-        int j = 0;
-        boolean found = false;
-        while (j < listaNodos.size() && !found){
-            found = listaNodos.get(i+j- (listaNodos.size()*(int)((i+j/listaNodos.size())))).randomizeNodoTerminal();
-        }
-        return found;
+        return listaNodos.get(i).randomizeNodoTerminal();
     }
 
     @Override
