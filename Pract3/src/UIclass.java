@@ -17,6 +17,7 @@ public class UIclass extends JFrame {
     JComboBox CrossType;
     JComboBox SelectionType;
     JFormattedTextField popSize;
+    JFormattedTextField bloating;
     JFormattedTextField nGens;
     JFormattedTextField seed;
     JFormattedTextField profundidad;
@@ -40,6 +41,9 @@ public class UIclass extends JFrame {
     }
     public int seed() {return  (int) seed.getValue();}
     public int profundidad() { return (int) profundidad.getValue();}
+    public float bloating() {
+        return ((int)bloating.getValue())/10f;
+    }
     public GeneticManager.MUTATION_TYPE mutation()
     {
         return GeneticManager.MUTATION_TYPE.values()[MutationType.getSelectedIndex()];
@@ -135,6 +139,7 @@ public class UIclass extends JFrame {
         JLabel label2 = new JLabel("Nº generations:");
         JLabel label3 = new JLabel("Prof. árboles:");
         JLabel label4 = new JLabel("Semilla:");
+        JLabel label5 = new JLabel("Bloating (x/10):");
 
         // Number formatter
         NumberFormat format = NumberFormat.getIntegerInstance();
@@ -148,6 +153,9 @@ public class UIclass extends JFrame {
         popSize = new JFormattedTextField(formatter);
         popSize.setColumns(4);
         popSize.setValue(100);
+        bloating = new JFormattedTextField(formatter);
+        bloating.setColumns(2);
+        bloating.setValue(2);
         nGens = new JFormattedTextField(formatter);
         nGens.setColumns(4);
         nGens.setValue(200);
@@ -166,6 +174,10 @@ public class UIclass extends JFrame {
         genPanel.add(label2);
         genPanel.add(nGens);
 
+        JPanel bloatingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        bloatingPanel.add(label5);
+        bloatingPanel.add(bloating);
+
         JPanel profPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         profPanel.add(label3);
         profPanel.add(profundidad);
@@ -179,6 +191,7 @@ public class UIclass extends JFrame {
         leftPanel.add(buttPanel);
         leftPanel.add(popPanel);
         leftPanel.add(genPanel);
+        leftPanel.add(bloatingPanel);
         leftPanel.add(profPanel);
         leftPanel.add(inicialPanel);
         leftPanel.add(seedPanel);

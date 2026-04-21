@@ -10,6 +10,7 @@ public abstract class NodoAST {
     public abstract void randomizeNodoFuncional();
     public abstract boolean randomizeNodoTerminal();
     public abstract boolean podar();
+    public abstract int numNodos();
     public abstract NODETYPE getType();
     public abstract NodoAST copy();
 }

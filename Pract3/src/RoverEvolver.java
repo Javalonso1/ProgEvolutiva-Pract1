@@ -6,13 +6,15 @@ public class RoverEvolver extends GeneticManager{
     private boolean initFull;   //Si la inicializacion random es Full o Grow
     private ArrayList<int[][]> maps;
     private int NTicks = 100;
+    private float bloating;
 
-    public RoverEvolver(UIclass g, int prof, boolean _inFull, ArrayList<int[][]> maps)
+    public RoverEvolver(UIclass g, int prof, boolean _inFull, ArrayList<int[][]> maps, float _bloat)
     {
         super(g);
         profundidadMax = prof;
         initFull = _inFull;
         this.maps = maps;
+        this.bloating = _bloat;
     }
     @Override
     protected Chromosome[] initializePopulation(int p_size){
@@ -106,7 +108,7 @@ public class RoverEvolver extends GeneticManager{
                 if (info.isLazy())
                     aptitud -= 1000;
             }
-            c.aptitud = aptitud/maps.size();
+            c.aptitud = (aptitud/maps.size()) - (c.fenotipo.numNodos() * bloating);
 
         }
     }

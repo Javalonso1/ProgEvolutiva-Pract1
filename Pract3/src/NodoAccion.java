@@ -29,6 +29,10 @@ public class NodoAccion extends NodoAST{
     public int ranomizeBranch(){
         return -1;
     }
+    @Override
+    public int numNodos(){
+        return 1;
+    }
 
     @Override
     public void randomizeNodoFuncional(){

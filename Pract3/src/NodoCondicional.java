@@ -125,6 +125,13 @@ public class NodoCondicional extends NodoAST{
     }
 
     @Override
+    public int numNodos(){
+        int a = 0;
+        a += hijoDerecho.numNodos();
+        a += hijoIzquierdo.numNodos();
+        return a;
+    }
+    @Override
     public NODETYPE getType() {
         return NODETYPE.CONDITIONAL;
     }

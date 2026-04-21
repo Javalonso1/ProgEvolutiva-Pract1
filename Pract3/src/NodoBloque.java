@@ -76,6 +76,15 @@ public class NodoBloque extends NodoAST{
     }
 
     @Override
+    public int numNodos(){
+        int a = 0;
+        for(int i = 0; i < listaNodos.size(); i++){
+            a += listaNodos.get(i).numNodos();
+        }
+        return a;
+    }
+
+    @Override
     public NODETYPE getType() {
         return NODETYPE.BLOCK;
     }
