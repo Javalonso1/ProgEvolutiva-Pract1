@@ -104,7 +104,7 @@ public class ChromosomeRover extends Chromosome{
                     NodoAST n;
                     if(Math.random() * 2 == 0) n = initializeRandomFull(path.length);
                     else n = initializeRandomGrow(path.length);
-                    fenotipo.setNodoAtPos(path, 0, n);
+                    fenotipo.setNodoAtPos(path, 0, n.copy());
                     break;
                 case FUNCIONAL:
                     fenotipo.randomizeNodoFuncional();
