@@ -34,7 +34,7 @@ public class NodoBloque extends NodoAST{
     @Override
     public void changeNodoAtPos(int[]pos, int prof, NodoAST n){
         if(prof >= pos.length -1){
-            listaNodos.set(pos[prof], n);
+            listaNodos.set(pos[prof], n.copy());
         }
         else {
             listaNodos.get(pos[prof]).changeNodoAtPos(pos, prof+1, n.copy());

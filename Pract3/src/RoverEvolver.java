@@ -78,8 +78,8 @@ public class RoverEvolver extends GeneticManager{
                                 if (Math.random() < 0.5) stop = true;
                             }
                         }
-                        sol[i].cruceSUBARBOL(path1, n2);
-                        sol[i+1].cruceSUBARBOL(path2, n1);
+                        sol[i].cruceSUBARBOL(path1, n2.copy());
+                        sol[i+1].cruceSUBARBOL(path2, n1.copy());
                         break;
                     default:
                         break;

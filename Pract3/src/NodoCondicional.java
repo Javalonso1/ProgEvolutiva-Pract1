@@ -37,12 +37,12 @@ public class NodoCondicional extends NodoAST{
         else {
             if(pos[prof] == 0) {
                 if(!hijoIzquierdo.setNodoAtPos(pos, prof + 1, n.copy())){
-                    hijoIzquierdo = n;
+                    hijoIzquierdo = n.copy();
                 }
             }
             else {
                 if(!hijoDerecho.setNodoAtPos(pos, prof + 1, n.copy())){
-                    hijoDerecho = n;
+                    hijoDerecho = n.copy();
                 }
             }
             return true;
@@ -52,8 +52,8 @@ public class NodoCondicional extends NodoAST{
     @Override
     public void changeNodoAtPos(int[]pos, int prof, NodoAST n){
         if(prof >= pos.length -1){
-            if(pos[prof] == 0) hijoIzquierdo = n;
-            else hijoDerecho = n;
+            if(pos[prof] == 0) hijoIzquierdo = n.copy();
+            else hijoDerecho = n.copy();
         }
         else {
             if(pos[prof] == 0) hijoIzquierdo.changeNodoAtPos(pos, prof + 1, n.copy());
