@@ -50,11 +50,11 @@ public class NodoAccion extends NodoAST{
     public String nodoToText() {
         switch (tipoAccion){
             case AVANZAR:
-                return "AVANZAR";
+                return "AV";
             case GIRAR_DER:
-                return "GIRAR_DER";
+                return "GIR_D";
             case GIRAR_IZQ:
-                return "GIRAR_IZQ";
+                return "GIR_I";
             default:
                 return "";
         }
