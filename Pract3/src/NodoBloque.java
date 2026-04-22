@@ -25,8 +25,8 @@ public class NodoBloque extends NodoAST{
     public boolean setNodoAtPos(int[]pos, int prof, NodoAST n){
         if(prof == pos.length) return false;
         else {
-            if(!listaNodos.get(pos[prof]).setNodoAtPos(pos, prof + 1, n)) {
-                listaNodos.set(pos[prof], n);
+            if(!listaNodos.get(pos[prof]).setNodoAtPos(pos, prof + 1, n.copy())) {
+                listaNodos.set(pos[prof], n.copy());
             }
             return true;
         }
@@ -37,7 +37,7 @@ public class NodoBloque extends NodoAST{
             listaNodos.set(pos[prof], n);
         }
         else {
-            listaNodos.get(pos[prof]).changeNodoAtPos(pos, prof+1, n);
+            listaNodos.get(pos[prof]).changeNodoAtPos(pos, prof+1, n.copy());
         }
     }
 

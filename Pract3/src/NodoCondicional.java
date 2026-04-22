@@ -36,12 +36,12 @@ public class NodoCondicional extends NodoAST{
         if(prof == pos.length) return false;
         else {
             if(pos[prof] == 0) {
-                if(!hijoIzquierdo.setNodoAtPos(pos, prof + 1, n)){
+                if(!hijoIzquierdo.setNodoAtPos(pos, prof + 1, n.copy())){
                     hijoIzquierdo = n;
                 }
             }
             else {
-                if(!hijoDerecho.setNodoAtPos(pos, prof + 1, n)){
+                if(!hijoDerecho.setNodoAtPos(pos, prof + 1, n.copy())){
                     hijoDerecho = n;
                 }
             }
@@ -56,8 +56,8 @@ public class NodoCondicional extends NodoAST{
             else hijoDerecho = n;
         }
         else {
-            if(pos[prof] == 0) hijoIzquierdo.changeNodoAtPos(pos, prof + 1, n);
-            else hijoDerecho.changeNodoAtPos(pos, prof + 1, n);
+            if(pos[prof] == 0) hijoIzquierdo.changeNodoAtPos(pos, prof + 1, n.copy());
+            else hijoDerecho.changeNodoAtPos(pos, prof + 1, n.copy());
         }
     }
 
