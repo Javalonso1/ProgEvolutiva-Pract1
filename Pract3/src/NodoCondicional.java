@@ -165,11 +165,11 @@ public class NodoCondicional extends NodoAST{
     }
 
     public void setHijoD(NodoAST n){
-        hijoDerecho = n;
+        hijoDerecho = n.copy();
     }
     public NodoAST getHijoD() {return  hijoDerecho;}
     public void setHijoI(NodoAST n){
-        hijoIzquierdo = n;
+        hijoIzquierdo = n.copy();
     }
     public NodoAST getHijoI() {return  hijoIzquierdo;}
 

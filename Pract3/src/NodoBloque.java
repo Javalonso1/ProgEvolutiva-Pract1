@@ -98,7 +98,7 @@ public class NodoBloque extends NodoAST{
     }
 
     public void AddNodo(NodoAST n){
-        listaNodos.add(n);
+        listaNodos.add(n.copy());
     }
 
     public ArrayList<NodoAST> GetNodos() {return  listaNodos;}
