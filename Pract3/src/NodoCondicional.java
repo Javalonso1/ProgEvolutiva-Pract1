@@ -157,7 +157,7 @@ public class NodoCondicional extends NodoAST{
             default:
                 s2 = "";
         }
-        return ("If "+ s1 + s2 + UmbralValues[Umbral] + "(" + hijoIzquierdo.nodoToTest() + ") else (" + hijoDerecho + ")");
+        return ("If "+ s1 + s2 + UmbralValues[Umbral] + "(" + hijoIzquierdo.nodoToText() + ") else (" + hijoDerecho + ")");
     }
     @Override
     public NODETYPE getType() {
