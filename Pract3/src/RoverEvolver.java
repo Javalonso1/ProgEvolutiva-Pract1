@@ -215,6 +215,7 @@ public class RoverEvolver extends GeneticManager{
             evaluateNode(c.fenotipo, info, path);
 
         Ui.setPath(path);
+        Ui.setBottomText(c.fenotipo.nodoToText());
 
     }
 
