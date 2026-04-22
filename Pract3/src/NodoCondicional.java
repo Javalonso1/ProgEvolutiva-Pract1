@@ -137,12 +137,16 @@ public class NodoCondicional extends NodoAST{
         switch (sensor){
             case DIST_MUESTRA:
                 s1 = "DIST_MUESTRA";
+                break;
             case DIST_ARENA:
                 s1 = "DIST_ARENA";
+                break;
             case NIVEL_ENERGIA:
                 s1 = "NIVEL_ENERGIA";
+                break;
             case DIST_OBSTACULO:
                 s1 = "DIST_OBSTACULO";
+                break;
             default:
                 s1 = "";
         }
@@ -150,12 +154,16 @@ public class NodoCondicional extends NodoAST{
         switch (operador){
             case IGUAL:
                 s2 = " es igual a ";
+                break;
             case MENOR_QUE:
                 s2 = " es menor que ";
+                break;
             case MAYOR_QUE:
                 s2 = " es mayor que ";
+                break;
             default:
                 s2 = "";
+                break;
         }
         return ("If "+ s1 + s2 + UmbralValues[Umbral] + "(" + hijoIzquierdo.nodoToText() + ") else (" + hijoDerecho + ")");
     }
