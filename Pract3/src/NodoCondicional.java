@@ -126,7 +126,7 @@ public class NodoCondicional extends NodoAST{
 
     @Override
     public int numNodos(){
-        int a = 0;
+        int a = 1;
         a += hijoDerecho.numNodos();
         a += hijoIzquierdo.numNodos();
         return a;
