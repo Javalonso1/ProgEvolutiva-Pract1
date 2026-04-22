@@ -47,6 +47,19 @@ public class NodoAccion extends NodoAST{
         return false;
     }
     @Override
+    public String nodoToText() {
+        switch (tipoAccion){
+            case AVANZAR:
+                return "AVANZAR";
+            case GIRAR_DER:
+                return "GIRAR_DER";
+            case GIRAR_IZQ:
+                return "GIRAR_IZQ";
+            default:
+                return "";
+        }
+    }
+    @Override
     public NODETYPE getType() {
         return NODETYPE.ACTION;
     }

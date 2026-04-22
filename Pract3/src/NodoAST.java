@@ -11,6 +11,7 @@ public abstract class NodoAST {
     public abstract boolean randomizeNodoTerminal();
     public abstract boolean podar();
     public abstract int numNodos();
+    public abstract String nodoToText();
     public abstract NODETYPE getType();
     public abstract NodoAST copy();
 }

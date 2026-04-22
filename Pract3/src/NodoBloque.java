@@ -85,6 +85,14 @@ public class NodoBloque extends NodoAST{
     }
 
     @Override
+    public String nodoToText() {
+        String s = "NodoBloque";
+        for(int i = 0; i < listaNodos.size(); i++){
+            s += "(" + listaNodos.get(i).nodoToTest() + ")";
+        }
+        return s;
+    }
+    @Override
     public NODETYPE getType() {
         return NODETYPE.BLOCK;
     }

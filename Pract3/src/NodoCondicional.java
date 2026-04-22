@@ -132,6 +132,34 @@ public class NodoCondicional extends NodoAST{
         return a;
     }
     @Override
+    public String nodoToText() {
+        String s1 = "";
+        switch (sensor){
+            case DIST_MUESTRA:
+                s1 = "DIST_MUESTRA";
+            case DIST_ARENA:
+                s1 = "DIST_ARENA";
+            case NIVEL_ENERGIA:
+                s1 = "NIVEL_ENERGIA";
+            case DIST_OBSTACULO:
+                s1 = "DIST_OBSTACULO";
+            default:
+                s1 = "";
+        }
+        String s2 = "";
+        switch (operador){
+            case IGUAL:
+                s2 = " es igual a ";
+            case MENOR_QUE:
+                s2 = " es menor que ";
+            case MAYOR_QUE:
+                s2 = " es mayor que ";
+            default:
+                s2 = "";
+        }
+        return ("If "+ s1 + s2 + UmbralValues[Umbral] + "(" + hijoIzquierdo.nodoToTest() + ") else (" + hijoDerecho + ")");
+    }
+    @Override
     public NODETYPE getType() {
         return NODETYPE.CONDITIONAL;
     }

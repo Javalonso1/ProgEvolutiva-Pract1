@@ -152,13 +152,13 @@ public class UIclass extends JFrame {
 
         popSize = new JFormattedTextField(formatter);
         popSize.setColumns(4);
-        popSize.setValue(100);
+        popSize.setValue(300);
         bloating = new JFormattedTextField(formatter);
         bloating.setColumns(2);
         bloating.setValue(2);
         nGens = new JFormattedTextField(formatter);
         nGens.setColumns(4);
-        nGens.setValue(200);
+        nGens.setValue(300);
         profundidad = new JFormattedTextField(formatter);
         profundidad.setColumns(4);
         profundidad.setValue(5);
