@@ -36,50 +36,16 @@ public class RoverEvolver extends GeneticManager{
                 sol[i+1] = pop[i+1].copy();
                 switch (crossMethod){
                     case SUBARBOL:
-                        int[] path1 = new int[0];
-                        NodoAST n1;
-                        n1 = sol[i].fenotipo;
-                        boolean stop = false;
-                        while (!stop){
-                            int a = n1.ranomizeBranch();
-                            if(a == -1){
-                                stop = true;
-                            }
-                            else {
-                                int[] pathAux = new int[path1.length +1];
-                                for(int j = 0; j < path1.length; j++){
-                                    pathAux[j] = path1[j];
-                                }
-                                pathAux[path1.length] = a;
-                                path1 = pathAux;
-                                n1 = sol[i].fenotipo.getNodoAtPos(path1, 0);
-
-                                if (Math.random() < 0.5) stop = true;
-                            }
-                        }
-                        int[] path2 = new  int[0];
-                        NodoAST n2;
-                        n2 = sol[i+1].fenotipo;
-                        stop = false;
-                        while (!stop){
-                            int a = n2.ranomizeBranch();
-                            if(a == -1){
-                                stop = true;
-                            }
-                            else {
-                                int[] pathAux = new int[path2.length +1];
-                                for(int j = 0; j < path2.length; j++){
-                                    pathAux[j] = path2[j];
-                                }
-                                pathAux[path2.length] = a;
-                                path2 = pathAux;
-                                n2 = sol[i+1].fenotipo.getNodoAtPos(path2, 0);
-
-                                if (Math.random() < 0.5) stop = true;
-                            }
-                        }
-                        sol[i].cruceSUBARBOL(path1, n2.copy());
-                        sol[i+1].cruceSUBARBOL(path2, n1.copy());
+                        ArrayList<NodoAST> arr = sol[i].fenotipo.getAllTerminalNodos();
+                        NodoAST n1 = arr.get((int)(Math.random()*arr.size()));
+                        arr = sol[i+1].fenotipo.getAllTerminalNodos();
+                        NodoAST n2 = arr.get((int)(Math.random()*arr.size()));
+                        int x1 = n1.pickRandomSon();
+                        int x2 = n2.pickRandomSon();
+                        NodoAST n1_1 = n1.getSon(x1).copy();
+                        NodoAST n2_1 = n2.getSon(x2).copy();
+                        n1.sustituteSon(x1,n2_1);
+                        n2.sustituteSon(x2,n1_1);
                         break;
                     default:
                         break;

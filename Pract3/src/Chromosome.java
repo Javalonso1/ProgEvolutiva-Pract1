@@ -13,7 +13,6 @@ public abstract class Chromosome {
 
     public abstract void initializeRandom(boolean full);
     abstract void mutate(GeneticManager.MUTATION_TYPE t, double mutationP);
-    abstract void  cruceSUBARBOL(int[]pos, NodoAST n);
 
     public abstract Chromosome copy();
 }

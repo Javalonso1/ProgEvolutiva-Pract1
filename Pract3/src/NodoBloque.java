@@ -15,38 +15,6 @@ public class NodoBloque extends NodoAST{
     }
 
     @Override
-    public NodoAST getNodoAtPos(int[]pos, int prof){
-        if(prof == pos.length) return this;
-        else {
-            return listaNodos.get(pos[prof]).getNodoAtPos(pos, prof + 1);
-        }
-    }
-    @Override
-    public boolean setNodoAtPos(int[]pos, int prof, NodoAST n){
-        if(prof == pos.length) return false;
-        else {
-            if(!listaNodos.get(pos[prof]).setNodoAtPos(pos, prof + 1, n.copy())) {
-                listaNodos.set(pos[prof], n.copy());
-            }
-            return true;
-        }
-    }
-    @Override
-    public void changeNodoAtPos(int[]pos, int prof, NodoAST n){
-        if(prof >= pos.length -1){
-            listaNodos.set(pos[prof], n.copy());
-        }
-        else {
-            listaNodos.get(pos[prof]).changeNodoAtPos(pos, prof+1, n.copy());
-        }
-    }
-
-    @Override
-    public int ranomizeBranch(){
-        return (int)(Math.random() * listaNodos.size());
-    }
-
-    @Override
     public void randomizeNodoFuncional(){
         listaNodos.get((int)(Math.random() * listaNodos.size())).randomizeNodoFuncional();
     }
@@ -54,6 +22,28 @@ public class NodoBloque extends NodoAST{
     public boolean randomizeNodoTerminal(){
         int i = (int)(Math.random() * listaNodos.size());
         return listaNodos.get(i).randomizeNodoTerminal();
+    }
+    @Override
+    public ArrayList<NodoAST> getAllTerminalNodos(){
+        ArrayList<NodoAST> arr = new ArrayList<NodoAST>();
+        arr.add(this);
+        for(int j = 0; j < listaNodos.size(); j++){
+            ArrayList<NodoAST> aux = listaNodos.get(j).getAllTerminalNodos();
+            for (int i = 0; i < aux.size(); i++) arr.add(aux.get(i));
+        }
+        return arr;
+    }
+    @Override
+    public int pickRandomSon(){
+        return (int)(Math.random()*listaNodos.size());
+    }
+    @Override
+    public NodoAST getSon(int i){
+        return listaNodos.get(i);
+    }
+    @Override
+    public void sustituteSon(int i, NodoAST n){
+        listaNodos.set(i, n.copy());
     }
 
     @Override

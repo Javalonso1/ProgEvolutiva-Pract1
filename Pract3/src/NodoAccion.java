@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class NodoAccion extends NodoAST{
     public enum Accion {AVANZAR, GIRAR_IZQ, GIRAR_DER};
 
@@ -11,23 +14,20 @@ public class NodoAccion extends NodoAST{
     }
 
     @Override
-    public NodoAST getNodoAtPos(int[]pos, int prof){
-        return this;
+    public ArrayList<NodoAST> getAllTerminalNodos(){
+        return new ArrayList<NodoAST>();
     }
-
     @Override
-    public boolean setNodoAtPos(int[]pos, int prof, NodoAST n){
-        return false;
-    }
-
-    @Override
-    public void changeNodoAtPos(int[]pos, int prof, NodoAST n){
-        //No deberia llegar aqui en primer lugar ._.
-    }
-
-    @Override
-    public int ranomizeBranch(){
+    public int pickRandomSon(){
         return -1;
+    }
+    @Override
+    public NodoAST getSon(int i){
+        return  null;
+    }
+    @Override
+    public void sustituteSon(int i, NodoAST n){
+
     }
     @Override
     public int numNodos(){

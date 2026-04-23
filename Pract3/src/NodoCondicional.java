@@ -23,50 +23,6 @@ public class NodoCondicional extends NodoAST{
     }
 
     @Override
-    public NodoAST getNodoAtPos(int[]pos, int prof){
-        if(prof == pos.length) return this;
-        else {
-            if(pos[prof] == 0) return hijoIzquierdo.getNodoAtPos(pos, prof + 1);
-            else  return hijoDerecho.getNodoAtPos(pos, prof + 1);
-        }
-    }
-
-    @Override
-    public boolean setNodoAtPos(int[]pos, int prof, NodoAST n){
-        if(prof == pos.length) return false;
-        else {
-            if(pos[prof] == 0) {
-                if(!hijoIzquierdo.setNodoAtPos(pos, prof + 1, n.copy())){
-                    hijoIzquierdo = n.copy();
-                }
-            }
-            else {
-                if(!hijoDerecho.setNodoAtPos(pos, prof + 1, n.copy())){
-                    hijoDerecho = n.copy();
-                }
-            }
-            return true;
-        }
-    }
-
-    @Override
-    public void changeNodoAtPos(int[]pos, int prof, NodoAST n){
-        if(prof >= pos.length -1){
-            if(pos[prof] == 0) hijoIzquierdo = n.copy();
-            else hijoDerecho = n.copy();
-        }
-        else {
-            if(pos[prof] == 0) hijoIzquierdo.changeNodoAtPos(pos, prof + 1, n.copy());
-            else hijoDerecho.changeNodoAtPos(pos, prof + 1, n.copy());
-        }
-    }
-
-    @Override
-    public int ranomizeBranch(){
-        return (int)(Math.random() * 2);
-    }
-
-    @Override
     public void randomizeNodoFuncional(){
         if((int)(Math.random() * 2) == 0) hijoIzquierdo.randomizeNodoFuncional();
         else hijoDerecho.randomizeNodoFuncional();
@@ -122,6 +78,31 @@ public class NodoCondicional extends NodoAST{
                 return true;
             }
         }
+    }
+    @Override
+    public ArrayList<NodoAST> getAllTerminalNodos(){
+        ArrayList<NodoAST> arr = new ArrayList<NodoAST>();
+        arr.add(this);
+        ArrayList<NodoAST> aux = hijoDerecho.getAllTerminalNodos();
+        for (int i = 0; i < aux.size(); i++) arr.add(aux.get(i));
+        aux = hijoIzquierdo.getAllTerminalNodos();
+        for (int i = 0; i < aux.size(); i++) arr.add(aux.get(i));
+
+        return arr;
+    }
+    @Override
+    public int pickRandomSon(){
+        return (int)(Math.random()*2);
+    }
+    @Override
+    public NodoAST getSon(int i){
+        if(i == 0) return hijoIzquierdo;
+        else return hijoDerecho;
+    }
+    @Override
+    public void sustituteSon(int i, NodoAST n){
+        if(i == 0) hijoIzquierdo = n.copy();
+        else hijoDerecho = n.copy();
     }
 
     @Override

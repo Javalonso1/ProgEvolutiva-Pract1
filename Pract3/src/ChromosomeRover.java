@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class ChromosomeRover extends Chromosome{
 
     protected  int MAX_NODOS_BLOQUE = 5;
@@ -73,38 +75,14 @@ public class ChromosomeRover extends Chromosome{
     }
 
     @Override
-    void cruceSUBARBOL(int[]pos, NodoAST n){
-        fenotipo.changeNodoAtPos(pos, 0, n.copy());
-    }
-
-    @Override
     void mutate(GeneticManager.MUTATION_TYPE t, double mutationP){
         double r = Math.random() * 100;
         if (r < mutationP){
             switch (t){
                 case SUBARBOL:
-                    int[] path = new int[0];
-                    boolean stop = false;
-                    while (!stop){
-                        int a = fenotipo.getNodoAtPos(path, 0).ranomizeBranch();
-                        if(a == -1){
-                            stop = true;
-                        }
-                        else {
-                            int[] pathAux = new int[path.length +1];
-                            for(int j = 0; j < path.length; j++){
-                                pathAux[j] = path[j];
-                            }
-                            pathAux[path.length] = a;
-                            path = pathAux;
-
-                            if(Math.random() * 2 == 0) stop = true;
-                        }
-                    }
-                    NodoAST n;
-                    if(Math.random() * 2 == 0) n = initializeRandomFull(path.length);
-                    else n = initializeRandomGrow(path.length);
-                    fenotipo.setNodoAtPos(path, 0, n.copy());
+                    ArrayList<NodoAST> arr = fenotipo.getAllTerminalNodos();
+                    NodoAST n1 = arr.get((int)(Math.random()*arr.size()));
+                    n1 = initializeRandomGrow(0);
                     break;
                 case FUNCIONAL:
                     fenotipo.randomizeNodoFuncional();
@@ -119,27 +97,7 @@ public class ChromosomeRover extends Chromosome{
                     int rnd = (int)(Math.random() * 4);
                     switch (rnd){
                         case 0:
-                            path = new int[0];
-                            stop = false;
-                            while (!stop){
-                                int a = fenotipo.getNodoAtPos(path, 0).ranomizeBranch();
-                                if(a == -1){
-                                    stop = true;
-                                }
-                                else {
-                                    int[] pathAux = new int[path.length +1];
-                                    for(int j = 0; j < path.length; j++){
-                                        pathAux[j] = path[j];
-                                    }
-                                    pathAux[path.length] = a;
-                                    path = pathAux;
 
-                                    if(Math.random() * 2 == 0) stop = true;
-                                }
-                            }
-                            if(Math.random() * 2 == 0) n = initializeRandomFull(path.length);
-                            else n = initializeRandomGrow(path.length);
-                            fenotipo.setNodoAtPos(path, 0, n.copy());
                             break;
                         case 1:
                             fenotipo.randomizeNodoFuncional();
