@@ -82,7 +82,7 @@ public class ChromosomeRover extends Chromosome{
                 case SUBARBOL:
                     ArrayList<NodoAST> arr = fenotipo.getAllTerminalNodos();
                     NodoAST n1 = arr.get((int)(Math.random()*arr.size()));
-                    n1 = initializeRandomGrow(0);
+                    n1 = initializeRandomGrow((int)(Math.random()*PROFUNDIDAD_MAXIMA));
                     break;
                 case FUNCIONAL:
                     fenotipo.randomizeNodoFuncional();
